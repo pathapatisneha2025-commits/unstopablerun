@@ -11,7 +11,6 @@ import {
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-
   const closeMenu = () => setOpen(false);
 
   return (
@@ -33,7 +32,7 @@ export default function Navbar() {
           <li><Link to="/contact" onClick={closeMenu}>Contact</Link></li>
         </ul>
 
-        {/* ICONS */}
+        {/* ICONS (DESKTOP ONLY) */}
         <div className="nav-icons">
           <LuSearch />
           <LuHeart />
@@ -116,7 +115,7 @@ export default function Navbar() {
           border-radius: 50%;
         }
 
-        /* HAMBURGER BUTTON */
+        /* HAMBURGER */
         .hamburger {
           display: none;
           width: 44px;
@@ -124,29 +123,25 @@ export default function Navbar() {
           border-radius: 50%;
           background: #ffffff;
           border: 1px solid #e5e7eb;
-          display: flex;
           align-items: center;
           justify-content: center;
           font-size: 24px;
           cursor: pointer;
+          box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+          margin-left: auto; /* 🔥 PUSH TO RIGHT */
           transition: all 0.25s ease;
-          box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
-        }
-
-        .hamburger:active {
-          transform: scale(0.92);
         }
 
         .hamburger.open {
           background: #ff6a00;
-          color: #ffffff;
+          color: white;
           transform: rotate(90deg);
         }
 
         /* MOBILE */
         @media (max-width: 900px) {
           .navbar {
-            grid-template-columns: auto auto;
+            grid-template-columns: auto 1fr auto;
             padding: 0 20px;
           }
 
