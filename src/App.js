@@ -14,6 +14,7 @@ import ActivitiesPage from "./pages/ActivitiesPage";
 import AboutUs from "./pages/AboutusPage";
 import ContactUs from "./pages/ContactusPage";
 import Shop from "./pages/ShopPage";
+import CartPage from "./pages/CartPage";
 
 function App() {
   return (
@@ -36,6 +37,7 @@ function App() {
         } />
 
                 <Route path="/shop" element={<Shop/>} />
+                <Route path="/cart" element={<CartPage/>} />
 
         <Route path="/activitypage" element={<ActivitiesPage/>} />
         <Route path="/about" element={<AboutUs/>} />

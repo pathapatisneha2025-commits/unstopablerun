@@ -1,41 +1,72 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { LuHeart, LuEye } from "react-icons/lu";
 
 export default function Shop() {
-  const products = [
-    {
-      id: 1,
-      name: "Pro Runner Tee",
-      price: "$49.99",
-      colors: "Orange Black White",
-      image:
-        "https://images.unsplash.com/photo-1521572163474-6864f9cf17ab",
-    },
-    {
-      id: 2,
-      name: "Endurance Shorts",
-      price: "$59.99",
-      colors: "Black Navy",
-      image:
-        "https://images.unsplash.com/photo-1593032465171-8b6e24b4f0f2",
-    },
-    {
-      id: 3,
-      name: "Power Lift Tank",
-      price: "$39.99",
-      colors: "Orange Grey",
-      image:
-        "https://images.unsplash.com/photo-1599058917212-d750089bc07e",
-    },
-    {
-      id: 4,
-      name: "Flex Training Joggers",
-      price: "$79.99",
-      colors: "Black Charcoal",
-      image:
-        "https://images.unsplash.com/photo-1600180758890-6b94519a8ba6",
-    },
-  ];
+  const [products, setProducts] = useState([]);
+  const [loading, setLoading] = useState(true);
+
+  useEffect(() => {
+    fetchProducts();
+  }, []);
+
+  const fetchProducts = async () => {
+    try {
+      const response = await fetch(
+        "https://unstopablerundatabse.onrender.com/products/all"
+      );
+
+      if (!response.ok) {
+        throw new Error("Failed to fetch products");
+      }
+
+      const data = await response.json();
+      setProducts(data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // -----------------------------
+const addToCart = async (product) => {
+  try {
+    const cartItem = {
+      product_id: product.id,
+      product_name: product.name,
+      product_price: parseFloat(product.price),
+      product_images: product.images || [],
+      quantity: 1
+    };
+
+    const res = await fetch(
+      "https://unstopablerundatabse.onrender.com/cart/add",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          userId: 1, // replace with actual logged-in user ID
+          items: [cartItem] // backend expects array
+        }),
+      }
+    );
+
+    const data = await res.json();
+    if (res.ok) {
+      alert(`${product.name} added to cart ✅`);
+    } else {
+      alert(`Failed to add: ${data.message}`);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Error adding product to cart ❌");
+  }
+};
+
+
+  if (loading) {
+    return <p style={{ padding: 40 }}>Loading products...</p>;
+  }
 
   return (
     <>
@@ -52,8 +83,7 @@ export default function Shop() {
         {/* FILTERS */}
         <div className="shop-filters">
           <button>Filters</button>
-          <button>Size ⌄</button>
-          <button>Color ⌄</button>
+          <button>Category ⌄</button>
           <button>Price ⌄</button>
           <span className="count">{products.length} products</span>
         </div>
@@ -63,27 +93,42 @@ export default function Shop() {
           {products.map((item) => (
             <div className="product-card" key={item.id}>
               <div className="image-wrapper">
-                <img src={item.image} alt={item.name} />
+                <img src={item.images?.[0]} alt={item.name} />
 
                 {/* ICONS */}
                 <div className="hover-icons">
-                  <span><LuHeart /></span>
-                  <span><LuEye /></span>
+                  <span>
+                    <LuHeart />
+                  </span>
+                  <span>
+                    <LuEye />
+                  </span>
                 </div>
 
                 {/* QUICK ADD */}
-                <button className="quick-add">Quick Add</button>
+               <button
+  className="quick-add"
+  onClick={() => addToCart(item)}
+>
+  Add to Cart
+</button>
+
               </div>
 
               <h3>{item.name}</h3>
-              <p className="price">{item.price}</p>
-              <p className="colors">{item.colors}</p>
+              <p className="price">${item.price}</p>
+              <p className="colors">{item.category}</p>
             </div>
           ))}
         </div>
       </div>
 
-      {/* CSS */}
+     
+      
+
+
+
+      {/* CSS (UNCHANGED) */}
       <style>{`
         .shop-page {
           padding: 40px 60px;
@@ -151,7 +196,6 @@ export default function Shop() {
           font-size: 14px;
         }
 
-        /* IMAGE */
         .image-wrapper {
           position: relative;
           border-radius: 18px;
@@ -170,7 +214,6 @@ export default function Shop() {
           transform: scale(1.05);
         }
 
-        /* ICONS */
         .hover-icons {
           position: absolute;
           top: 12px;
@@ -195,7 +238,6 @@ export default function Shop() {
           box-shadow: 0 6px 16px rgba(0,0,0,0.15);
         }
 
-        /* QUICK ADD */
         .quick-add {
           position: absolute;
           bottom: 15px;
@@ -212,7 +254,6 @@ export default function Shop() {
           transition: all 0.3s ease;
         }
 
-        /* HOVER EFFECT */
         .product-card:hover .hover-icons,
         .product-card:hover .quick-add {
           opacity: 1;
@@ -223,7 +264,6 @@ export default function Shop() {
           transform: translateY(0);
         }
 
-        /* MOBILE */
         @media (max-width: 768px) {
           .shop-page {
             padding: 20px;
@@ -238,7 +278,6 @@ export default function Shop() {
             margin-left: 0;
           }
 
-          /* Always visible on mobile */
           .hover-icons,
           .quick-add {
             opacity: 1;

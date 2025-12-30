@@ -33,15 +33,15 @@ export default function Navbar() {
         </ul>
 
         {/* ICONS (DESKTOP ONLY) */}
-        <div className="nav-icons">
-          <LuSearch />
-          <LuHeart />
-          <LuUser />
-          <div className="cart">
-            <LuShoppingBag />
-            <small>0</small>
-          </div>
-        </div>
+       <div className="nav-icons">
+  <LuSearch />
+  <LuHeart />
+  <LuUser />
+  <Link to="/cart" className="cart">
+    <LuShoppingBag />
+    <small>0</small> {/* You can replace 0 with actual cart count later */}
+  </Link>
+</div>
 
         {/* HAMBURGER */}
         <div
