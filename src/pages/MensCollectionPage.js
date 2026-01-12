@@ -1,5 +1,5 @@
 import React from 'react';
-import { Search, Heart, ShoppingBag, SlidersHorizontal, ChevronDown } from 'lucide-react';
+import { SlidersHorizontal, ChevronDown } from 'lucide-react';
 
 const MensPage = () => {
   const styles = `
@@ -25,17 +25,18 @@ const MensPage = () => {
 
     .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 2rem; padding: 0 5% 5rem; }
     .card { cursor: pointer; }
-    .img-box { aspect-ratio: 1/1; background: #f3f4f6; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-weight: 900; color: #ccc; margin-bottom: 1rem; }
+    .img-box { aspect-ratio: 1/1; border-radius: 12px; display: flex; align-items: center; justify-content: center; overflow: hidden; margin-bottom: 1rem; }
+    .img-box img { width: 100%; height: 100%; object-fit: cover; border-radius: 12px; }
     .p-cat { font-size: 0.75rem; font-weight: 800; color: #888; text-transform: uppercase; }
     .p-name { font-weight: 900; text-transform: uppercase; margin: 5px 0; }
     .p-name.highlight { color: #ff5c00; }
   `;
 
   const products = [
-    { cat: 'Outerwear', name: 'Apex Storm Jacket', price: 189 },
-    { cat: 'Tops', name: 'Tech Mesh Tee', price: 55 },
-    { cat: 'Shoes', name: 'Carbon Runner Pro', price: 210, highlight: true },
-    { cat: 'Bottoms', name: 'Hybrid Training Shorts', price: 65 }
+    { cat: 'Outerwear', name: 'Apex Storm Jacket', price: 189, img: '/sportshoddies.jpeg' },
+    { cat: 'Tops', name: 'Tech Mesh Tee', price: 55, img: '/sportstshirt.jpeg' },
+    { cat: 'Shoes', name: 'Carbon Runner Pro', price: 210, highlight: true, img: 'https://images.unsplash.com/photo-1589987600105-b5dff64d85f6?auto=format&fit=crop&w=600&q=80' },
+    { cat: 'Bottoms', name: 'Hybrid Training Shorts', price: 65, img: 'https://images.unsplash.com/photo-1600185361552-3308a6f0a72f?auto=format&fit=crop&w=600&q=80' }
   ];
 
   return (
@@ -46,6 +47,7 @@ const MensPage = () => {
         <span className="hero-tag">Performance Engineered</span>
         <h1 className="hero-h1">Men's Collection</h1>
       </header>
+
       <div className="toolbar">
         <div style={{display:'flex', gap:'1rem'}}>
           <button className="filter-btn"><SlidersHorizontal size={18}/> Filters</button>
@@ -53,10 +55,13 @@ const MensPage = () => {
         </div>
         <div style={{fontWeight:700}}>Sort By <ChevronDown size={16}/></div>
       </div>
+
       <main className="grid">
         {products.map((p, i) => (
           <div key={i} className="card">
-            <div className="img-box">RUNN</div>
+            <div className="img-box">
+              <img src={p.img} alt={p.name} />
+            </div>
             <div className="p-cat">{p.cat}</div>
             <div className={`p-name ${p.highlight ? 'highlight' : ''}`}>{p.name}</div>
             <div style={{fontWeight:800}}>${p.price}</div>

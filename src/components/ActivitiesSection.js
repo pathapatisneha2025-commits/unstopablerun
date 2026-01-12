@@ -7,25 +7,25 @@ const activities = [
     title: "RUNNING",
     subtitle: "Built for speed and endurance",
     image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1400&q=80",
-    link: "/activities/running",
+    link: "/activitypage",
   },
   {
     title: "TRAINING",
     subtitle: "Power through every workout",
     image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1400&q=80",
-    link: "/activities/training",
+    link: "/activitypage",
   },
   {
     title: "LIFESTYLE",
     subtitle: "Athletic comfort, everyday style",
     image: "https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1400&q=80",
-    link: "/activities/lifestyle",
+    link: "/activitypage",
   },
   {
     title: "YOGA",
     subtitle: "Flow with flexibility and ease",
     image: "https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=crop&w=1400&q=80",
-    link: "/activities/yoga",
+    link: "/activitypage",
   },
 ];
 
@@ -36,34 +36,34 @@ export default function ActivitiesSection() {
         @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&display=swap');
 
         .activities-section {
-          background-color: #f3f3f3; /* Matches the light gray background */
-          padding: 100px 24px;
+          background-color: #f3f3f3;
+          padding: 80px 24px; /* Reduced vertical padding */
           font-family: 'Inter', sans-serif;
         }
 
         .header-container {
           text-align: center;
-          margin-bottom: 80px;
+          margin-bottom: 60px; /* Reduced margin */
         }
 
         .flow-badge {
           display: inline-block;
           background-color: #fcece0;
           color: #ff6b00;
-          padding: 8px 24px;
+          padding: 6px 20px; /* Slimmed down badge */
           border-radius: 50px;
           font-family: 'Barlow Condensed', sans-serif;
-          font-size: 14px;
+          font-size: 12px; /* Reduced font size */
           font-weight: 800;
-          letter-spacing: 1.5px;
-          margin-bottom: 20px;
+          letter-spacing: 1.2px;
+          margin-bottom: 16px;
         }
 
         .main-title {
           font-family: 'Barlow Condensed', sans-serif;
-          font-size: clamp(40px, 10vw, 84px);
+          font-size: clamp(32px, 8vw, 60px); /* Reduced from 84px */
           font-weight: 900;
-          line-height: 0.95;
+          line-height: 1;
           color: #1a1a1a;
           margin: 0;
           text-transform: uppercase;
@@ -76,14 +76,14 @@ export default function ActivitiesSection() {
         .cards-grid {
           display: grid;
           grid-template-columns: repeat(4, 1fr);
-          gap: 20px;
-          max-width: 1440px;
+          gap: 16px; /* Slightly tighter gap */
+          max-width: 1300px; /* Reduced max-width for better focus */
           margin: 0 auto;
         }
 
         .activity-card {
           position: relative;
-          height: 580px;
+          height: 520px; /* Slightly reduced height */
           text-decoration: none;
           display: block;
         }
@@ -91,7 +91,7 @@ export default function ActivitiesSection() {
         .img-container {
           height: 100%;
           width: 100%;
-          border-radius: 32px;
+          border-radius: 24px; /* Slightly smaller radius */
           overflow: hidden;
         }
 
@@ -103,13 +103,13 @@ export default function ActivitiesSection() {
 
         .white-card {
           position: absolute;
-          bottom: 12px;
-          left: 12px;
-          right: 12px;
+          bottom: 10px;
+          left: 10px;
+          right: 10px;
           background: white;
-          padding: 30px;
-          border-radius: 24px;
-          min-height: 160px;
+          padding: 24px; /* Reduced padding */
+          border-radius: 20px;
+          min-height: 140px; /* Reduced height */
           display: flex;
           flex-direction: column;
           justify-content: center;
@@ -117,30 +117,30 @@ export default function ActivitiesSection() {
 
         .white-card h3 {
           font-family: 'Barlow Condensed', sans-serif;
-          font-size: 28px;
+          font-size: 22px; /* Reduced from 28px */
           font-weight: 800;
           color: #1a1a1a;
-          margin: 0 0 10px 0;
-          letter-spacing: -0.5px;
+          margin: 0 0 6px 0;
+          letter-spacing: -0.3px;
         }
 
         .white-card p {
-          font-size: 15px;
+          font-size: 13px; /* Reduced from 15px */
           color: #666;
-          margin: 0 0 25px 0;
+          margin: 0 0 16px 0;
           line-height: 1.4;
-          max-width: 80%;
+          max-width: 90%;
         }
 
         .explore-link {
           display: flex;
           align-items: center;
-          gap: 6px;
+          gap: 5px;
           color: #ff6b00;
           font-family: 'Barlow Condensed', sans-serif;
           font-weight: 800;
-          font-size: 16px;
-          letter-spacing: 1px;
+          font-size: 14px; /* Reduced from 16px */
+          letter-spacing: 0.8px;
         }
 
         @media (max-width: 1200px) {
@@ -149,7 +149,8 @@ export default function ActivitiesSection() {
 
         @media (max-width: 640px) {
           .cards-grid { grid-template-columns: 1fr; }
-          .main-title { font-size: 50px; }
+          .main-title { font-size: 40px; }
+          .activity-card { height: 450px; }
         }
       `}</style>
 
@@ -172,7 +173,7 @@ export default function ActivitiesSection() {
                 <h3>{item.title}</h3>
                 <p>{item.subtitle}</p>
                 <div className="explore-link">
-                  EXPLORE <ArrowUpRight size={18} strokeWidth={3} />
+                  EXPLORE <ArrowUpRight size={16} strokeWidth={3} />
                 </div>
               </div>
             </Link>

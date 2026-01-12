@@ -1,27 +1,32 @@
 import React from "react";
+import { Link } from "react-router-dom";
+import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 export default function FeaturedCollections() {
   const collections = [
     {
+      id: "men",
       tag: "PERFORMANCE GEAR",
       title: "MEN",
       subtitle: "Engineered for the modern athlete",
-      image:
-        "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1400&q=80",
+      image:"/men.jpeg",
+      path: "/menscollectoionpage",
     },
     {
+      id: "women",
       tag: "ATHLETIC APPAREL",
       title: "WOMEN",
       subtitle: "Power meets elegance",
-      image:
-        "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1400&q=80",
+      image: "women.jpeg",
+      path: "/womencollectoionpage",
     },
     {
+      id: "accessories",
       tag: "ESSENTIAL GEAR",
       title: "ACCESSORIES",
       subtitle: "Complete your setup",
-      image:
-        "https://images.unsplash.com/photo-1585386959984-a4155224a1ad?auto=format&fit=crop&w=1400&q=80",
+      image:"Acessories.jpeg",
+      path: "/Accesssoriespage",
       active: true,
     },
   ];
@@ -29,7 +34,6 @@ export default function FeaturedCollections() {
   return (
     <>
       <section className="collections">
-
         {/* HEADER */}
         <div className="collections-header">
           <div>
@@ -40,16 +44,17 @@ export default function FeaturedCollections() {
             </h2>
           </div>
 
-          <a href="/shop" className="view-all">
-            VIEW ALL →
-          </a>
+          <Link to="/shop" className="view-all">
+            VIEW ALL <ArrowRight size={16} />
+          </Link>
         </div>
 
         {/* GRID */}
         <div className="grid">
-          {collections.map((item, i) => (
-            <div
-              key={i}
+          {collections.map((item) => (
+            <Link
+              key={item.id}
+              to={item.path}
               className={`card ${item.active ? "active" : ""}`}
             >
               <img src={item.image} alt={item.title} />
@@ -60,14 +65,15 @@ export default function FeaturedCollections() {
                 <h2>{item.title}</h2>
                 <p>{item.subtitle}</p>
                 <span className="explore">
-                  EXPLORE <span>↗</span>
+                  EXPLORE <ArrowUpRight size={16} />
                 </span>
               </div>
-            </div>
+            </Link>
           ))}
         </div>
       </section>
 
+      {/* STYLES */}
       <style>{`
         .collections {
           padding: 90px 6%;
@@ -80,6 +86,8 @@ export default function FeaturedCollections() {
           justify-content: space-between;
           align-items: flex-end;
           margin-bottom: 60px;
+          flex-wrap: wrap;
+          gap: 20px;
         }
 
         .pill {
@@ -89,14 +97,14 @@ export default function FeaturedCollections() {
           background: rgba(255,106,0,0.12);
           color: #ff6a00;
           font-size: 12px;
-          font-weight: 600;
+          font-weight: 700;
           letter-spacing: 1px;
           margin-bottom: 16px;
         }
 
         .collections-header h2 {
           font-size: 64px;
-          font-weight: 900;
+          font-weight: 500;
           line-height: 1;
           color: #111;
         }
@@ -106,11 +114,15 @@ export default function FeaturedCollections() {
         }
 
         .view-all {
+          display: inline-flex;
+          align-items: center;
+          gap: 8px;
           font-size: 14px;
-          font-weight: 600;
+          font-weight: 700;
           letter-spacing: 1px;
           color: #111;
           text-decoration: none;
+          transition: color 0.3s;
         }
 
         .view-all:hover {
@@ -133,6 +145,7 @@ export default function FeaturedCollections() {
           background: #000;
           box-shadow: 0 20px 40px rgba(0,0,0,0.15);
           transition: transform 0.4s ease;
+          text-decoration: none;
         }
 
         .card:hover {
@@ -144,9 +157,14 @@ export default function FeaturedCollections() {
           height: 100%;
           object-fit: cover;
           transform: scale(1.05);
+          transition: transform 0.6s ease;
         }
 
-        /* ACTIVE ORANGE BORDER */
+        .card:hover img {
+          transform: scale(1.12);
+        }
+
+        /* ACTIVE BORDER */
         .card.active {
           outline: 4px solid #ff6a00;
           outline-offset: -4px;
@@ -181,13 +199,13 @@ export default function FeaturedCollections() {
           padding: 7px 16px;
           border-radius: 999px;
           font-size: 12px;
-          font-weight: 700;
+          font-weight: 800;
           margin-bottom: 14px;
         }
 
         .info h2 {
           font-size: 44px;
-          font-weight: 900;
+          font-weight: 500;
           margin-bottom: 6px;
         }
 
@@ -198,28 +216,23 @@ export default function FeaturedCollections() {
         }
 
         .explore {
-          font-size: 14px;
-          font-weight: 600;
-          letter-spacing: 1px;
-          color: #fff;
           display: inline-flex;
           align-items: center;
           gap: 6px;
-          transition: color 0.3s ease;
+          font-size: 14px;
+          font-weight: 700;
+          letter-spacing: 1px;
+          color: #fff;
+          transition: color 0.3s ease, transform 0.3s ease;
         }
 
         .card:hover .explore {
           color: #ff6a00;
+          transform: translate(4px, -4px);
         }
 
         /* RESPONSIVE */
         @media (max-width: 1000px) {
-          .collections-header {
-            flex-direction: column;
-            align-items: flex-start;
-            gap: 20px;
-          }
-
           .collections-header h2 {
             font-size: 48px;
           }

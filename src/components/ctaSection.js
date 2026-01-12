@@ -21,7 +21,7 @@ const CtaSection = () => {
             </button>
           </div>
 
-          {/* Updated Icon Row to match Screenshot 2 */}
+          {/* Updated Icon Row */}
           <div className="stats-row">
             <div className="stat-item">
               <div className="icon-wrapper">
@@ -75,7 +75,7 @@ const CtaSection = () => {
         .join-section {
           background-color: #FF6B00;
           color: white;
-          padding: 80px 40px;
+          padding: 60px 30px;
           font-family: 'Inter', sans-serif;
           overflow: hidden;
           display: flex;
@@ -89,36 +89,36 @@ const CtaSection = () => {
           justify-content: space-between;
           align-items: center;
           width: 100%;
-          gap: 60px;
+          gap: 40px;
         }
 
-        .content-side { flex: 1; max-width: 550px; }
+        .content-side { flex: 1; max-width: 500px; }
 
         .top-badge {
           background: rgba(255, 255, 255, 0.15);
           display: inline-block;
-          padding: 6px 16px;
+          padding: 4px 12px;
           border-radius: 50px;
-          font-size: 11px;
+          font-size: 10px;
           font-weight: 700;
-          margin-bottom: 24px;
-          letter-spacing: 1.5px;
+          margin-bottom: 18px;
+          letter-spacing: 1.2px;
           backdrop-filter: blur(4px);
         }
 
         .join-title {
           font-family: 'Barlow Condensed', sans-serif;
-          font-size: 96px;
-          line-height: 0.85;
+          font-size: 64px;
+          line-height: 0.9;
           font-weight: 900;
-          margin: 0 0 24px 0;
+          margin: 0 0 18px 0;
           text-transform: uppercase;
         }
 
         .join-description {
-          font-size: 18px;
-          line-height: 1.6;
-          margin-bottom: 32px;
+          font-size: 16px;
+          line-height: 1.5;
+          margin-bottom: 28px;
           opacity: 0.9;
           max-width: 90%;
         }
@@ -127,8 +127,8 @@ const CtaSection = () => {
           display: flex;
           background: rgba(0, 0, 0, 0.05);
           border-radius: 16px;
-          padding: 8px;
-          margin-bottom: 48px;
+          padding: 6px;
+          margin-bottom: 36px;
           border: 1px solid rgba(255, 255, 255, 0.2);
           max-width: 450px;
         }
@@ -138,8 +138,8 @@ const CtaSection = () => {
           border: none;
           color: white;
           flex: 1;
-          padding: 12px 20px;
-          font-size: 16px;
+          padding: 10px 16px;
+          font-size: 14px;
           outline: none;
         }
 
@@ -149,34 +149,33 @@ const CtaSection = () => {
           background: white;
           color: #FF6B00;
           border: none;
-          padding: 12px 28px;
+          padding: 10px 24px;
           border-radius: 12px;
           font-weight: 700;
           cursor: pointer;
           display: flex;
           align-items: center;
-          gap: 8px;
+          gap: 6px;
           transition: all 0.2s;
         }
 
         .subscribe-btn:hover { background: #f0f0f0; }
 
-        /* Stats & Icons Styling */
         .stats-row {
           display: flex;
-          gap: 48px;
+          gap: 32px;
         }
 
         .stat-item {
           display: flex;
           flex-direction: column;
           align-items: flex-start;
-          gap: 12px;
+          gap: 8px;
         }
 
         .icon-wrapper {
-          width: 48px;
-          height: 48px;
+          width: 40px;
+          height: 40px;
           background: rgba(255, 255, 255, 0.1);
           border-radius: 12px;
           display: flex;
@@ -189,69 +188,60 @@ const CtaSection = () => {
 
         .stat-number {
           font-family: 'Barlow Condensed', sans-serif;
-          font-size: 24px;
+          font-size: 20px;
           font-weight: 900;
           line-height: 1;
         }
 
         .stat-label {
-          font-size: 12px;
+          font-size: 10px;
           opacity: 0.7;
           text-transform: uppercase;
           letter-spacing: 0.5px;
         }
 
-        /* Right Side Animation */
         .visual-side {
           flex: 1;
           position: relative;
-          height: 500px;
+          height: 400px;
           display: flex;
           align-items: center;
           justify-content: center;
         }
 
-        .circle {
-          position: absolute;
-          border: 1px dashed rgba(255, 255, 255, 0.3);
-          border-radius: 50%;
-        }
-
-        .circle-large { width: 500px; height: 500px; }
-        .circle-medium { width: 380px; height: 380px; }
-        .circle-small { 
-          width: 260px; height: 260px; 
-          animation: spin 30s linear infinite;
-        }
+        .circle { position: absolute; border: 1px dashed rgba(255, 255, 255, 0.3); border-radius: 50%; }
+        .circle-large { width: 400px; height: 400px; }
+        .circle-medium { width: 300px; height: 300px; }
+        .circle-small { width: 200px; height: 200px; animation: spin 30s linear infinite; }
 
         .orbit-dot {
           position: absolute;
-          width: 14px;
-          height: 14px;
+          width: 12px;
+          height: 12px;
           background: white;
           border-radius: 50%;
-          top: -7px;
+          top: -6px;
           left: 50%;
-          box-shadow: 0 0 15px rgba(255,255,255,0.6);
+          box-shadow: 0 0 12px rgba(255,255,255,0.6);
         }
 
         .brand-center { text-align: center; z-index: 2; }
 
         .brand-logo {
           font-family: 'Barlow Condensed', sans-serif;
-          font-size: 80px;
+          font-size: 60px;
           font-weight: 900;
           margin: 0;
-          letter-spacing: 4px;
+          letter-spacing: 3px;
         }
 
         .brand-tagline {
-          font-size: 12px;
-          letter-spacing: 6px;
+          font-size: 10px;
+          letter-spacing: 4px;
           font-weight: 500;
           opacity: 0.8;
           display: block;
-          margin-top: -10px;
+          margin-top: -8px;
         }
 
         @keyframes spin {
@@ -262,9 +252,9 @@ const CtaSection = () => {
         @media (max-width: 1024px) {
           .join-container { flex-direction: column; text-align: center; }
           .content-side { max-width: 100%; display: flex; flex-direction: column; align-items: center; }
-          .stats-row { justify-content: center; gap: 32px; }
+          .stats-row { justify-content: center; gap: 24px; }
           .stat-item { align-items: center; }
-          .visual-side { display: none; } /* Hide complex animation on small tablets/mobile */
+          .visual-side { display: none; }
         }
       `}</style>
     </section>

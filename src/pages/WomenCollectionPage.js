@@ -6,12 +6,42 @@ const WomenCollectionPage = () => {
 
   const categories = ['All', 'Shoes', 'Tops', 'Bottoms', 'Outerwear'];
 
-  const products = [
-    { id: 1, category: 'BOTTOMS', name: 'POWER COMPRESSION TIGHTS', price: 89, color: '#f3f4f6' },
-    { id: 2, category: 'TOPS', name: 'SWIFT PERFORMANCE TEE', price: 45, color: '#f3f4f6' },
-    { id: 3, category: 'SHOES', name: 'AERO RUNNING SHOES', price: 179, color: '#fdf2e9', highlight: true },
-    { id: 4, category: 'ACCESSORIES', name: 'ULTRA GRIP GLOVES', price: 35, color: '#f3f4f6' }
-  ];
+ const products = [
+  { 
+    id: 1, 
+    category: 'BOTTOMS', 
+    name: 'POWER COMPRESSION TIGHTS', 
+    price: 89, 
+    color: '#f3f4f6',
+    img: '/pants.jpeg'
+  },
+  { 
+    id: 2, 
+    category: 'TOPS', 
+    name: 'SWIFT PERFORMANCE TEE', 
+    price: 45, 
+    color: '#f3f4f6',
+    img: '/womentshirt.jpeg'
+  },
+  { 
+    id: 3, 
+    category: 'SHOES', 
+    name: 'AERO RUNNING SHOES', 
+    price: 179, 
+    color: '#fdf2e9', 
+    highlight: true,
+    img: '/runningshoes.jpeg'
+  },
+  { 
+    id: 4, 
+    category: 'ACCESSORIES', 
+    name: 'ULTRA GRIP GLOVES', 
+    price: 35, 
+    color: '#f3f4f6',
+    img: '/sportsgloves.jpeg'
+  }
+];
+
 
   const styles = `
     .shop-container {
@@ -185,16 +215,23 @@ const WomenCollectionPage = () => {
       </section>
 
       {/* Grid */}
-      <main className="product-grid">
-        {products.map(product => (
-          <div key={product.id} className="product-card">
-            <div className="image-box" style={{ backgroundColor: product.color }}>RUNN</div>
-            <div className="p-cat">{product.category}</div>
-            <div className={`p-name ${product.highlight ? 'highlight' : ''}`}>{product.name}</div>
-            <div className="p-price">${product.price}</div>
-          </div>
-        ))}
-      </main>
+    <main className="product-grid">
+  {products.map(product => (
+    <div key={product.id} className="product-card">
+      <div className="image-box" style={{ backgroundColor: product.color }}>
+        <img 
+          src={product.img} 
+          alt={product.name} 
+          style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
+        />
+      </div>
+      <div className="p-cat">{product.category}</div>
+      <div className={`p-name ${product.highlight ? 'highlight' : ''}`}>{product.name}</div>
+      <div className="p-price">${product.price}</div>
+    </div>
+  ))}
+</main>
+
 
       {/* Button */}
       <div className="load-more-container">

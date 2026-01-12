@@ -1,5 +1,5 @@
 import React from 'react';
-import { ArrowRight, Search, Heart, ShoppingBag, Mountain, Bike, Zap, Dumbbell, Sparkles } from 'lucide-react';
+import { ArrowRight, Search, Heart, User, ShoppingBag } from 'lucide-react';
 
 const ActivitiesPage = () => {
   // --- CSS Styles ---
@@ -18,19 +18,17 @@ const ActivitiesPage = () => {
       justify-content: space-between;
       align-items: center;
       padding: 1rem 2rem;
-      border-bottom: 1px solid #f3f4f6;
+      background: #ff5c00;
+      color: white;
     }
     .logo-circle {
-      width: 32px;
-      height: 32px;
-      background: #ff5c00;
-      border-radius: 50%;
+      width: 40px;
+      height: 40px;
+      background: white;
+      border-radius: 4px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: white;
-      font-weight: 900;
-      font-style: italic;
     }
     .nav-links {
       display: flex;
@@ -38,21 +36,21 @@ const ActivitiesPage = () => {
     }
     .nav-links a {
       text-decoration: none;
-      color: inherit;
+      color: rgba(255, 255, 255, 0.8);
       font-weight: 700;
       font-size: 0.8rem;
       text-transform: uppercase;
       letter-spacing: 0.1em;
     }
     .nav-links a.active {
-      color: #ff5c00;
-      border-bottom: 2px solid #ff5c00;
+      color: white;
+      border-bottom: 2px solid white;
       padding-bottom: 4px;
     }
     .nav-icons {
       display: flex;
       gap: 1.5rem;
-      color: #6b7280;
+      align-items: center;
     }
 
     /* Hero */
@@ -102,6 +100,7 @@ const ActivitiesPage = () => {
       border-radius: 1.5rem;
       transition: all 0.3s ease;
       cursor: pointer;
+      text-align: center;
     }
     .card:hover {
       box-shadow: 0 20px 25px -5px rgba(0, 0, 0, 0.05);
@@ -110,11 +109,9 @@ const ActivitiesPage = () => {
       border: 2px solid #ff5c00;
     }
     .card-icon {
+      font-size: 3rem;
       margin-bottom: 1.5rem;
-      color: #374151;
     }
-    .highlight .card-icon { color: #ff5c00; }
-    
     .card-h3 {
       font-size: 1.5rem;
       font-weight: 900;
@@ -137,50 +134,106 @@ const ActivitiesPage = () => {
       justify-content: space-between;
       align-items: center;
     }
-    .stats { display: flex; gap: 2rem; }
-    .stat-val { 
-      display: block; 
-      font-weight: 800; 
-      color: #ff5c00; 
-      font-size: 1.1rem;
-    }
-    .stat-lab { 
-      font-size: 0.7rem; 
-      text-transform: uppercase; 
-      color: #9ca3af; 
-      font-weight: 700;
-      letter-spacing: 0.05em;
-    }
+    .stats { display: flex; gap: 2rem; justify-content: center; }
+    .stat-val { display: block; font-weight: 800; color: #ff5c00; font-size: 1.1rem; }
+    .stat-lab { font-size: 0.7rem; text-transform: uppercase; color: #9ca3af; font-weight: 700; }
     .arrow { color: #d1d5db; transition: 0.2s; }
     .card:hover .arrow { transform: translateX(4px); color: #ff5c00; }
+
+    /* Footer Section (From Screenshot) */
+    .footer-container {
+      background-color: #000;
+      color: white;
+      padding: 4rem 2rem 2rem;
+    }
+    .footer-subscribe {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 2rem;
+      max-width: 1200px;
+      margin: 0 auto 4rem;
+    }
+    .subscribe-text h2 {
+      font-size: 2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .subscribe-text span { color: #ff5c00; }
+    .subscribe-text p { color: #9ca3af; margin-top: 0.5rem; }
+    
+    .subscribe-form {
+      display: flex;
+      gap: 1rem;
+      flex-grow: 1;
+      max-width: 500px;
+    }
+    .subscribe-input {
+      flex-grow: 1;
+      background: #1a1a1a;
+      border: 1px solid #333;
+      padding: 1rem;
+      color: white;
+      border-radius: 8px;
+    }
+    .subscribe-btn {
+      background: #ff5c00;
+      color: white;
+      border: none;
+      padding: 0 2rem;
+      border-radius: 8px;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      cursor: pointer;
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      max-width: 1200px;
+      margin: 0 auto;
+      border-top: 1px solid #222;
+      padding-top: 3rem;
+    }
+    .link-group h4 {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      letter-spacing: 0.1em;
+      margin-bottom: 1.5rem;
+    }
+    .link-group ul { list-style: none; padding: 0; margin: 0; }
+    .link-group li { margin-bottom: 0.8rem; color: #9ca3af; font-size: 0.9rem; cursor: pointer; }
   `;
 
   const activities = [
-    { title: "Running", Icon: Zap, products: "124", athletes: "15K+", text: "Built for speed and endurance. From sprints to marathons, find your perfect pace." },
-    { title: "Training", Icon: Dumbbell, products: "98", athletes: "22K+", text: "Power through every workout. Gear that moves with you and works as hard as you do.", highlight: true },
-    { title: "Lifestyle", Icon: Sparkles, products: "156", athletes: "30K+", text: "Athletic comfort meets everyday style. Look good, feel unstoppable." },
-    { title: "Yoga", Icon: Zap, products: "67", athletes: "12K+", text: "Flow with flexibility and ease. Breathable fabrics for mindful movement." },
-    { title: "Hiking", Icon: Mountain, products: "45", athletes: "8K+", text: "Conquer any terrain. Durable gear built for adventure." },
-    { title: "Cycling", Icon: Bike, products: "52", athletes: "10K+", text: "Aerodynamic performance wear for every ride." }
+    { title: "Running", Icon: () => "🏃", products: "124", athletes: "15K+", text: "Built for speed and endurance. From sprints to marathons, find your perfect pace." },
+    { title: "Training", Icon: () => "💪", products: "98", athletes: "22K+", text: "Power through every workout. Gear that moves with you and works as hard as you do.", highlight: true },
+    { title: "Lifestyle", Icon: () => "✨", products: "156", athletes: "30K+", text: "Athletic comfort meets everyday style. Look good, feel unstoppable." },
+    { title: "Yoga", Icon: () => "🧘", products: "67", athletes: "12K+", text: "Flow with flexibility and ease. Breathable fabrics for mindful movement." },
+    { title: "Hiking", Icon: () => "🥾", products: "45", athletes: "8K+", text: "Conquer any terrain. Durable gear built for adventure." },
+    { title: "Cycling", Icon: () => "🚴", products: "52", athletes: "10K+", text: "Aerodynamic performance wear for every ride." }
   ];
 
   return (
     <div className="page-wrapper">
       <style>{styles}</style>
       
-  
-      {/* Hero Header */}
+      
+
       <header className="hero">
         <p className="hero-subtitle">Find Your Flow</p>
         <h1 className="hero-title">Activities</h1>
         <p className="hero-text">Every sport. Every workout. Every moment. Find gear designed specifically for your passion.</p>
       </header>
 
-      {/* Main Grid */}
       <main className="content-grid">
         {activities.map((item, i) => (
           <div key={i} className={`card ${item.highlight ? 'highlight' : ''}`}>
-            <div className="card-icon"><item.Icon size={40} /></div>
+            <div className="card-icon">{item.Icon()}</div>
             <h3 className="card-h3">{item.title}</h3>
             <p className="card-p">{item.text}</p>
             <div className="card-footer">
@@ -199,6 +252,24 @@ const ActivitiesPage = () => {
           </div>
         ))}
       </main>
+
+      {/* --- Stay Unstoppable Footer --- */}
+      <footer className="footer-container">
+        <div className="footer-subscribe">
+          <div className="subscribe-text">
+            <h2>STAY <span>UNSTOPPABLE</span></h2>
+            <p>Subscribe for exclusive offers, new arrivals & insider-only discounts</p>
+          </div>
+          <div className="subscribe-form">
+            <input type="email" placeholder="Enter your email" className="subscribe-input" />
+            <button className="subscribe-btn">
+              SUBSCRIBE <ArrowRight size={16} />
+            </button>
+          </div>
+        </div>
+
+       
+      </footer>
     </div>
   );
 };

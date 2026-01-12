@@ -61,7 +61,7 @@ const AboutUs = () => {
     /* Hero Section */
     .hero {
       background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), 
-                  url('https://images.unsplash.com/photo-1538370621607-4919ce7889b3?auto=format&fit=crop&q=80&w=2000');
+                  url('/about.jpeg');
       background-size: cover;
       background-position: center;
       padding: 8rem 5%;

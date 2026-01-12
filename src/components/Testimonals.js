@@ -58,9 +58,10 @@ export default function Testimonials() {
           <div className="badge">COMMUNITY VOICES</div>
           
           <div className="title-row">
-            <h2 className="main-title">
-              WHAT ATHLETES <span className="highlight">SAY</span>
-            </h2>
+           <h2 className="main-title">
+  <span className="white-text">WHAT ATHLETES</span> <span className="highlight">SAY</span>
+</h2>
+
 
             <div className="nav-controls">
               <button 
@@ -153,19 +154,27 @@ export default function Testimonials() {
           flex-wrap: wrap;
         }
 
-        .main-title {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 900;
-          font-size: clamp(48px, 8vw, 84px);
-          line-height: 0.9;
-          margin: 0;
-          text-transform: uppercase;
-          letter-spacing: -0.02em;
-        }
+       .main-title {
+  font-family: 'Barlow Condensed', sans-serif;
+  font-weight: 600; /* slightly bolder for readability */
+  font-size: clamp(24px, 5vw, 40px); /* smaller and responsive */
+  line-height: 1.1; /* slightly taller for readability */
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: -0.01em;
+}
 
-        .highlight {
-          color: #ff6a00;
-        }
+.white-text {
+  color: #ffffff; /* keep text white */
+}
+
+.highlight {
+  color: #ff6a00; /* orange for "SAY" */
+}
+
+
+
+        
 
         .nav-controls {
           display: flex;
