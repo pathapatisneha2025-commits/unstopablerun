@@ -1,186 +1,274 @@
-import React from "react";
+import React from 'react';
 
-export default function CtaSection() {
+const CtaSection = () => {
   return (
-    <section className="newsletter-section">
-      <div className="container">
-        {/* Badge */}
-        <div className="badge-wrapper">
-          <span className="join-badge">
-            <span className="flash-icon">⚡</span> JOIN THE MOVEMENT
-          </span>
+    <section className="join-section">
+      <div className="join-container">
+        {/* Left Content Side */}
+        <div className="content-side">
+          <div className="top-badge">BE PART OF SOMETHING GREATER</div>
+          <h1 className="join-title">JOIN THE<br />MOVEMENT</h1>
+          <p className="join-description">
+            Connect with athletes worldwide who share your passion. 
+            Get exclusive access to new drops, training tips, and be the 
+            first to know about our events.
+          </p>
+          
+          <div className="subscription-box">
+            <input type="email" placeholder="Enter your email" className="email-input" />
+            <button className="subscribe-btn">
+              Subscribe <span>→</span>
+            </button>
+          </div>
+
+          {/* Updated Icon Row to match Screenshot 2 */}
+          <div className="stats-row">
+            <div className="stat-item">
+              <div className="icon-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+              </div>
+              <div className="stat-text">
+                <span className="stat-number">50K+</span>
+                <span className="stat-label">Athletes</span>
+              </div>
+            </div>
+
+            <div className="stat-item">
+              <div className="icon-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
+              </div>
+              <div className="stat-text">
+                <span className="stat-number">120+</span>
+                <span className="stat-label">Countries</span>
+              </div>
+            </div>
+
+            <div className="stat-item">
+              <div className="icon-wrapper">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M6 9H4.5a2.5 2.5 0 0 1 0-5H6"></path><path d="M18 9h1.5a2.5 2.5 0 0 0 0-5H18"></path><path d="M4 22h16"></path><path d="M10 14.66V17c0 .55-.47.98-.97 1.21C7.85 18.75 7 20.24 7 22"></path><path d="M14 14.66V17c0 .55.47.98.97 1.21C16.15 18.75 17 20.24 17 22"></path><path d="M18 2H6v7a6 6 0 0 0 12 0V2Z"></path></svg>
+              </div>
+              <div className="stat-text">
+                <span className="stat-number">500+</span>
+                <span className="stat-label">Events</span>
+              </div>
+            </div>
+          </div>
         </div>
 
-        {/* Heading */}
-        <h2 className="main-heading">
-          STAY <span className="highlight">UNSTOPPABLE</span>
-        </h2>
-
-        {/* Description */}
-        <p className="description">
-          Subscribe to get exclusive early access, special offers, and 
-          workout tips delivered straight to your inbox.
-        </p>
-
-        {/* Form Area */}
-        <form className="subscribe-form" onSubmit={(e) => e.preventDefault()}>
-          <input 
-            type="email" 
-            placeholder="Enter your email" 
-            className="email-input"
-            required 
-          />
-          <button type="submit" className="subscribe-btn">
-            SUBSCRIBE <span className="send-icon">➤</span>
-          </button>
-        </form>
-
-        {/* Benefits/Trust marks */}
-        <div className="trust-markers">
-          <span>✓ No spam, ever</span>
-          <span>✓ Exclusive offers</span>
-          <span>✓ Unsubscribe anytime</span>
+        {/* Right Visual Side */}
+        <div className="visual-side">
+          <div className="circle circle-large"></div>
+          <div className="circle circle-medium"></div>
+          <div className="circle circle-small">
+            <div className="orbit-dot"></div>
+          </div>
+          <div className="brand-center">
+            <h2 className="brand-logo">RUNN</h2>
+            <span className="brand-tagline">UNSTOPPABLE YOU</span>
+          </div>
         </div>
       </div>
 
       <style>{`
-        .newsletter-section {
-          /* Radial gradient to match your screenshot */
-          background: radial-gradient(circle at center, #2c1a10 0%, #0f0f0f 100%);
-          padding: 100px 20px;
-          text-align: center;
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;900&family=Inter:wght@400;500;700&display=swap');
+
+        .join-section {
+          background-color: #FF6B00;
           color: white;
+          padding: 80px 40px;
           font-family: 'Inter', sans-serif;
+          overflow: hidden;
+          display: flex;
+          align-items: center;
         }
 
-        .container {
-          max-width: 700px;
+        .join-container {
+          max-width: 1200px;
           margin: 0 auto;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          width: 100%;
+          gap: 60px;
         }
 
-        .badge-wrapper {
-          margin-bottom: 24px;
-        }
+        .content-side { flex: 1; max-width: 550px; }
 
-        .join-badge {
-          background: rgba(255, 106, 0, 0.1);
-          border: 1px solid rgba(255, 106, 0, 0.3);
-          color: #ff6a00;
-          padding: 8px 20px;
+        .top-badge {
+          background: rgba(255, 255, 255, 0.15);
+          display: inline-block;
+          padding: 6px 16px;
           border-radius: 50px;
-          font-size: 14px;
+          font-size: 11px;
           font-weight: 700;
-          letter-spacing: 1px;
+          margin-bottom: 24px;
+          letter-spacing: 1.5px;
+          backdrop-filter: blur(4px);
         }
 
-        .flash-icon {
-          margin-right: 5px;
-        }
-
-        .main-heading {
-          font-size: clamp(36px, 6vw, 64px);
+        .join-title {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: 96px;
+          line-height: 0.85;
           font-weight: 900;
-          line-height: 1.1;
-          margin-bottom: 20px;
+          margin: 0 0 24px 0;
           text-transform: uppercase;
         }
 
-        .highlight {
-          color: #ff6a00;
-        }
-
-        .description {
+        .join-description {
           font-size: 18px;
-          color: #b0b0b0;
           line-height: 1.6;
-          margin-bottom: 40px;
+          margin-bottom: 32px;
+          opacity: 0.9;
+          max-width: 90%;
         }
 
-        .subscribe-form {
+        .subscription-box {
           display: flex;
-          gap: 12px;
-          background: rgba(255, 255, 255, 0.05);
+          background: rgba(0, 0, 0, 0.05);
+          border-radius: 16px;
           padding: 8px;
-          border-radius: 50px;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          margin-bottom: 30px;
+          margin-bottom: 48px;
+          border: 1px solid rgba(255, 255, 255, 0.2);
+          max-width: 450px;
         }
 
         .email-input {
-          flex: 1;
           background: transparent;
           border: none;
-          padding: 12px 24px;
           color: white;
+          flex: 1;
+          padding: 12px 20px;
           font-size: 16px;
           outline: none;
         }
 
+        .email-input::placeholder { color: rgba(255, 255, 255, 0.5); }
+
         .subscribe-btn {
-          background: #ff6a00;
-          color: white;
+          background: white;
+          color: #FF6B00;
           border: none;
-          padding: 14px 32px;
-          border-radius: 40px;
+          padding: 12px 28px;
+          border-radius: 12px;
           font-weight: 700;
           cursor: pointer;
           display: flex;
           align-items: center;
-          gap: 10px;
-          transition: transform 0.2s ease, background 0.2s ease;
+          gap: 8px;
+          transition: all 0.2s;
         }
 
-        .subscribe-btn:hover {
-          background: #e55a00;
-          transform: scale(1.02);
-        }
+        .subscribe-btn:hover { background: #f0f0f0; }
 
-        .send-icon {
-          font-size: 12px;
-        }
-
-        .trust-markers {
+        /* Stats & Icons Styling */
+        .stats-row {
           display: flex;
-          justify-content: center;
-          gap: 24px;
-          color: #666;
-          font-size: 14px;
+          gap: 48px;
         }
 
-        /* --- MOBILE RESPONSIVENESS --- */
-        @media (max-width: 600px) {
-          .newsletter-section {
-            padding: 60px 16px;
-          }
+        .stat-item {
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 12px;
+        }
 
-          .subscribe-form {
-            flex-direction: column;
-            background: transparent;
-            border: none;
-            padding: 0;
-            gap: 16px;
-          }
+        .icon-wrapper {
+          width: 48px;
+          height: 48px;
+          background: rgba(255, 255, 255, 0.1);
+          border-radius: 12px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border: 1px solid rgba(255, 255, 255, 0.1);
+        }
 
-          .email-input {
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 40px;
-            padding: 18px 24px;
-            text-align: center;
-          }
+        .stat-text { display: flex; flex-direction: column; }
 
-          .subscribe-btn {
-            width: 100%;
-            justify-content: center;
-            padding: 18px;
-          }
+        .stat-number {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: 24px;
+          font-weight: 900;
+          line-height: 1;
+        }
 
-          .trust-markers {
-            flex-direction: column;
-            gap: 10px;
-          }
+        .stat-label {
+          font-size: 12px;
+          opacity: 0.7;
+          text-transform: uppercase;
+          letter-spacing: 0.5px;
+        }
+
+        /* Right Side Animation */
+        .visual-side {
+          flex: 1;
+          position: relative;
+          height: 500px;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+        }
+
+        .circle {
+          position: absolute;
+          border: 1px dashed rgba(255, 255, 255, 0.3);
+          border-radius: 50%;
+        }
+
+        .circle-large { width: 500px; height: 500px; }
+        .circle-medium { width: 380px; height: 380px; }
+        .circle-small { 
+          width: 260px; height: 260px; 
+          animation: spin 30s linear infinite;
+        }
+
+        .orbit-dot {
+          position: absolute;
+          width: 14px;
+          height: 14px;
+          background: white;
+          border-radius: 50%;
+          top: -7px;
+          left: 50%;
+          box-shadow: 0 0 15px rgba(255,255,255,0.6);
+        }
+
+        .brand-center { text-align: center; z-index: 2; }
+
+        .brand-logo {
+          font-family: 'Barlow Condensed', sans-serif;
+          font-size: 80px;
+          font-weight: 900;
+          margin: 0;
+          letter-spacing: 4px;
+        }
+
+        .brand-tagline {
+          font-size: 12px;
+          letter-spacing: 6px;
+          font-weight: 500;
+          opacity: 0.8;
+          display: block;
+          margin-top: -10px;
+        }
+
+        @keyframes spin {
+          from { transform: rotate(0deg); }
+          to { transform: rotate(360deg); }
+        }
+
+        @media (max-width: 1024px) {
+          .join-container { flex-direction: column; text-align: center; }
+          .content-side { max-width: 100%; display: flex; flex-direction: column; align-items: center; }
+          .stats-row { justify-content: center; gap: 32px; }
+          .stat-item { align-items: center; }
+          .visual-side { display: none; } /* Hide complex animation on small tablets/mobile */
         }
       `}</style>
     </section>
   );
-}
+};
+
+export default CtaSection;

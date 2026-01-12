@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
 import {
   LuSearch,
   LuHeart,
@@ -11,70 +11,93 @@ import {
 
 export default function Navbar() {
   const [open, setOpen] = useState(false);
-  const closeMenu = () => setOpen(false);
 
   return (
     <>
+      {/* TOP BAR */}
+      <div className="top-bar">
+        🔥 FREE SHIPPING ON ORDERS OVER $100 | USE CODE: UNSTOPPABLE
+      </div>
+
+      {/* NAVBAR */}
       <nav className="navbar">
         {/* LOGO */}
-        <div className="logo">
-          <Link to="/" onClick={closeMenu}>
-            <img src="/companylogo.png" alt="RUNN" className="logo-desktop" />
-          </Link>
-        </div>
+        <Link to="/" className="logo">
+          <img src="/companylogo.png" alt="RUNN" />
+        </Link>
 
         {/* MENU */}
         <ul className={`nav-links ${open ? "active" : ""}`}>
-          <li><Link to="/" onClick={closeMenu}>Home</Link></li>
-          <li><Link to="/shop" onClick={closeMenu}>Shop</Link></li>
-          <li><Link to="/activitypage" onClick={closeMenu}>Activities</Link></li>
-          <li><Link to="/about" onClick={closeMenu}>About</Link></li>
-          <li><Link to="/contact" onClick={closeMenu}>Contact</Link></li>
+          {["/", "/shop", "/activitypage", "/about", "/contact"].map(
+            (path, i) => (
+              <li key={i}>
+                <NavLink
+                  to={path}
+                  onClick={() => setOpen(false)}
+                  className={({ isActive }) =>
+                    isActive ? "active-link" : ""
+                  }
+                >
+                  {["HOME", "SHOP", "ACTIVITIES", "ABOUT", "CONTACT"][i]}
+                </NavLink>
+              </li>
+            )
+          )}
         </ul>
 
-        {/* ICONS (DESKTOP ONLY) */}
-       <div className="nav-icons">
-  <LuSearch />
-  <LuHeart />
-  <LuUser />
-  <Link to="/cart" className="cart">
-    <LuShoppingBag />
-    <small>0</small> {/* You can replace 0 with actual cart count later */}
-  </Link>
-</div>
+        {/* ICONS */}
+        <div className="nav-icons">
+          <LuSearch />
+          <LuHeart />
+          <LuUser />
+          <div className="cart">
+            <LuShoppingBag />
+            <span>0</span>
+          </div>
+        </div>
 
         {/* HAMBURGER */}
-        <div
-          className={`hamburger ${open ? "open" : ""}`}
-          onClick={() => setOpen(!open)}
-        >
+        <div className="hamburger" onClick={() => setOpen(!open)}>
           {open ? <LuX /> : <LuMenu />}
         </div>
       </nav>
 
+      {/* STYLES */}
       <style>{`
         * {
-          box-sizing: border-box;
           margin: 0;
           padding: 0;
+          box-sizing: border-box;
         }
 
+        /* TOP BAR */
+        .top-bar {
+          background: #ff6a00;
+          color: #fff;
+          text-align: center;
+          padding: 10px;
+          font-size: 14px;
+          font-weight: 600;
+        }
+
+        /* NAVBAR */
         .navbar {
           position: sticky;
           top: 0;
           z-index: 1000;
-          height: 72px;
-          background: #e6e6e6;
+          background: #ffffff;
           display: grid;
           grid-template-columns: auto 1fr auto;
           align-items: center;
-          padding: 0 40px;
+          padding: 18px 60px;
+          border-bottom: 1px solid #eee;
         }
 
-        .logo-desktop {
-          width: 70px;
+        .logo img {
+          width: 80px;
         }
 
+        /* MENU */
         .nav-links {
           display: flex;
           justify-content: center;
@@ -84,15 +107,35 @@ export default function Navbar() {
 
         .nav-links a {
           text-decoration: none;
-          font-size: 16px;
-          color: #1f2937;
-          font-weight: 500;
+          color: #111;
+          font-weight: 600;
+          font-size: 14px;
+          letter-spacing: 1px;
+          padding-bottom: 6px;
+          position: relative;
         }
 
-        .nav-links a:hover {
+        .nav-links a::after {
+          content: "";
+          position: absolute;
+          left: 0;
+          bottom: 0;
+          width: 0;
+          height: 2px;
+          background: #ff6a00;
+          transition: 0.3s;
+        }
+
+        .nav-links a:hover::after,
+        .active-link::after {
+          width: 100%;
+        }
+
+        .active-link {
           color: #ff6a00;
         }
 
+        /* ICONS */
         .nav-icons {
           display: flex;
           gap: 22px;
@@ -104,12 +147,12 @@ export default function Navbar() {
           position: relative;
         }
 
-        .cart small {
+        .cart span {
           position: absolute;
           top: -6px;
           right: -8px;
           background: #ff6a00;
-          color: white;
+          color: #fff;
           font-size: 10px;
           padding: 2px 6px;
           border-radius: 50%;
@@ -118,44 +161,27 @@ export default function Navbar() {
         /* HAMBURGER */
         .hamburger {
           display: none;
-          width: 44px;
-          height: 44px;
-          border-radius: 50%;
-          background: #ffffff;
-          border: 1px solid #e5e7eb;
-          align-items: center;
-          justify-content: center;
-          font-size: 24px;
+          font-size: 26px;
           cursor: pointer;
-          box-shadow: 0 4px 10px rgba(0,0,0,0.08);
-          margin-left: auto; /* 🔥 PUSH TO RIGHT */
-          transition: all 0.25s ease;
-        }
-
-        .hamburger.open {
-          background: #ff6a00;
-          color: white;
-          transform: rotate(90deg);
         }
 
         /* MOBILE */
         @media (max-width: 900px) {
           .navbar {
-            grid-template-columns: auto 1fr auto;
-            padding: 0 20px;
+            padding: 16px 24px;
           }
 
           .nav-links {
             position: absolute;
-            top: 72px;
+            top: 120px;
             left: 0;
             width: 100%;
-            background: #e6e6e6;
+            background: #fff;
             flex-direction: column;
             gap: 24px;
-            padding: 28px 0;
+            padding: 30px 0;
             display: none;
-            box-shadow: 0 6px 14px rgba(0,0,0,0.08);
+            box-shadow: 0 6px 16px rgba(0,0,0,0.1);
           }
 
           .nav-links.active {
@@ -167,7 +193,7 @@ export default function Navbar() {
           }
 
           .hamburger {
-            display: flex;
+            display: block;
           }
         }
       `}</style>

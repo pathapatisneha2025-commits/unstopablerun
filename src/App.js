@@ -15,6 +15,10 @@ import AboutUs from "./pages/AboutusPage";
 import ContactUs from "./pages/ContactusPage";
 import Shop from "./pages/ShopPage";
 import CartPage from "./pages/CartPage";
+import FeaturedCollections from "./components/FeaturedCollection";
+import WomenCollectionPage from "./pages/WomenCollectionPage";
+import MensPage from "./pages/MensCollectionPage";
+import AccessoriesPage from "./pages/AccessoriesPage";
 
 function App() {
   return (
@@ -28,9 +32,10 @@ function App() {
         <Route path="/" element={
           <>
             <HeroSection/>
+            <FeaturedCollections/>
             <ActivitiesSection/>
             <WhyChooseUs/>
-            <ShopByCollection/>
+            {/* <ShopByCollection/> */}
             <Testimonials/>
             <CtaSection/>
           </>
@@ -40,6 +45,10 @@ function App() {
                 <Route path="/cart" element={<CartPage/>} />
 
         <Route path="/activitypage" element={<ActivitiesPage/>} />
+                <Route path="/womencollectoionpage" element={<WomenCollectionPage/>} />
+                <Route path="/menscollectoionpage" element={<MensPage/>} />
+                <Route path="/Accesssoriespage" element={<AccessoriesPage/>} />
+
         <Route path="/about" element={<AboutUs/>} />
                 <Route path="/contact" element={<ContactUs/>} />
 

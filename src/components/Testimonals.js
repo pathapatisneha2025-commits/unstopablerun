@@ -1,207 +1,266 @@
-import React from "react";
+import React, { useState } from "react";
 
 const testimonials = [
   {
     name: "Marcus Johnson",
     role: "Marathon Runner",
     image: "https://i.pravatar.cc/150?u=marcus",
-    text: "RUNN gear has completely transformed my training. The breathability and fit are unmatched. I've shaved minutes off my marathon time!",
+    text: "RUNN gear has transformed my training. The comfort and performance are unmatched. I've shaved minutes off my personal best.",
     rating: 5,
   },
   {
     name: "Sarah Chen",
     role: "CrossFit Athlete",
     image: "https://i.pravatar.cc/150?u=sarah",
-    text: "Finally, workout gear that can keep up with my intensity. The durability is incredible — these pieces survive every workout without breaking down.",
+    text: "Finally, athletic wear that keeps up with my intensity. The durability is incredible, and the style is fire.",
     rating: 5,
   },
   {
-    name: "David Martinez",
+    name: "David Williams",
     role: "Personal Trainer",
     image: "https://i.pravatar.cc/150?u=david",
-    text: "I recommend RUNN to all my clients. The performance fit allows full range of motion, and the quality is professional-grade.",
+    text: "I recommend RUNN to all my clients. The quality speaks for itself. My clients love how they look and feel.",
+    rating: 5,
+  },
+  {
+    name: "Emily Carter",
+    role: "Yoga Coach",
+    image: "https://i.pravatar.cc/150?u=emily",
+    text: "Lightweight, flexible, and breathable. Perfect for long sessions.",
     rating: 5,
   },
 ];
 
 export default function Testimonials() {
+  const [index, setIndex] = useState(0);
+  const visibleCount = 3;
+
+  const next = () => {
+    if (index + 1 <= testimonials.length - visibleCount) {
+      setIndex(index + 1);
+    }
+  };
+
+  const prev = () => {
+    if (index - 1 >= 0) {
+      setIndex(index - 1);
+    }
+  };
+
   return (
-    <section className="testimonials-container">
-      <div className="header-box">
-        <span className="pill-badge">TESTIMONIALS</span>
-        <h2 className="title">
-          TRUSTED BY <span className="highlight">ATHLETES</span>
-        </h2>
-      </div>
+    <section className="testimonials-section">
+      <div className="container">
+        {/* TOP BORDER ACCENT */}
+        <div className="top-divider"></div>
 
-      <div className="testimonials-grid">
-        {testimonials.map((item, index) => (
-          <div className="testimonial-card" key={index}>
-            <div className="card-top">
-              <div className="stars">
-                {[...Array(item.rating)].map((_, i) => (
-                  <span key={i} className="star">★</span>
-                ))}
-              </div>
-              <div className="quote-icon">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                  <path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H16.017C15.4647 8 15.017 8.44772 15.017 9V12C15.017 12.5523 14.5693 13 14.017 13H12.017V21H14.017ZM6.017 21L6.017 18C6.017 16.8954 6.91243 16 8.017 16H11.017C11.5693 16 12.017 15.5523 12.017 15V9C12.017 8.44772 11.5693 8 11.017 8H8.017C7.46472 8 7.017 8.44772 7.017 9V12C7.017 12.5523 6.56929 13 6.017 13H4.017V21H6.017Z" />
-                </svg>
-              </div>
-            </div>
+        {/* HEADER AREA */}
+        <header className="header-stack">
+          <div className="badge">COMMUNITY VOICES</div>
+          
+          <div className="title-row">
+            <h2 className="main-title">
+              WHAT ATHLETES <span className="highlight">SAY</span>
+            </h2>
 
-            <p className="testimonial-text">"{item.text}"</p>
-
-            <div className="user-info">
-              <img src={item.image} alt={item.name} className="user-avatar" />
-              <div className="user-details">
-                <h4 className="user-name">{item.name}</h4>
-                <p className="user-role">{item.role}</p>
-              </div>
+            <div className="nav-controls">
+              <button 
+                onClick={prev} 
+                className="control-btn" 
+                disabled={index === 0}
+                aria-label="Previous"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M15 18l-6-6 6-6"/></svg>
+              </button>
+              <button 
+                onClick={next} 
+                className="control-btn" 
+                disabled={index + visibleCount >= testimonials.length}
+                aria-label="Next"
+              >
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5"><path d="M9 18l6-6-6-6"/></svg>
+              </button>
             </div>
           </div>
-        ))}
+        </header>
+
+        {/* CARDS GRID */}
+        <div className="testimonial-grid">
+          {testimonials.slice(index, index + visibleCount).map((t, i) => (
+            <article className="testimonial-card" key={i}>
+              <div className="quote-icon">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="#ff6a00"><path d="M14.017 21L14.017 18C14.017 16.8954 14.9124 16 16.017 16H19.017C19.5693 16 20.017 15.5523 20.017 15V9C20.017 8.44772 19.5693 8 19.017 8H16.017C15.4647 8 15.017 8.44772 15.017 9V12M10 21L10 18C10 16.8954 10.8954 16 12 16H15M3 21L3 18C3 16.8954 3.89543 16 5 16H8C8.55228 16 9 15.5523 9 15V9C9 8.44772 8.55228 8 8 8H5C4.44772 8 4 8.44772 4 9V12" stroke="#ff6a00" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+              </div>
+              <p className="testimonial-text">"{t.text}"</p>
+              <div className="rating-stars">
+                {"★".repeat(t.rating)}
+              </div>
+              <div className="user-info">
+                <img src={t.image} alt={t.name} className="user-avatar" />
+                <div className="user-details">
+                  <h4 className="user-name">{t.name}</h4>
+                  <p className="user-role">{t.role}</p>
+                </div>
+              </div>
+            </article>
+          ))}
+        </div>
       </div>
 
       <style>{`
-        .testimonials-container {
-          background-color: #f8f9fa;
-          padding: 80px 20px;
-          font-family: 'Inter', system-ui, sans-serif;
+        @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:ital,wght@0,700;0,900;1,900&display=swap');
+
+        .testimonials-section {
+          background-color: #0a0a0a;
+          color: #ffffff;
+          padding: 80px 24px;
+          font-family: 'Inter', sans-serif;
         }
 
-        .header-box {
-          text-align: center;
-          margin-bottom: 60px;
+        .container {
+          max-width: 1280px;
+          margin: 0 auto;
         }
 
-        .pill-badge {
-          background: rgba(255, 106, 0, 0.1);
-          color: #ff6a00;
+        .top-divider {
+          height: 1px;
+          background: #333;
+          width: 100%;
+          margin-bottom: 40px;
+        }
+
+        .header-stack {
+          margin-bottom: 48px;
+        }
+
+        .badge {
+          display: inline-block;
+          background: #ff6a00;
+          color: #fff;
           padding: 6px 16px;
-          border-radius: 20px;
-          font-size: 13px;
-          font-weight: 700;
-          letter-spacing: 1px;
+          border-radius: 100px;
+          font-family: 'Barlow Condensed', sans-serif;
+          font-weight: 900;
+          font-size: 14px;
+          letter-spacing: 0.05em;
+          margin-bottom: 24px;
         }
 
-        .title {
-          font-size: clamp(32px, 5vw, 48px);
+        .title-row {
+          display: flex;
+          justify-content: space-between;
+          align-items: flex-end;
+          gap: 20px;
+          flex-wrap: wrap;
+        }
+
+        .main-title {
+          font-family: 'Barlow Condensed', sans-serif;
           font-weight: 900;
-          margin-top: 20px;
-          color: #111;
+          font-size: clamp(48px, 8vw, 84px);
+          line-height: 0.9;
+          margin: 0;
           text-transform: uppercase;
+          letter-spacing: -0.02em;
         }
 
         .highlight {
           color: #ff6a00;
         }
 
-        .testimonials-grid {
-          display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 30px;
-          max-width: 1200px;
-          margin: 0 auto;
-        }
-
-        .testimonial-card {
-          background: white;
-          padding: 40px;
-          border-radius: 24px;
-          box-shadow: 0 10px 30px rgba(0,0,0,0.03);
+        .nav-controls {
           display: flex;
-          flex-direction: column;
-          justify-content: space-between;
-          transition: transform 0.3s ease;
+          gap: 12px;
+          margin-bottom: 10px;
         }
 
-        .testimonial-card:hover {
-          transform: translateY(-5px);
-        }
-
-        .card-top {
-          display: flex;
-          justify-content: space-between;
-          align-items: center;
-          margin-bottom: 25px;
-        }
-
-        .star {
-          color: #ff6a00;
-          font-size: 18px;
-          margin-right: 2px;
-        }
-
-        .quote-icon {
-          color: rgba(255, 106, 0, 0.2);
-          background: rgba(255, 106, 0, 0.05);
-          width: 44px;
-          height: 44px;
+        .control-btn {
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          border: 1px solid #444;
+          background: transparent;
+          color: white;
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 50%;
+          cursor: pointer;
+          transition: all 0.2s ease;
+        }
+
+        .control-btn:hover:not(:disabled) {
+          border-color: #ff6a00;
+          background: rgba(255, 106, 0, 0.05);
+        }
+
+        .control-btn:disabled {
+          opacity: 0.2;
+          cursor: not-allowed;
+        }
+
+        .testimonial-grid {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+          gap: 24px;
+        }
+
+        .testimonial-card {
+          background: #141414;
+          border: 1px solid #222;
+          padding: 40px;
+          border-radius: 24px;
+          display: flex;
+          flex-direction: column;
+          transition: transform 0.3s ease;
         }
 
         .testimonial-text {
-          font-size: 16px;
+          font-size: 18px;
           line-height: 1.6;
-          color: #444;
-          margin-bottom: 30px;
-          font-style: italic;
+          color: #d1d1d1;
+          margin-bottom: 24px;
+          flex-grow: 1;
+        }
+
+        .rating-stars {
+          color: #ff6a00;
+          font-size: 20px;
+          letter-spacing: 2px;
+          margin-bottom: 24px;
         }
 
         .user-info {
           display: flex;
           align-items: center;
-          gap: 15px;
+          gap: 16px;
         }
 
         .user-avatar {
-          width: 50px;
-          height: 50px;
+          width: 52px;
+          height: 52px;
           border-radius: 50%;
           object-fit: cover;
+          border: 2px solid #ff6a00;
         }
 
         .user-name {
-          font-size: 16px;
-          font-weight: 700;
           margin: 0;
-          color: #111;
+          font-size: 18px;
+          font-weight: 600;
         }
 
         .user-role {
+          margin: 4px 0 0 0;
           font-size: 14px;
           color: #777;
-          margin: 0;
         }
 
-        /* --- TABLET RESPONSIVENESS --- */
-        @media (max-width: 1024px) {
-          .testimonials-grid {
-            grid-template-columns: repeat(2, 1fr);
-            gap: 20px;
-          }
-        }
-
-        /* --- MOBILE RESPONSIVENESS --- */
         @media (max-width: 768px) {
-          .testimonials-container {
-            padding: 50px 16px;
+          .title-row {
+            flex-direction: column;
+            align-items: flex-start;
           }
-
-          .testimonials-grid {
-            grid-template-columns: 1fr; /* Single column stack */
-          }
-
-          .testimonial-card {
-            padding: 30px;
-          }
-
-          .title {
-            font-size: 32px;
+          .nav-controls {
+            display: none; /* Hide controls on mobile if using swipe or simple scroll */
           }
         }
       `}</style>

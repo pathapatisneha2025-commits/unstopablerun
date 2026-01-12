@@ -1,205 +1,207 @@
 import React from "react";
+import { Zap, Shield, Leaf, Heart, Truck, Award } from "lucide-react";
+
+const features = [
+  {
+    title: "PERFORMANCE FIRST",
+    desc: "Engineered for peak athletic performance with cutting-edge technology.",
+    icon: <Zap size={24} />,
+  },
+  {
+    title: "PREMIUM QUALITY",
+    desc: "Crafted from the finest materials for durability that lasts.",
+    icon: <Shield size={24} />,
+  },
+  {
+    title: "SUSTAINABLE",
+    desc: "Eco-conscious production with recycled and sustainable materials.",
+    icon: <Leaf size={24} />,
+  },
+  {
+    title: "ATHLETE TESTED",
+    desc: "Designed and tested by professional athletes worldwide.",
+    icon: <Heart size={24} />,
+  },
+  {
+    title: "FREE SHIPPING",
+    desc: "Complimentary shipping on all orders over $100.",
+    icon: <Truck size={24} />,
+  },
+  {
+    title: "LIFETIME WARRANTY",
+    desc: "We stand behind our products with a lifetime guarantee.",
+    icon: <Award size={24} />,
+  },
+];
 
 export default function WhyChooseUs() {
-  const features = [
-    {
-      title: "Breathable",
-      desc: "Advanced moisture-wicking fabrics that keep you cool and dry during intense workouts.",
-      icon: "💨",
-    },
-    {
-      title: "Durable",
-      desc: "Premium materials built to withstand your toughest training sessions and beyond.",
-      icon: "🛡️",
-    },
-    {
-      title: "Performance Fit",
-      desc: "Ergonomic designs that move with your body for unrestricted range of motion.",
-      icon: "🎯",
-    },
-    {
-      title: "Sustainable",
-      desc: "Eco-conscious manufacturing using recycled materials where possible.",
-      icon: "♻️",
-    },
-  ];
-
   return (
-    <>
-      <section className="athletes">
-        <div className="athletes-container">
-          {/* LEFT CONTENT */}
-          <div className="athletes-left">
-            <span className="badge">WHY RUNN?</span>
-            <h2>
-              BUILT FOR <span>ATHLETES</span>
-            </h2>
-            <p>
-              Every piece of RUNN gear is crafted with one goal: to help you
-              push beyond your limits. We combine cutting-edge technology with
-              premium materials to create performance wear that matches your
-              ambition.
-            </p>
+    <section className="why-choose-section">
+      <div className="full-width-container">
+        {/* Header Section */}
+        <div className="header">
+          <span className="badge">THE RUNN DIFFERENCE</span>
+          <h2 className="title">
+            WHY CHOOSE <span className="highlight">RUNN?</span>
+          </h2>
+          <p className="subtitle">
+            We're not just a brand – we're a movement dedicated to empowering athletes at every level.
+          </p>
+        </div>
 
-            <div className="buttons">
-              <button className="primary">SHOP COLLECTION</button>
-              <button className="secondary">LEARN MORE</button>
-            </div>
-          </div>
-
-          {/* RIGHT CARDS */}
-          <div className="athletes-right">
-            {features.map((item, index) => (
-              <div className="feature-card" key={index}>
-                <div className="icon">{item.icon}</div>
+        {/* Features Grid */}
+        <div className="features-grid">
+          {features.map((item, index) => (
+            <div className="feature-card" key={index}>
+              <div className="card-content">
+                <div className="icon-box">{item.icon}</div>
                 <h3>{item.title}</h3>
                 <p>{item.desc}</p>
               </div>
-            ))}
-          </div>
+            </div>
+          ))}
         </div>
-      </section>
+      </div>
 
-      {/* CSS */}
       <style>{`
-        .athletes {
-          padding: 90px 16px;
-          background: linear-gradient(to right, #fff7f1, #ffffff);
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;700;900&display=swap');
+
+        .why-choose-section {
+          width: 100%;
+          min-height: 100vh;
+          display: flex;
+          align-items: center;
+          background-color: #ffffff;
+          font-family: 'Inter', sans-serif;
+          padding: 80px 0; /* Vertical padding only */
         }
 
-        .athletes-container {
-          max-width: 1200px;
-          margin: auto;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 60px;
-          align-items: center;
+        .full-width-container {
+          width: 100%;
+          padding: 0 5%; /* Provides the 5% margin seen on the left/right in the screenshot */
+        }
+
+        .header {
+          text-align: center;
+          margin-bottom: 80px;
         }
 
         .badge {
           display: inline-block;
-          background: #ffe7d6;
-          color: #ff6a00;
-          padding: 8px 18px;
-          border-radius: 20px;
-          font-weight: 600;
-          font-size: 14px;
-          margin-bottom: 20px;
-        }
-
-        .athletes-left h2 {
-          font-size: 48px;
+          background-color: #FFF3EA;
+          color: #FF6B00;
+          padding: 10px 24px;
+          border-radius: 100px;
+          font-size: 12px;
           font-weight: 800;
-          margin-bottom: 18px;
+          letter-spacing: 1.5px;
+          margin-bottom: 24px;
         }
 
-        .athletes-left h2 span {
-          color: #ff6a00;
+        .title {
+          font-size: clamp(40px, 8vw, 72px); /* Bold, massive title to match screenshot */
+          font-weight: 900;
+          color: #111111;
+          margin: 0 0 24px 0;
+          letter-spacing: -3px;
+          line-height: 1;
         }
 
-        .athletes-left p {
-          font-size: 18px;
-          color: #555;
-          line-height: 1.7;
-          max-width: 520px;
-          margin-bottom: 36px;
+        .highlight {
+          color: #FF6B00;
         }
 
-        .buttons {
-          display: flex;
-          gap: 20px;
-          flex-wrap: wrap;
+        .subtitle {
+          font-size: 20px;
+          color: #6B7280;
+          max-width: 700px;
+          margin: 0 auto;
+          line-height: 1.6;
+          font-weight: 400;
         }
 
-        .primary {
-          background: #ff6a00;
-          color: #fff;
-          border: none;
-          padding: 14px 28px;
-          border-radius: 30px;
-          font-size: 16px;
-          font-weight: 600;
-          cursor: pointer;
-        }
-
-        .secondary {
-          background: transparent;
-          color: #ff6a00;
-          border: 2px solid #ff6a00;
-          padding: 14px 28px;
-          border-radius: 30px;
-          font-size: 16px;
-          font-weight: 600;
-          cursor: pointer;
-        }
-
-        .athletes-right {
+        .features-grid {
           display: grid;
-          grid-template-columns: repeat(2, 1fr);
-          gap: 24px;
+          grid-template-columns: repeat(3, 1fr);
+          gap: 40px; /* Wider gap for the premium full-page look */
         }
 
         .feature-card {
-          background: #f5f5f5;
-          padding: 28px;
-          border-radius: 20px;
+          background-color: #F9FAFB;
+          border-radius: 48px; /* Extra rounded corners like the screenshot */
+          aspect-ratio: 1 / 1;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+          border: 1px solid #F3F4F6;
         }
 
-        .icon {
-          width: 56px;
-          height: 56px;
-          background: #ff6a00;
-          color: #fff;
+        .feature-card:hover {
+          background-color: #ffffff;
+          transform: translateY(-15px);
+          box-shadow: 0 40px 80px rgba(0, 0, 0, 0.07);
+          border-color: #FFE5D3;
+        }
+
+        .card-content {
+          padding: 12%; 
+          text-align: left;
+        }
+
+        .icon-box {
+          width: 64px;
+          height: 64px;
+          background-color: #FFF3EA;
+          color: #FF6B00;
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 14px;
-          font-size: 22px;
-          margin-bottom: 18px;
+          border-radius: 22px;
+          margin-bottom: 32px;
         }
 
         .feature-card h3 {
-          font-size: 20px;
-          margin-bottom: 10px;
-          font-weight: 700;
+          font-size: clamp(18px, 2vw, 24px);
+          font-weight: 900;
+          color: #111111;
+          margin-bottom: 16px;
+          letter-spacing: 0.5px;
         }
 
         .feature-card p {
-          font-size: 15px;
-          color: #666;
+          font-size: clamp(14px, 1.2vw, 17px);
+          color: #6B7280;
           line-height: 1.6;
+          margin: 0;
         }
 
-        /* Tablet */
-        @media (max-width: 1024px) {
-          .athletes-container {
-            grid-template-columns: 1fr;
+        /* Responsive Adjustments */
+        @media (max-width: 1200px) {
+          .features-grid {
+            gap: 20px;
           }
+          .full-width-container {
+            padding: 0 40px;
+          }
+        }
 
-          .athletes-right {
+        @media (max-width: 1024px) {
+          .features-grid {
             grid-template-columns: repeat(2, 1fr);
           }
         }
 
-        /* Mobile */
-        @media (max-width: 600px) {
-          .athletes-left h2 {
-            font-size: 34px;
-          }
-
-          .athletes-left p {
-            font-size: 16px;
-          }
-
-          .athletes-right {
+        @media (max-width: 640px) {
+          .features-grid {
             grid-template-columns: 1fr;
           }
-
-          .buttons {
-            justify-content: center;
+          .feature-card {
+            aspect-ratio: 1 / 1;
+            max-width: 100%;
           }
         }
       `}</style>
-    </>
+    </section>
   );
 }

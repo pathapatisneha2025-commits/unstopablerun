@@ -1,320 +1,274 @@
-import React from "react";
-import { LuMail, LuPhone, LuMapPin, LuSend } from "react-icons/lu";
+import React from 'react';
+import { Search, Heart, ShoppingBag, MapPin, Phone, Mail, Clock, Send } from 'lucide-react';
 
-export default function ContactUs() {
+const ContactUs = () => {
+  const styles = `
+    .contact-wrapper {
+      font-family: 'Inter', system-ui, -apple-system, sans-serif;
+      background-color: white;
+      color: #1a1a1a;
+      margin: 0;
+    }
+
+    /* Navbar */
+    .nav {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 5%;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    .logo {
+      width: 32px;
+      height: 32px;
+      background: #ff5c00;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-weight: 900;
+      font-style: italic;
+    }
+    .links { display: flex; gap: 2rem; }
+    .links a {
+      text-decoration: none;
+      color: #4b5563;
+      font-weight: 700;
+      font-size: 0.85rem;
+      text-transform: uppercase;
+      letter-spacing: 0.1em;
+    }
+    .links a.active {
+      color: #ff5c00;
+      border-bottom: 2px solid #ff5c00;
+      padding-bottom: 4px;
+    }
+    .icons { display: flex; gap: 1.5rem; color: #6b7280; }
+
+    /* Hero Section */
+    .hero-banner {
+      background-color: #1a120b;
+      padding: 6rem 1rem;
+      text-align: center;
+      position: relative;
+    }
+    .hero-label {
+      color: #ff5c00;
+      text-transform: uppercase;
+      letter-spacing: 0.3em;
+      font-weight: 700;
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .hero-title {
+      color: white;
+      font-size: 4.5rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin: 0;
+    }
+    .hero-sub {
+      color: #9ca3af;
+      margin-top: 1.5rem;
+      font-size: 1.1rem;
+    }
+
+    /* Main Content Layout */
+    .main-grid {
+      max-width: 1200px;
+      margin: 5rem auto;
+      padding: 0 2rem;
+      display: grid;
+      grid-template-columns: 1.2fr 0.8fr;
+      gap: 4rem;
+    }
+
+    /* Form Styles */
+    .form-header, .info-header {
+      font-size: 2rem;
+      font-weight: 900;
+      text-transform: uppercase;
+      margin-bottom: 2.5rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .field-group { display: flex; flex-direction: column; gap: 0.5rem; margin-bottom: 1.5rem; }
+    .field-group label {
+      font-weight: 700;
+      font-size: 0.9rem;
+      color: #374151;
+    }
+    .field-group input, .field-group textarea {
+      padding: 1rem;
+      border: none;
+      background: #f9fafb;
+      border-radius: 12px;
+      font-family: inherit;
+    }
+    .field-group textarea { height: 120px; resize: none; }
+    
+    .btn-send {
+      background: #ff5c00;
+      color: white;
+      border: none;
+      padding: 1.25rem 2.5rem;
+      border-radius: 16px;
+      font-weight: 900;
+      text-transform: uppercase;
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+      cursor: pointer;
+      box-shadow: 0 10px 15px -3px rgba(255, 92, 0, 0.3);
+    }
+
+    /* Info Cards */
+    .info-card {
+      background: #f9fafb;
+      padding: 1.5rem;
+      border-radius: 16px;
+      display: flex;
+      gap: 1.5rem;
+      margin-bottom: 1.5rem;
+    }
+    .icon-box {
+      width: 48px;
+      height: 48px;
+      background: #fff;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #ff5c00;
+      box-shadow: 0 4px 6px -1px rgba(0,0,0,0.05);
+    }
+    .info-content h4 {
+      margin: 0 0 0.25rem 0;
+      text-transform: uppercase;
+      font-weight: 900;
+      font-size: 0.85rem;
+    }
+    .info-content p {
+      margin: 0;
+      color: #6b7280;
+      font-size: 0.95rem;
+      line-height: 1.5;
+    }
+
+    /* Map Placeholder */
+    .map-placeholder {
+      background: #f3f4f6;
+      height: 250px;
+      border-radius: 20px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #9ca3af;
+      font-weight: 600;
+      margin-top: 2rem;
+    }
+
+    @media (max-width: 900px) {
+      .main-grid { grid-template-columns: 1fr; }
+      .hero-title { font-size: 3rem; }
+    }
+  `;
+
   return (
-    <>
-      {/* HERO */}
-      <section className="contact-hero">
-        <div className="overlay" />
-        <div className="hero-content">
-          <span className="badge">GET IN TOUCH</span>
-          <h1>
-            CONTACT <span>US</span>
-          </h1>
-          <p>
-            Have a question, need support, or want to collaborate?
-            We’re here to help.
-          </p>
-        </div>
-      </section>
+    <div className="contact-wrapper">
+      <style>{styles}</style>
+      
+    
 
-      {/* CONTACT SECTION */}
-      <section className="contact-section">
-        <div className="contact-container">
+      {/* Hero Header */}
+      <header className="hero-banner">
+        <p className="hero-label">Get In Touch</p>
+        <h1 className="hero-title">Contact Us</h1>
+        <p className="hero-sub">Have questions? We're here to help. Reach out and let's start a conversation.</p>
+      </header>
+
+      {/* Main Grid */}
+      <main className="main-grid">
+        {/* Left: Contact Form */}
+        <section>
+          <h2 className="form-header">Send a Message</h2>
+          <form onSubmit={(e) => e.preventDefault()}>
+            <div className="form-row">
+              <div className="field-group">
+                <label>First Name</label>
+                <input type="text" placeholder="John" />
+              </div>
+              <div className="field-group">
+                <label>Last Name</label>
+                <input type="text" placeholder="Doe" />
+              </div>
+            </div>
+            <div className="field-group">
+              <label>Email Address</label>
+              <input type="email" placeholder="john@example.com" />
+            </div>
+            <div className="field-group">
+              <label>Subject</label>
+              <input type="text" placeholder="How can we help?" />
+            </div>
+            <div className="field-group">
+              <label>Message</label>
+              <textarea placeholder="Tell us more..."></textarea>
+            </div>
+            <button className="btn-send">
+              Send Message <Send size={18} />
+            </button>
+          </form>
+        </section>
+
+        {/* Right: Info Panels */}
+        <section>
+          <h2 className="info-header">Get In Touch</h2>
           
-          {/* LEFT INFO */}
-          <div className="contact-info">
-            <h2>
-              LET’S <span>CONNECT</span>
-            </h2>
-            <p>
-              Reach out to us anytime. Our team will respond as soon as possible.
-            </p>
-
-            <div className="info-item">
-              <LuMail />
-              <div>
-                <h4>Email</h4>
-                <p>support@yourbrand.com</p>
-              </div>
-            </div>
-
-            <div className="info-item">
-              <LuPhone />
-              <div>
-                <h4>Phone</h4>
-                <p>+91 98765 43210</p>
-              </div>
-            </div>
-
-            <div className="info-item">
-              <LuMapPin />
-              <div>
-                <h4>Location</h4>
-                <p>India · Worldwide Shipping</p>
-              </div>
+          <div className="info-card">
+            <div className="icon-box"><MapPin size={22} /></div>
+            <div className="info-content">
+              <h4>Visit Us</h4>
+              <p>123 Performance Ave<br/>Athletic City, AC 12345</p>
             </div>
           </div>
 
-          {/* RIGHT FORM */}
-          <form className="contact-form">
-            <h3>Send a Message</h3>
-
-            <div className="input-group">
-              <input type="text" placeholder="Your Name" required />
-              <input type="email" placeholder="Email Address" required />
+          <div className="info-card">
+            <div className="icon-box"><Phone size={22} /></div>
+            <div className="info-content">
+              <h4>Call Us</h4>
+              <p>+1 (800) RUNN-NOW<br/>Mon-Fri, 9AM-6PM EST</p>
             </div>
+          </div>
 
-            <input type="text" placeholder="Subject" required />
-            <textarea placeholder="Your Message" rows="5" required />
+          <div className="info-card">
+            <div className="icon-box"><Mail size={22} /></div>
+            <div className="info-content">
+              <h4>Email Us</h4>
+              <p>hello@runn.com<br/>support@runn.com</p>
+            </div>
+          </div>
 
-            <button type="submit">
-              SEND MESSAGE <LuSend />
-            </button>
-          </form>
-        </div>
-      </section>
+          <div className="info-card">
+            <div className="icon-box"><Clock size={22} /></div>
+            <div className="info-content">
+              <h4>Business Hours</h4>
+              <p>Monday - Friday: 9AM - 6PM<br/>Weekend: 10AM - 4PM</p>
+            </div>
+          </div>
 
-      {/* CTA */}
-      <section className="contact-cta">
-        <h2>
-          READY TO <span>MOVE</span> WITH US?
-        </h2>
-        <p>
-          Discover performance wear built for every goal.
-        </p>
-        <button>SHOP COLLECTION →</button>
-      </section>
-
-      {/* CSS */}
-      <style>{`
-        * {
-          box-sizing: border-box;
-        }
-
-        /* HERO */
-        .contact-hero {
-          position: relative;
-          height: 80vh;
-          background: url("https://images.unsplash.com/photo-1521805103424-d8f8430e8933")
-            center/cover no-repeat;
-          display: flex;
-          align-items: center;
-          padding: 0 8%;
-          color: white;
-        }
-
-        .contact-hero .overlay {
-          position: absolute;
-          inset: 0;
-          background: linear-gradient(
-            to right,
-            rgba(0,0,0,0.85),
-            rgba(0,0,0,0.4)
-          );
-        }
-
-        .hero-content {
-          position: relative;
-          max-width: 600px;
-          z-index: 2;
-        }
-
-        .badge {
-          display: inline-block;
-          background: rgba(255,106,0,0.15);
-          color: #ff6a00;
-          padding: 8px 18px;
-          border-radius: 999px;
-          font-size: 12px;
-          font-weight: 800;
-          letter-spacing: 0.08em;
-          margin-bottom: 20px;
-        }
-
-        .hero-content h1 {
-          font-size: 56px;
-          font-weight: 900;
-          margin-bottom: 16px;
-        }
-
-        .hero-content h1 span {
-          color: #ff6a00;
-        }
-
-        .hero-content p {
-          font-size: 18px;
-          color: #ddd;
-          line-height: 1.6;
-        }
-
-        /* CONTACT */
-        .contact-section {
-          padding: 100px 24px;
-          background: #fff;
-        }
-
-        .contact-container {
-          max-width: 1200px;
-          margin: auto;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 60px;
-          align-items: flex-start;
-        }
-
-        .contact-info h2 {
-          font-size: 44px;
-          font-weight: 900;
-          margin-bottom: 16px;
-          color: #0f172a;
-        }
-
-        .contact-info h2 span {
-          color: #ff6a00;
-        }
-
-        .contact-info p {
-          font-size: 17px;
-          color: #475569;
-          margin-bottom: 30px;
-        }
-
-        .info-item {
-          display: flex;
-          gap: 16px;
-          align-items: center;
-          margin-bottom: 22px;
-        }
-
-        .info-item svg {
-          font-size: 22px;
-          color: #ff6a00;
-        }
-
-        .info-item h4 {
-          font-size: 16px;
-          font-weight: 700;
-          margin-bottom: 2px;
-          color: #0f172a;
-        }
-
-        .info-item p {
-          font-size: 15px;
-          color: #64748b;
-        }
-
-        /* FORM */
-        .contact-form {
-          background: #f8fafc;
-          padding: 40px;
-          border-radius: 28px;
-          box-shadow: 0 10px 25px rgba(0,0,0,0.05);
-        }
-
-        .contact-form h3 {
-          font-size: 26px;
-          font-weight: 800;
-          margin-bottom: 24px;
-          color: #0f172a;
-        }
-
-        .input-group {
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 16px;
-        }
-
-        .contact-form input,
-        .contact-form textarea {
-          width: 100%;
-          padding: 14px 16px;
-          border-radius: 12px;
-          border: 1px solid #e2e8f0;
-          font-size: 15px;
-          margin-bottom: 16px;
-        }
-
-        .contact-form input:focus,
-        .contact-form textarea:focus {
-          outline: none;
-          border-color: #ff6a00;
-        }
-
-        .contact-form button {
-          display: flex;
-          align-items: center;
-          gap: 8px;
-          justify-content: center;
-          padding: 14px;
-          width: 100%;
-          border-radius: 30px;
-          border: none;
-          background: #ff6a00;
-          color: white;
-          font-size: 16px;
-          font-weight: 700;
-          cursor: pointer;
-        }
-
-        /* CTA */
-        .contact-cta {
-          padding: 100px 24px;
-          background: #0f172a;
-          color: white;
-          text-align: center;
-        }
-
-        .contact-cta h2 {
-          font-size: 44px;
-          font-weight: 900;
-          margin-bottom: 16px;
-        }
-
-        .contact-cta h2 span {
-          color: #ff6a00;
-        }
-
-        .contact-cta p {
-          font-size: 18px;
-          color: #cbd5f5;
-          margin-bottom: 28px;
-        }
-
-        .contact-cta button {
-          padding: 16px 36px;
-          border-radius: 30px;
-          border: none;
-          background: #ff6a00;
-          color: white;
-          font-size: 16px;
-          font-weight: 700;
-          cursor: pointer;
-        }
-
-        /* RESPONSIVE */
-        @media (max-width: 900px) {
-          .contact-container {
-            grid-template-columns: 1fr;
-          }
-        }
-
-        @media (max-width: 768px) {
-          .hero-content h1 {
-            font-size: 38px;
-          }
-
-          .input-group {
-            grid-template-columns: 1fr;
-          }
-
-          .contact-info h2,
-          .contact-cta h2 {
-            font-size: 34px;
-          }
-        }
-      `}</style>
-    </>
+          <div className="map-placeholder">
+            Map Integration
+          </div>
+        </section>
+      </main>
+    </div>
   );
-}
+};
+
+export default ContactUs;

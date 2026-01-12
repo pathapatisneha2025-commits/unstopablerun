@@ -1,141 +1,175 @@
 import React from "react";
-import { Link } from "react-router-dom"; // Added for optimized navigation
-import { 
-  FaInstagram, 
-  FaFacebookF, 
-  FaTwitter, 
-  FaYoutube, 
-  FaMapMarkerAlt, 
-  FaEnvelope, 
-  FaPhoneAlt 
-} from "react-icons/fa";
+import { Link } from "react-router-dom";
 
-export default function Footer() {
-  const currentYear = new Date().getFullYear();
-
+const Footer = () => {
   return (
-    <footer className="footer">
-      <div className="footer-container">
-        <div className="footer-main-grid">
-          
-          {/* Brand Info Section */}
-          <div className="footer-brand">
-          <img src="/companylogo.png" alt="RUNN" className="logo-desktop" />
-            <p className="brand-tagline">UNSTOPPABLE YOU</p>
-            <p className="brand-description">
-              Premium athletic wear engineered for performance. 
-              Push your limits with gear that keeps up.
-            </p>
-            <div className="social-icons">
-              {/* External links keep <a> tags */}
-              <a href="https://instagram.com" target="_blank" rel="noopener noreferrer" aria-label="Instagram"><FaInstagram /></a>
-              <a href="https://facebook.com" target="_blank" rel="noopener noreferrer" aria-label="Facebook"><FaFacebookF /></a>
-              <a href="https://twitter.com" target="_blank" rel="noopener noreferrer" aria-label="Twitter"><FaTwitter /></a>
-              <a href="https://youtube.com" target="_blank" rel="noopener noreferrer" aria-label="YouTube"><FaYoutube /></a>
-            </div>
+    <footer className="footer-container">
+      {/* Main Footer Content */}
+      <div className="footer-main">
+        {/* Brand Section */}
+        <div className="footer-brand">
+          <div className="footer-logo-box">
+             {/* Replace with your actual logo image */}
+             <img src="/companylogo.png" alt="RUNN Logo" className="logo-img" />
           </div>
-
-          {/* Links Grid - Replaced <a> with <Link> */}
-          <div className="links-container">
-            <div className="footer-column">
-              <h3>Shop</h3>
-              <ul>
-                <li><Link to="/shop/men">Men</Link></li>
-                <li><Link to="/shop/women">Women</Link></li>
-                <li><Link to="/shop/accessories">Accessories</Link></li>
-                <li><Link to="/shop/new">New Arrivals</Link></li>
-                <li><Link to="/shop/sale">Sale</Link></li>
-              </ul>
+          <p className="brand-mission">
+            Empowering athletes to push beyond limits. <br />
+            Every stride, every moment — be unstoppable.
+          </p>
+          <div className="contact-info">
+            <div className="contact-item">
+              <span className="contact-icon">📍</span>
+              123 Performance Ave, Athletic City, AC 12345
             </div>
-
-            <div className="footer-column">
-              <h3>Support</h3>
-              <ul>
-                <li><Link to="/size-guide">Size Guide</Link></li>
-                <li><Link to="/shipping">Shipping</Link></li>
-                <li><Link to="/returns">Returns</Link></li>
-                <li><Link to="/faq">FAQ</Link></li>
-                <li><Link to="/contact">Contact Us</Link></li>
-              </ul>
+            <div className="contact-item">
+              <span className="contact-icon">📞</span>
+              +1 (800) RUNN-NOW
             </div>
-
-            <div className="footer-column">
-              <h3>Company</h3>
-              <ul>
-                <li><Link to="/about">About RUNN</Link></li>
-                <li><Link to="/sustainability">Sustainability</Link></li>
-                <li><Link to="/careers">Careers</Link></li>
-                <li><Link to="/press">Press</Link></li>
-                <li><Link to="/blog">Blog</Link></li>
-              </ul>
-            </div>
-          </div>
-
-          {/* Contact Section */}
-          <div className="footer-column contact-info">
-            <h3>Contact</h3>
-            <div className="contact-details">
-              <div className="contact-item">
-                <FaMapMarkerAlt className="icon-orange" />
-                <span>123 Fitness Street, Active City, AC 12345</span>
-              </div>
-              <div className="contact-item">
-                <FaEnvelope className="icon-orange" />
-                <span>hello@runn.com</span>
-              </div>
-              <div className="contact-item">
-                <FaPhoneAlt className="icon-orange" />
-                <span>+1 (234) 567-890</span>
-              </div>
+            <div className="contact-item">
+              <span className="contact-icon">✉️</span>
+              <a href="mailto:hello@runn.com">hello@runn.com</a>
             </div>
           </div>
         </div>
 
-        {/* Bottom Bar */}
-        <div className="footer-bottom">
-          <p className="copyright">© {currentYear} RUNN. All rights reserved.</p>
-          <div className="legal-links">
-            <Link to="/privacy">Privacy Policy</Link>
-            <Link to="/terms">Terms of Service</Link>
+        {/* Links Grid */}
+        <div className="footer-links-grid">
+          <div className="link-column">
+            <h4>SHOP</h4>
+            <ul>
+              <li><Link to="/menscollectoionpage">Men</Link></li>
+              <li><Link to="/womencollectoionpage">Women</Link></li>
+              <li><Link to="/Accesssoriespage">Accessories</Link></li>
+              <li><Link to="/shop">New Arrivals</Link></li>
+              <li><Link to="/shop">Best Sellers</Link></li>
+            </ul>
           </div>
+          <div className="link-column">
+            <h4>ACTIVITIES</h4>
+            <ul>
+              <li><Link to="/activitypage">Running</Link></li>
+              <li><Link to="/activitypage">Training</Link></li>
+              <li><Link to="/activitypage">Lifestyle</Link></li>
+              <li><Link to="/activitypage">Yoga</Link></li>
+            </ul>
+          </div>
+          <div className="link-column">
+            <h4>COMPANY</h4>
+            <ul>
+              <li><Link to="/about">About Us</Link></li>
+              <li><Link to="/contact">Contact</Link></li>
+             
+            </ul>
+          </div>
+          
+        </div>
+      </div>
+
+      {/* Footer Bottom Bar */}
+      <div className="footer-bottom">
+        <div className="footer-copyright">
+          © 2026 RUNN. All rights reserved. <span className="orange-text">Unstoppable You.</span>
+        </div>
+        <div className="social-links">
+          <a href="https://instagram.com" className="social-icon" aria-label="Instagram">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect><path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line></svg>
+          </a>
+          <a href="https://facebook.com" className="social-icon" aria-label="Facebook">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z"></path></svg>
+          </a>
+          <a href="https://twitter.com" className="social-icon" aria-label="Twitter">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M23 3a10.9 10.9 0 0 1-3.14 1.53 4.48 4.48 0 0 0-7.86 3v1A10.66 10.66 0 0 1 3 4s-4 9 5 13a11.64 11.64 0 0 1-7 2c9 5 20 0 20-11.5a4.5 4.5 0 0 0-.08-.83A7.72 7.72 0 0 0 23 3z"></path></svg>
+          </a>
+          <a href="https://youtube.com" className="social-icon" aria-label="YouTube">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M22.54 6.42a2.78 2.78 0 0 0-1.94-2C18.88 4 12 4 12 4s-6.88 0-8.6.42a2.78 2.78 0 0 0-1.94 2C1 8.11 1 12 1 12s0 3.89.42 5.58a2.78 2.78 0 0 0 1.94 2c1.72.42 8.6.42 8.6.42s6.88 0 8.6-.42a2.78 2.78 0 0 0 1.94-2C23 15.89 23 12 23 12s0-3.89-.42-5.58z"></path><polygon points="9.75 15.02 15.5 12 9.75 8.98 9.75 15.02"></polygon></svg>
+          </a>
         </div>
       </div>
 
       <style>{`
-        /* Styles remain the same for responsiveness */
-        .footer { background-color: #1a1e23; color: #ffffff; padding: 80px 20px 40px; font-family: 'Inter', sans-serif; }
-        .footer-container { max-width: 1200px; margin: 0 auto; }
-        .footer-main-grid { display: grid; grid-template-columns: 1.5fr 3fr 1.2fr; gap: 60px; padding-bottom: 50px; border-bottom: 1px solid rgba(255, 255, 255, 0.1); }
-        .brand-logo { font-size: 32px; font-weight: 900; letter-spacing: 2px; margin: 0; }
-        .brand-tagline { color: #ff6a00; font-size: 12px; font-weight: 700; letter-spacing: 2px; margin-bottom: 20px; }
-        .brand-description { color: #9ca3af; font-size: 14px; line-height: 1.6; margin-bottom: 25px; }
-        .social-icons { display: flex; gap: 15px; }
-        .social-icons a { width: 38px; height: 38px; background: rgba(255, 255, 255, 0.08); border-radius: 50%; display: flex; align-items: center; justify-content: center; color: white; text-decoration: none; transition: 0.3s ease; }
-        .social-icons a:hover { background-color: #ff6a00; }
-        .links-container { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
-        .footer-column h3 { font-size: 18px; font-weight: 700; margin-bottom: 25px; color: white; text-transform: uppercase; }
-        .footer-column ul { list-style: none; padding: 0; margin: 0; }
-        .footer-column ul li { margin-bottom: 15px; }
-        .footer-column ul li a { color: #9ca3af; text-decoration: none; font-size: 14px; transition: 0.2s; }
-        .footer-column ul li a:hover { color: #ff6a00; }
-        .contact-details { display: flex; flex-direction: column; gap: 15px; }
-        .contact-item { display: flex; align-items: flex-start; gap: 12px; color: #9ca3af; font-size: 14px; }
-        .icon-orange { color: #ff6a00; margin-top: 3px; flex-shrink: 0; }
-        .footer-bottom { display: flex; justify-content: space-between; align-items: center; padding-top: 30px; color: #6b7280; font-size: 13px; }
-        .legal-links { display: flex; gap: 30px; }
-        .legal-links a { color: #6b7280; text-decoration: none; }
-
-        @media (max-width: 1024px) {
-          .footer-main-grid { grid-template-columns: 1fr; text-align: center; }
-          .links-container { grid-template-columns: repeat(3, 1fr); }
-          .social-icons, .contact-item { justify-content: center; }
+        .footer-container {
+          background-color: #0A0A0A;
+          color: #FFFFFF;
+          font-family: 'Inter', sans-serif;
+          padding: 80px 8% 40px 8%;
         }
 
-        @media (max-width: 640px) {
-          .links-container { grid-template-columns: 1fr; gap: 30px; }
-          .footer-bottom { flex-direction: column; gap: 20px; }
+        .footer-main {
+          display: grid;
+          grid-template-columns: 1.2fr 3fr;
+          gap: 60px;
+          margin-bottom: 80px;
+        }
+
+        .footer-logo-box { width: 100px; height: 100px; margin-bottom: 25px; background: white; border-radius: 4px; overflow: hidden; }
+        .logo-img { width: 100%; height: 100%; object-fit: contain; }
+
+        .brand-mission { color: #888; line-height: 1.6; margin-bottom: 30px; font-size: 15px; }
+        
+        .contact-info { display: flex; flex-direction: column; gap: 15px; }
+        .contact-item { display: flex; align-items: center; gap: 12px; color: #888; font-size: 14px; }
+        .contact-item a { color: inherit; text-decoration: none; transition: 0.2s; }
+        .contact-item a:hover { color: #FF6B00; }
+        .contact-icon { color: #FF6B00; }
+
+        .footer-links-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; }
+        .link-column h4 { 
+          font-family: 'Barlow Condensed', sans-serif; 
+          font-size: 18px; 
+          font-weight: 700;
+          margin-bottom: 25px; 
+          letter-spacing: 1px;
+        }
+        
+        .link-column ul { list-style: none; padding: 0; margin: 0; }
+        .link-column li { margin-bottom: 15px; }
+        
+        /* Activate Links Styling */
+        .link-column li a { 
+          color: #888; 
+          text-decoration: none; 
+          font-size: 15px; 
+          transition: 0.3s ease;
+        }
+        .link-column li a:hover { color: #FFFFFF; }
+
+        .footer-bottom {
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          padding-top: 30px;
+          border-top: 1px solid #1A1A1A;
+        }
+
+        .footer-copyright { color: #555; font-size: 14px; }
+        .orange-text { color: #FF6B00; font-weight: 600; margin-left: 5px; }
+
+        .social-links { display: flex; gap: 12px; }
+        .social-icon {
+          width: 42px; height: 42px;
+          background: #141414;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: #888;
+          transition: 0.3s;
+          text-decoration: none;
+        }
+        .social-icon:hover { color: white; background: #FF6B00; transform: translateY(-3px); }
+
+        @media (max-width: 1024px) {
+          .footer-main { grid-template-columns: 1fr; gap: 50px; }
+          .footer-links-grid { grid-template-columns: repeat(2, 1fr); gap: 40px; }
+        }
+
+        @media (max-width: 600px) {
+          .footer-bottom { flex-direction: column; gap: 25px; text-align: center; }
+          .footer-links-grid { grid-template-columns: 1fr; }
         }
       `}</style>
     </footer>
   );
-}
+};
+
+export default Footer;
