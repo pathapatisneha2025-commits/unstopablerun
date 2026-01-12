@@ -87,7 +87,7 @@ export default function Navbar() {
           z-index: 1000;
           background: #ffffff;
           display: grid;
-          grid-template-columns: auto 1fr auto;
+          grid-template-columns: auto 1fr auto auto; /* logo | links | icons | hamburger */
           align-items: center;
           padding: 18px 60px;
           border-bottom: 1px solid #eee;
@@ -168,12 +168,13 @@ export default function Navbar() {
         /* MOBILE */
         @media (max-width: 900px) {
           .navbar {
+            grid-template-columns: auto auto; /* logo | hamburger */
             padding: 16px 24px;
           }
 
           .nav-links {
             position: absolute;
-            top: 120px;
+            top: 72px; /* below navbar */
             left: 0;
             width: 100%;
             background: #fff;
@@ -194,6 +195,7 @@ export default function Navbar() {
 
           .hamburger {
             display: block;
+            justify-self: end; /* move to right side */
           }
         }
       `}</style>
