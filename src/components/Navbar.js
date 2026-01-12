@@ -12,6 +12,13 @@ import {
 export default function Navbar() {
   const [open, setOpen] = useState(false);
 
+  // Close menu on mobile
+  const handleLinkClick = () => {
+    if (window.innerWidth <= 900) {
+      setOpen(false);
+    }
+  };
+
   return (
     <>
       {/* TOP BAR */}
@@ -22,7 +29,7 @@ export default function Navbar() {
       {/* NAVBAR */}
       <nav className="navbar">
         {/* LOGO */}
-        <Link to="/" className="logo">
+        <Link to="/" className="logo" onClick={handleLinkClick}>
           <img src="/companylogo.png" alt="RUNN" />
         </Link>
 
@@ -33,7 +40,7 @@ export default function Navbar() {
               <li key={i}>
                 <NavLink
                   to={path}
-                  onClick={() => setOpen(false)}
+                  onClick={handleLinkClick}
                   className={({ isActive }) =>
                     isActive ? "active-link" : ""
                   }
