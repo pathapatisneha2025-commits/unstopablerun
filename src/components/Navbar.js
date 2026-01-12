@@ -6,7 +6,7 @@ export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
   const handleLinkClick = () => {
-    setMenuOpen(false);
+    setMenuOpen(false); // Close menu when a link is clicked
   };
 
   const links = [
@@ -50,9 +50,7 @@ export default function Navbar() {
               <NavLink
                 to={link.path}
                 onClick={handleLinkClick}
-                className={({ isActive }) =>
-                  isActive ? "active-link" : ""
-                }
+                className={({ isActive }) => (isActive ? "active-link" : "")}
               >
                 {link.label}
               </NavLink>
@@ -74,7 +72,7 @@ export default function Navbar() {
 
       {/* STYLES */}
       <style>{`
-        * { margin:0; padding:0; box-sizing:border-box; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial', sans-serif; }
 
         .top-bar {
           background:#ff6a00;
@@ -93,6 +91,7 @@ export default function Navbar() {
           background:#fff;
           box-shadow:0 2px 10px rgba(0,0,0,0.05);
           position:relative;
+          z-index: 10;
         }
 
         .logo { height:55px; }
@@ -108,6 +107,7 @@ export default function Navbar() {
           color:#111;
           font-weight:600;
           font-size:14px;
+          transition: color 0.3s;
         }
 
         .navbar-center li a:hover,
@@ -144,6 +144,16 @@ export default function Navbar() {
           height:3px;
           background:#333;
           border-radius:2px;
+          transition: all 0.3s ease;
+        }
+        .hamburger.active span:nth-child(1) {
+          transform: rotate(45deg) translate(5px, 5px);
+        }
+        .hamburger.active span:nth-child(2) {
+          opacity: 0;
+        }
+        .hamburger.active span:nth-child(3) {
+          transform: rotate(-45deg) translate(5px, -5px);
         }
 
         /* MOBILE */
@@ -161,6 +171,7 @@ export default function Navbar() {
             padding:20px;
             display:none;
             box-shadow:0 8px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s ease;
           }
           .navbar-center.show { display:flex; }
 
