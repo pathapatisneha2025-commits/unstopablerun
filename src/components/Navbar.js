@@ -5,9 +5,7 @@ import { LuSearch, LuHeart, LuUser, LuShoppingBag } from "react-icons/lu";
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
 
-  const handleLinkClick = () => {
-    setMenuOpen(false); // Close menu when a link is clicked
-  };
+  const handleLinkClick = () => setMenuOpen(false);
 
   const links = [
     { path: "/", label: "HOME" },
@@ -26,7 +24,6 @@ export default function Navbar() {
 
       {/* NAVBAR */}
       <nav className="navbar">
-        {/* Left: Logo */}
         <div className="navbar-left">
           <Link to="/" onClick={handleLinkClick}>
             <img src="/companylogo.png" alt="RUNN" className="logo" />
@@ -43,7 +40,7 @@ export default function Navbar() {
           <span></span>
         </div>
 
-        {/* Center: Links */}
+        {/* Center Links */}
         <ul className={`navbar-center ${menuOpen ? "show" : ""}`}>
           {links.map((link, i) => (
             <li key={i}>
@@ -58,7 +55,7 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* Right: Icons */}
+        {/* Right Icons */}
         <div className="navbar-right">
           <LuSearch />
           <LuHeart />
@@ -72,7 +69,7 @@ export default function Navbar() {
 
       {/* STYLES */}
       <style>{`
-        * { margin:0; padding:0; box-sizing:border-box; font-family: 'Arial', sans-serif; }
+        * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
 
         .top-bar {
           background:#ff6a00;
@@ -91,7 +88,7 @@ export default function Navbar() {
           background:#fff;
           box-shadow:0 2px 10px rgba(0,0,0,0.05);
           position:relative;
-          z-index: 10;
+          z-index: 1000; /* Ensure it's above content */
         }
 
         .logo { height:55px; }
@@ -100,6 +97,7 @@ export default function Navbar() {
           list-style:none;
           display:flex;
           gap:28px;
+          transition: max-height 0.3s ease, opacity 0.3s ease;
         }
 
         .navbar-center li a {
@@ -138,6 +136,7 @@ export default function Navbar() {
           flex-direction:column;
           cursor:pointer;
           gap:5px;
+          z-index: 1100; /* above menu */
         }
         .hamburger span {
           width:26px;
@@ -150,7 +149,7 @@ export default function Navbar() {
           transform: rotate(45deg) translate(5px, 5px);
         }
         .hamburger.active span:nth-child(2) {
-          opacity: 0;
+          opacity:0;
         }
         .hamburger.active span:nth-child(3) {
           transform: rotate(-45deg) translate(5px, -5px);
@@ -169,11 +168,16 @@ export default function Navbar() {
             flex-direction:column;
             gap:18px;
             padding:20px;
-            display:none;
+            max-height:0;
+            overflow:hidden;
+            opacity:0;
             box-shadow:0 8px 20px rgba(0,0,0,0.1);
-            transition: all 0.3s ease;
           }
-          .navbar-center.show { display:flex; }
+
+          .navbar-center.show {
+            max-height:500px; /* Enough to show all links */
+            opacity:1;
+          }
 
           .navbar-right { display:none; }
         }
