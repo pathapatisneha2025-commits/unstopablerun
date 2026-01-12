@@ -91,7 +91,10 @@ export default function Navbar() {
           z-index: 1000; /* Ensure it's above content */
         }
 
-        .logo { height:55px; }
+.logo { 
+  height: 100px; /* increased from 55px */
+  width: auto;  /* maintain aspect ratio */
+}
 
         .navbar-center {
           list-style:none;

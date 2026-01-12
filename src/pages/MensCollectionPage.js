@@ -35,8 +35,8 @@ const MensPage = () => {
   const products = [
     { cat: 'Outerwear', name: 'Apex Storm Jacket', price: 189, img: '/sportshoddies.jpeg' },
     { cat: 'Tops', name: 'Tech Mesh Tee', price: 55, img: '/sportstshirt.jpeg' },
-    { cat: 'Shoes', name: 'Carbon Runner Pro', price: 210, highlight: true, img: 'https://images.unsplash.com/photo-1589987600105-b5dff64d85f6?auto=format&fit=crop&w=600&q=80' },
-    { cat: 'Bottoms', name: 'Hybrid Training Shorts', price: 65, img: 'https://images.unsplash.com/photo-1600185361552-3308a6f0a72f?auto=format&fit=crop&w=600&q=80' }
+    { cat: 'Shoes', name: 'Carbon Runner Pro', price: 210, highlight: true, img: '/runningshoes.jpeg' },
+    { cat: 'Bottoms', name: 'Hybrid Training Shorts', price: 65, img: '/shots.png' }
   ];
 
   return (
