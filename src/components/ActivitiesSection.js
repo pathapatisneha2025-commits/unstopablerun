@@ -6,25 +6,25 @@ const activities = [
   {
     title: "RUNNING",
     subtitle: "Built for speed and endurance",
-    image: "https://images.unsplash.com/photo-1517836357463-d25dfeac3438?auto=format&fit=crop&w=1400&q=80",
+    image: "/running.jpeg",
     link: "/activitypage",
   },
   {
     title: "TRAINING",
     subtitle: "Power through every workout",
-    image: "https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&w=1400&q=80",
+    image: "/training.jpeg",
     link: "/activitypage",
   },
   {
     title: "LIFESTYLE",
     subtitle: "Athletic comfort, everyday style",
-    image: "https://images.unsplash.com/photo-1520975916090-3105956dac38?auto=format&fit=crop&w=1400&q=80",
+    image: "/lifestyle.jpeg",
     link: "/activitypage",
   },
   {
     title: "YOGA",
     subtitle: "Flow with flexibility and ease",
-    image: "https://images.unsplash.com/photo-1552058544-f2b08422138a?auto=format&fit=crop&w=1400&q=80",
+    image: "/yoga.jpeg",
     link: "/activitypage",
   },
 ];

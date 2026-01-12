@@ -92,7 +92,7 @@ export default function Navbar() {
         }
 
 .logo { 
-  height: 100px; /* increased from 55px */
+  height: 150px; /* increased from 55px */
   width: auto;  /* maintain aspect ratio */
 }
 
