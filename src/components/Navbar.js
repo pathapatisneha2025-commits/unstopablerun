@@ -119,7 +119,7 @@ export default function Navbar() {
           )}
 
           {!user && (
-            <Link to="/login" style={{ color: "inherit" }}>
+            <Link to="/register" style={{ color: "inherit" }}>
               <LuUser title="Login" />
             </Link>
           )}
