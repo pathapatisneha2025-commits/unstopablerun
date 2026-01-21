@@ -10,7 +10,7 @@ export default function Navbar() {
 
   const navigate = useNavigate();
 
-  // Load logged-in user from localStorage
+  // Load logged-in user
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     if (storedUser) setUser(storedUser);
@@ -73,74 +73,43 @@ export default function Navbar() {
         </div>
 
         {/* Hamburger */}
-        <div
-          className={`hamburger ${menuOpen ? "active" : ""}`}
-          onClick={() => setMenuOpen(!menuOpen)}
-        >
+        <div className={`hamburger ${menuOpen ? "active" : ""}`} onClick={() => setMenuOpen(!menuOpen)}>
           <span></span>
           <span></span>
           <span></span>
         </div>
 
-        {/* Center Links */}
-        <ul className={`navbar-center ${menuOpen ? "show" : ""}`}>
-          {links.map((link, i) => (
-            <li key={i}>
-              <NavLink
-                to={link.path}
-                onClick={handleLinkClick}
-                className={({ isActive }) => (isActive ? "active-link" : "")}
-              >
-                {link.label}
-              </NavLink>
-            </li>
-          ))}
+      <ul className={`navbar-center ${menuOpen ? "show" : ""}`}>
+  {links.map((link, i) => (
+    <li key={i}>
+      <Link
+        to={link.path}
+        onClick={handleLinkClick} // closes hamburger menu on click
+        className="nav-link" // optional class for styling
+      >
+        {link.label}
+      </Link>
+    </li>
+  ))}
+</ul>
 
-          {/* On mobile, also show user menu inside hamburger */}
-          {menuOpen && user && (
-            <li className="mobile-user-menu">
-              <div
-                className="user-dropdown-mobile"
-                onClick={() => setUserMenuOpen(!userMenuOpen)}
-              >
-                <div className="user-box">
-                  <LuUser />
-                  <span>{user.name}</span>
-                </div>
-                {userMenuOpen && (
-                  <div className="dropdown-menu-mobile">
-                    <Link to="/profile" onClick={handleLinkClick}>Profile</Link>
-                    <Link to="/orders" onClick={handleLinkClick}>My Orders</Link>
-                    <div className="logout-btn" onClick={handleLogout}>
-                      Logout <LuLogOut />
-                    </div>
-                  </div>
-                )}
-              </div>
-            </li>
-          )}
-        </ul>
 
         {/* Right Icons */}
         <div className="navbar-right">
           <LuSearch />
           <LuHeart />
 
-          {/* USER LOGIN / DROPDOWN */}
+          {/* Desktop User Dropdown */}
           {user && (
-            <div
-              className="user-dropdown"
-              onClick={() => setUserMenuOpen(!userMenuOpen)}
-            >
+            <div className="user-dropdown" onClick={() => setUserMenuOpen(!userMenuOpen)}>
               <div className="user-box">
                 <LuUser />
                 <span className="username">{user.name}</span>
               </div>
-
               {userMenuOpen && (
                 <div className="dropdown-menu">
-                  {/* <Link to="/profile">Profile</Link> */}
-                  {/* <Link to="/orders">My Orders</Link> */}
+                  <Link to="/profile" onClick={handleLinkClick}>Profile</Link>
+                  <Link to="/orders" onClick={handleLinkClick}>My Orders</Link>
                   <div className="logout-btn" onClick={handleLogout}>
                     Logout <LuLogOut />
                   </div>
@@ -148,6 +117,7 @@ export default function Navbar() {
               )}
             </div>
           )}
+
           {!user && (
             <Link to="/login" style={{ color: "inherit" }}>
               <LuUser title="Login" />
@@ -185,7 +155,7 @@ export default function Navbar() {
           z-index:1000;
         }
 
-        .logo { height:150px; }
+        .logo { height:50px; }
 
         .navbar-center {
           list-style:none;
@@ -209,6 +179,16 @@ export default function Navbar() {
           font-size:20px;
           position: relative;
         }
+.nav-link {
+  text-decoration: none;
+  color: #111;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.nav-link:hover {
+  color: #ff6a00;
+}
 
         .cart {
           position:relative;
@@ -318,7 +298,6 @@ export default function Navbar() {
 
           .navbar-right { display:flex; gap:12px; font-size:18px; }
 
-          /* Hide desktop user dropdown hover effect on mobile */
           .user-dropdown { display:none; }
         }
       `}</style>
