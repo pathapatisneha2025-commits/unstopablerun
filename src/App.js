@@ -6,7 +6,6 @@ import Navbar from "./components/Navbar";
 import HeroSection from "./components/HeroSection";
 import ActivitiesSection from "./components/ActivitiesSection";
 import WhyChooseUs from "./components/WhyChooseUs";
-import ShopByCollection from "./components/Shopbycollection";
 import Testimonials from "./components/Testimonals";
 import CtaSection from "./components/ctaSection";
 import Footer from "./components/Footer";
@@ -19,6 +18,9 @@ import FeaturedCollections from "./components/FeaturedCollection";
 import WomenCollectionPage from "./pages/WomenCollectionPage";
 import MensPage from "./pages/MensCollectionPage";
 import AccessoriesPage from "./pages/AccessoriesPage";
+import ProductsPage from "./pages/ProductPage";
+import ProductDetailsPage from "./pages/ProductDetailedPage";
+import RegisterPage from "./pages/RegisterPage";
 
 function App() {
   return (
@@ -43,8 +45,12 @@ function App() {
 
                 <Route path="/shop" element={<Shop/>} />
                 <Route path="/cart" element={<CartPage/>} />
+                <Route path="/register" element={<RegisterPage/>} />
 
         <Route path="/activitypage" element={<ActivitiesPage/>} />
+                <Route path="/products/:category" element={<ProductsPage/>} />
+  <Route path="/product/:id" element={<ProductDetailsPage />} />
+
                 <Route path="/womencollectoionpage" element={<WomenCollectionPage/>} />
                 <Route path="/menscollectoionpage" element={<MensPage/>} />
                 <Route path="/Accesssoriespage" element={<AccessoriesPage/>} />

@@ -22,18 +22,32 @@ export default function CartPage() {
     fetchCart();
   }, []);
 
-  const fetchCart = async () => {
-    try {
-      const res = await fetch(`https://unstopablerundatabse.onrender.com/cart/${userId}`);
-      if (!res.ok) throw new Error("Failed to fetch cart");
-      const data = await res.json();
-      setCart(data.items || []);
-    } catch (err) {
-      console.error(err);
-    } finally {
-      setLoading(false);
-    }
-  };
+const fetchCart = async () => {
+  try {
+    const res = await fetch(`https://unstopablerundatabse.onrender.com/cart/${userId}`);
+    if (!res.ok) throw new Error("Failed to fetch cart");
+    const data = await res.json();
+
+    // Normalize items safely
+    const normalizedItems = (data.items || []).map(item => ({
+      product_id: item.product_id ?? 0,                       // fallback ID
+      quantity: Number(item.quantity) || 1,                  // ensure number, default 1
+      product_name: item.product_name || "Unknown Product", // fallback name
+      product_price: parseFloat(item.product_price) || 0,   // ensure number, default 0
+      product_images: Array.isArray(item.product_images) && item.product_images.length > 0
+        ? item.product_images
+        : ["https://via.placeholder.com/60"]               // fallback image
+    }));
+
+    setCart(normalizedItems);
+  } catch (err) {
+    console.error("Error fetching cart:", err);
+  } finally {
+    setLoading(false);
+  }
+};
+
+
 
   // Remove item
   const removeItem = async (productId) => {
@@ -160,7 +174,7 @@ export default function CartPage() {
                       onChange={(e) => updateQuantity(item.product_id, parseInt(e.target.value))}
                     />
                   </td>
-                  <td>${(item.product_price * item.quantity).toFixed(2)}</td>
+<td>${(item.product_price * item.quantity).toFixed(2)}</td>
                   <td>
                     <button className="remove-btn" onClick={() => removeItem(item.product_id)}>Remove</button>
                   </td>

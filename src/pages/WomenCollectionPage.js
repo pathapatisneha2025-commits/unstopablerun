@@ -42,6 +42,34 @@ const WomenCollectionPage = () => {
   }
 ];
 
+const addToCart = async (product) => {
+  const userId = 1; // Replace with your dynamic user ID
+  try {
+    const res = await fetch('https://unstopablerundatabse.onrender.com/cart/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId,
+        items: [{
+          product_id: product.id,
+          quantity: 1,
+          product_name: product.name,   // <-- send name
+          product_price: product.price, // <-- send price
+          product_images: [product.img] // <-- send image
+        }]
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alert(`${product.name} added to cart!`);
+    } else {
+      alert(data.message || 'Failed to add to cart');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Server error');
+  }
+};
 
   const styles = `
     .shop-container {
@@ -182,6 +210,20 @@ const WomenCollectionPage = () => {
       text-transform: uppercase;
       cursor: pointer;
     }
+      .btn-add-cart {
+      background-color: #ff5c00;
+      color: white;
+      padding: 0.6rem 1rem;
+      border: none;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 0.5rem;
+      width: 100%;
+      text-align: center;
+    }
+    .load-more-container { text-align: center; padding-bottom: 5rem; }
+    .btn-load { border: 2px solid #ff5c00; background: white; color: #ff5c00; padding: 1rem 3rem; border-radius: 12px; font-weight: 900; text-transform: uppercase; cursor: pointer; }
   `;
 
   return (
@@ -228,6 +270,9 @@ const WomenCollectionPage = () => {
       <div className="p-cat">{product.category}</div>
       <div className={`p-name ${product.highlight ? 'highlight' : ''}`}>{product.name}</div>
       <div className="p-price">${product.price}</div>
+       <button className="btn-add-cart" onClick={() => addToCart(product)}>
+              Add to Cart
+            </button>
     </div>
   ))}
 </main>
