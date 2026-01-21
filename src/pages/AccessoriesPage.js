@@ -58,6 +58,35 @@ const AccessoriesPage = () => {
     }
   ];
 
+  const addToCart = async (product) => {
+  const userId = 1; // Replace with your dynamic user ID
+  try {
+    const res = await fetch('https://unstopablerundatabse.onrender.com/cart/add', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        userId,
+        items: [{
+          product_id: product.id,
+          quantity: 1,
+          product_name: product.name,   // <-- send name
+          product_price: product.price, // <-- send price
+          product_images: [product.img] // <-- send image
+        }]
+      })
+    });
+    const data = await res.json();
+    if (res.ok) {
+      alert(`${product.name} added to cart!`);
+    } else {
+      alert(data.message || 'Failed to add to cart');
+    }
+  } catch (err) {
+    console.error(err);
+    alert('Server error');
+  }
+};
+
   return (
     <div className="shop-root">
       <style>{styles}</style>
@@ -78,6 +107,12 @@ const AccessoriesPage = () => {
             <div className="p-cat">{p.cat}</div>
             <div className={`p-name ${p.highlight ? 'highlight' : ''}`}>{p.name}</div>
             <div className="p-price">${p.price}</div>
+              <button 
+              style={{marginTop: '8px', padding: '6px 12px', background:'#ff5c00', color:'white', border:'none', borderRadius:'6px', cursor:'pointer', fontWeight:700}}
+              onClick={() => addToCart(p)}
+            >
+              Add to Cart
+            </button>
           </div>
         ))}
       </main>
