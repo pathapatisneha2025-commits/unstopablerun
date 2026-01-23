@@ -41,7 +41,8 @@ const Shop = () => {
                     --text-dark: #0f172a;
                     --text-muted: #64748b;
                 }
-                body { margin: 0; font-family: 'Inter', sans-serif; background-color: #fff; color: var(--text-dark); -webkit-font-smoothing: antialiased; }
+                body { margin: 0; font-family: 'Inter', sans-serif;  background-color: #fffaf5;
+; color: var(--text-dark); -webkit-font-smoothing: antialiased; }
                 .italic-black { font-weight: 900; font-style: italic; text-transform: uppercase; letter-spacing: -0.02em; }
                 .page-root { width: 100%; overflow-x: hidden; }
                 .container { max-width: 1240px; margin: 0 auto; padding: 4rem 2rem; }

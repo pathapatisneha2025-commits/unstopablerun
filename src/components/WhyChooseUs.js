@@ -2,36 +2,12 @@ import React from "react";
 import { Zap, Shield, Leaf, Heart, Truck, Award } from "lucide-react";
 
 const features = [
-  {
-    title: "PERFORMANCE FIRST",
-    desc: "Engineered for peak athletic performance with cutting-edge technology.",
-    icon: <Zap size={24} />,
-  },
-  {
-    title: "PREMIUM QUALITY",
-    desc: "Crafted from the finest materials for durability that lasts.",
-    icon: <Shield size={24} />,
-  },
-  {
-    title: "SUSTAINABLE",
-    desc: "Eco-conscious production with recycled and sustainable materials.",
-    icon: <Leaf size={24} />,
-  },
-  {
-    title: "ATHLETE TESTED",
-    desc: "Designed and tested by professional athletes worldwide.",
-    icon: <Heart size={24} />,
-  },
-  {
-    title: "FREE SHIPPING",
-    desc: "Complimentary shipping on all orders over $100.",
-    icon: <Truck size={24} />,
-  },
-  {
-    title: "LIFETIME WARRANTY",
-    desc: "We stand behind our products with a lifetime guarantee.",
-    icon: <Award size={24} />,
-  },
+  { title: "PERFORMANCE FIRST", desc: "Engineered for peak athletic performance with cutting-edge technology.", icon: <Zap size={24} /> },
+  { title: "PREMIUM QUALITY", desc: "Crafted from the finest materials for durability that lasts.", icon: <Shield size={24} /> },
+  { title: "SUSTAINABLE", desc: "Eco-conscious production with recycled and sustainable materials.", icon: <Leaf size={24} /> },
+  { title: "ATHLETE TESTED", desc: "Designed and tested by professional athletes worldwide.", icon: <Heart size={24} /> },
+  { title: "FREE SHIPPING", desc: "Complimentary shipping on all orders over $100.", icon: <Truck size={24} /> },
+  { title: "LIFETIME WARRANTY", desc: "We stand behind our products with a lifetime guarantee.", icon: <Award size={24} /> },
 ];
 
 export default function WhyChooseUs() {
@@ -68,43 +44,41 @@ export default function WhyChooseUs() {
 
         .why-choose-section {
           width: 100%;
-          min-height: 100vh;
-          display: flex;
-          align-items: center;
-          background-color: #ffffff;
+          background-color: #fffaf5;
           font-family: 'Inter', sans-serif;
-          padding: 80px 0; /* Vertical padding only */
+          padding: 60px 10px; /* smaller vertical padding for mobile */
+          box-sizing: border-box;
         }
 
         .full-width-container {
-          width: 100%;
-          padding: 0 5%; /* Provides the 5% margin seen on the left/right in the screenshot */
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 0 16px; /* prevent overflow on mobile */
         }
 
         .header {
           text-align: center;
-          margin-bottom: 80px;
+          margin-bottom: 60px;
         }
 
         .badge {
           display: inline-block;
           background-color: #FFF3EA;
           color: #FF6B00;
-          padding: 10px 24px;
+          padding: 8px 20px;
           border-radius: 100px;
           font-size: 12px;
           font-weight: 800;
-          letter-spacing: 1.5px;
-          margin-bottom: 24px;
+          letter-spacing: 1.2px;
+          margin-bottom: 16px;
         }
 
         .title {
-          font-size: clamp(40px, 8vw, 72px); /* Bold, massive title to match screenshot */
+          font-size: clamp(28px, 6vw, 60px);
           font-weight: 900;
           color: #111111;
-          margin: 0 0 24px 0;
-          letter-spacing: -3px;
-          line-height: 1;
+          margin: 0 0 16px 0;
+          line-height: 1.1;
         }
 
         .highlight {
@@ -112,93 +86,83 @@ export default function WhyChooseUs() {
         }
 
         .subtitle {
-          font-size: 20px;
+          font-size: clamp(14px, 3vw, 20px);
           color: #6B7280;
           max-width: 700px;
           margin: 0 auto;
           line-height: 1.6;
-          font-weight: 400;
         }
 
         .features-grid {
           display: grid;
-          grid-template-columns: repeat(3, 1fr);
-          gap: 40px; /* Wider gap for the premium full-page look */
+          grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+          gap: 20px;
         }
 
         .feature-card {
           background-color: #F9FAFB;
-          border-radius: 48px; /* Extra rounded corners like the screenshot */
-          aspect-ratio: 1 / 1;
+          border-radius: 32px;
           display: flex;
           flex-direction: column;
           justify-content: center;
-          transition: all 0.5s cubic-bezier(0.2, 1, 0.3, 1);
+          transition: all 0.3s ease;
           border: 1px solid #F3F4F6;
+          min-height: 250px;
+          box-sizing: border-box;
         }
 
         .feature-card:hover {
           background-color: #ffffff;
-          transform: translateY(-15px);
-          box-shadow: 0 40px 80px rgba(0, 0, 0, 0.07);
+          transform: translateY(-8px);
+          box-shadow: 0 20px 40px rgba(0,0,0,0.05);
           border-color: #FFE5D3;
         }
 
         .card-content {
-          padding: 12%; 
+          padding: 20px;
           text-align: left;
         }
 
         .icon-box {
-          width: 64px;
-          height: 64px;
+          width: 48px;
+          height: 48px;
           background-color: #FFF3EA;
           color: #FF6B00;
           display: flex;
           align-items: center;
           justify-content: center;
-          border-radius: 22px;
-          margin-bottom: 32px;
+          border-radius: 16px;
+          margin-bottom: 16px;
         }
 
         .feature-card h3 {
-          font-size: clamp(18px, 2vw, 24px);
-          font-weight: 900;
+          font-size: clamp(16px, 2vw, 20px);
+          font-weight: 700;
           color: #111111;
-          margin-bottom: 16px;
-          letter-spacing: 0.5px;
+          margin-bottom: 8px;
         }
 
         .feature-card p {
-          font-size: clamp(14px, 1.2vw, 17px);
+          font-size: clamp(12px, 1.5vw, 16px);
           color: #6B7280;
-          line-height: 1.6;
+          line-height: 1.4;
           margin: 0;
         }
 
-        /* Responsive Adjustments */
-        @media (max-width: 1200px) {
-          .features-grid {
-            gap: 20px;
-          }
-          .full-width-container {
-            padding: 0 40px;
-          }
-        }
-
-        @media (max-width: 1024px) {
-          .features-grid {
-            grid-template-columns: repeat(2, 1fr);
-          }
-        }
-
+        /* Mobile adjustments */
         @media (max-width: 640px) {
+          .why-choose-section {
+            padding: 40px 8px;
+          }
           .features-grid {
-            grid-template-columns: 1fr;
+            gap: 16px;
           }
           .feature-card {
-            aspect-ratio: 1 / 1;
-            max-width: 100%;
+            min-height: auto;
+            border-radius: 24px;
+          }
+          .card-content {
+            padding: 16px;
           }
         }
       `}</style>

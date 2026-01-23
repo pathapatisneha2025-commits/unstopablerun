@@ -21,6 +21,9 @@ import AccessoriesPage from "./pages/AccessoriesPage";
 import ProductsPage from "./pages/ProductPage";
 import ProductDetailsPage from "./pages/ProductDetailedPage";
 import RegisterPage from "./pages/RegisterPage";
+import ServiceFeatures from "./components/ServicesSection";
+import VideoInstagramFeed from "./components/CustomerTestimonals";
+import OrdersPage from "./pages/Orders";
 
 function App() {
   return (
@@ -35,10 +38,12 @@ function App() {
           <>
             <HeroSection/>
             <FeaturedCollections/>
+            <ServiceFeatures/>
             <ActivitiesSection/>
             <WhyChooseUs/>
             {/* <ShopByCollection/> */}
             <Testimonials/>
+            <VideoInstagramFeed/>
             <CtaSection/>
           </>
         } />
@@ -50,6 +55,7 @@ function App() {
         <Route path="/activitypage" element={<ActivitiesPage/>} />
                 <Route path="/products/:category" element={<ProductsPage/>} />
   <Route path="/product/:id" element={<ProductDetailsPage />} />
+  <Route path="/orders" element={<OrdersPage />} />
 
                 <Route path="/womencollectoionpage" element={<WomenCollectionPage/>} />
                 <Route path="/menscollectoionpage" element={<MensPage/>} />

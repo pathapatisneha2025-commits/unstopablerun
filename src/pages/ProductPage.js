@@ -147,34 +147,35 @@ const ProductsPage = () => {
         {products
           .filter(p => activeCategory === 'All' || p.category.toUpperCase() === activeCategory.toUpperCase())
           .map(product => (
-          <div
-            key={product.id}
-            className="product-card"
-            onClick={() => navigate(`/product/${product.id}`)}
-          >
-            <div className="image-box" style={{ backgroundColor: product.color || '#f3f4f6' }}>
-              <img
-                src={product.images && product.images.length > 0 ? product.images[0] : '/placeholder.png'}
-                alt={product.name}
-                style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
-              />
-            </div>
+         <div
+  key={product.id}
+  className="product-card"
+  onClick={() => navigate(`/product/${product.id}`)}
+>
+  <div className="image-box" style={{ backgroundColor: product.color || '#f3f4f6' }}>
+    <img
+      src={product.main_image || '/placeholder.png'}
+      alt={product.name}
+      style={{ width: '100%', height: '100%', objectFit: 'cover', borderRadius: '12px' }}
+    />
+  </div>
 
-            <div className="p-cat">{product.category}</div>
-            <div className={`p-name ${product.highlight ? 'highlight' : ''}`}>{product.name}</div>
-            <div className="p-price">${product.price}</div>
-            <div className="p-stock">
-              {product.stock > 0 ? `${product.stock} in stock` : 'Out of Stock'}
-            </div>
+  <div className="p-cat">{product.category}</div>
+  <div className={`p-name ${product.highlight ? 'highlight' : ''}`}>{product.name}</div>
+  <div className="p-price">${product.price}</div>
+  <div className="p-stock">
+    {product.stock > 0 ? `${product.stock} in stock` : 'Out of Stock'}
+  </div>
 
-            <button
-              className="btn-add-cart"
-              disabled={product.stock === 0}
-              onClick={(e) => { e.stopPropagation(); addToCart(product); }}
-            >
-              {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
-            </button>
-          </div>
+  <button
+    className="btn-add-cart"
+    disabled={product.stock === 0}
+    onClick={(e) => { e.stopPropagation(); addToCart(product); }}
+  >
+    {product.stock === 0 ? 'Out of Stock' : 'Add to Cart'}
+  </button>
+</div>
+
         ))}
       </main>
 

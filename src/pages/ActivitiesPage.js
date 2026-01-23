@@ -6,7 +6,7 @@ const ActivitiesPage = () => {
  const styles = `
 .page-wrapper {
   min-height: 100vh;
-  background-color: white;
+ background-color: #fffaf5;
   font-family: 'Inter', system-ui, -apple-system, sans-serif;
   color: #111827;
   margin: 0;

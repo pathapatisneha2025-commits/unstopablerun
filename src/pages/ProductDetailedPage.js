@@ -1,31 +1,21 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, Link } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import { useParams } from "react-router-dom";
 
-const ProductDetailsPage = () => {
+export default function ProductDetail() {
   const { id } = useParams();
-
   const [product, setProduct] = useState(null);
-  const [selectedSize, setSelectedSize] = useState('');
-  const [mainImage, setMainImage] = useState('');
-
-  const standardSizes = ['S', 'M', 'L', 'XL', 'XXL'];
+  const [selectedVariant, setSelectedVariant] = useState({});
+  const [mainImage, setMainImage] = useState("");
 
   useEffect(() => {
     const fetchProduct = async () => {
       try {
-        const res = await fetch(
-          `https://unstopablerundatabse.onrender.com/products/${id}`
-        );
-        if (!res.ok) throw new Error('Failed to fetch product');
-
+        const res = await fetch(`https://unstopablerundatabse.onrender.com/products/${id}`);
+        if (!res.ok) throw new Error("Failed to fetch product");
         const data = await res.json();
         setProduct(data);
-
-        if (data.images && data.images.length > 0) {
-          setMainImage(data.images[0]);
-        }
-
-        setSelectedSize('');
+        setSelectedVariant(data?.variants?.[0] || {});
+        setMainImage(data?.main_image || "/placeholder.png");
       } catch (err) {
         console.error(err);
       }
@@ -33,136 +23,299 @@ const ProductDetailsPage = () => {
     fetchProduct();
   }, [id]);
 
-  const addToCart = async () => {
-    if (!selectedSize) {
-      alert('Please select size');
-      return;
-    }
-
-    const userId = 1;
-
-    try {
-      const res = await fetch(
-        'https://unstopablerundatabse.onrender.com/cart/add',
-        {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            userId,
-            items: [
-              {
-                product_id: product.id,
-                quantity: 1,
-                product_name: product.name,
-                product_price: product.price,
-                product_images: [mainImage],
-                size: selectedSize,
-              },
-            ],
-          }),
-        }
-      );
-
-      const data = await res.json();
-
-      if (res.ok) {
-        alert(`${product.name} added to cart!`);
-      } else {
-        alert(data.message || 'Failed to add to cart');
-      }
-    } catch (err) {
-      console.error(err);
-      alert('Server error');
-    }
-  };
-
-  if (!product) {
-    return <div style={{ textAlign: 'center', padding: '2rem' }}>Loading...</div>;
-  }
+  if (!product) return <div className="loading">Loading product...</div>;
 
   return (
-    <div style={{ fontFamily: 'Inter, sans-serif', padding: '2rem', maxWidth: '1200px', margin: '0 auto' }}>
-      <Link to="/shop" style={{ color: '#ff5c00', fontWeight: 700 }}>← Back to Shop</Link>
-
-      <div style={{ display: 'flex', gap: '2rem', marginTop: '2rem', flexWrap: 'wrap' }}>
-        {/* Images */}
-        <div style={{ flex: '1 1 400px' }}>
-          <div style={{ borderRadius: '12px', overflow: 'hidden', border: '1px solid #eee' }}>
-            <img src={mainImage} alt={product.name} style={{ width: '100%', objectFit: 'cover' }} />
-          </div>
-          <div style={{ display: 'flex', gap: '0.5rem', marginTop: '1rem', flexWrap: 'wrap' }}>
-            {product.images?.map((img, idx) => (
-              <div
-                key={idx}
-                onClick={() => setMainImage(img)}
-                style={{
-                  border: mainImage === img ? '2px solid #ff5c00' : '1px solid #ccc',
-                  borderRadius: '8px',
-                  width: '60px',
-                  height: '60px',
-                  cursor: 'pointer',
-                }}
-              >
-                <img src={img} alt={`thumb-${idx}`} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
-              </div>
-            ))}
-          </div>
-        </div>
-
-        {/* Product Info */}
-        <div style={{ flex: '1 1 400px' }}>
-          <h2 style={{ fontWeight: 900 }}>{product.name}</h2>
-          <div style={{ color: '#888', fontWeight: 700 }}>{product.category}</div>
-          <div style={{ fontWeight: 900, fontSize: '1.5rem' }}>${product.price}</div>
-
-          {/* Size */}
-          <div style={{ marginTop: '1rem' }}>
-            <div style={{ fontWeight: 700 }}>Size:</div>
-            <div style={{ display: 'flex', gap: '0.5rem' }}>
-              {standardSizes.map((size) => (
-                <div
-                  key={size}
-                  onClick={() => setSelectedSize(size)}
-                  style={{
-                    padding: '0.5rem 1rem',
-                    borderRadius: '6px',
-                    border: selectedSize === size ? '2px solid #ff5c00' : '1px solid #ccc',
-                    cursor: 'pointer',
-                    fontWeight: 700,
-                  }}
-                >
-                  {size}
-                </div>
+    <div className="page-container">
+      <div className="product-detail-container">
+        <div className="product-detail">
+          {/* Left: Images */}
+          <div className="images-section">
+            <div className="main-image">
+              <img src={mainImage} alt={product.name} />
+            </div>
+            <div className="thumbnails">
+              {[product.main_image, ...product.thumbnails].map((img, idx) => (
+                <img
+                  key={idx}
+                  src={img}
+                  alt={`thumb-${idx}`}
+                  className={mainImage === img ? "thumb active" : "thumb"}
+                  onClick={() => setMainImage(img)}
+                />
               ))}
             </div>
           </div>
 
-          {/* Stock */}
-          <div style={{ marginTop: '1rem', fontWeight: 700 }}>
-            {product.stock > 0 ? `${product.stock} in stock` : 'Out of stock'}
-          </div>
+          {/* Right: Details */}
+          <div className="details-section">
+            <h1 className="product-name">{product.name}</h1>
+            <p className="category">
+              {product.category} {product.subcategory && `> ${product.subcategory}`}
+            </p>
 
-          {/* Add to Cart */}
-          <button
-            onClick={addToCart}
-            disabled={product.stock === 0}
-            style={{
-              marginTop: '1rem',
-              background: '#ff5c00',
-              color: '#fff',
-              border: 'none',
-              padding: '0.75rem 1.5rem',
-              borderRadius: '8px',
-              fontWeight: 700,
-              cursor: product.stock === 0 ? 'not-allowed' : 'pointer',
-            }}
-          >
-            Add to Cart
-          </button>
+            {/* Variants */}
+            {product.variants?.length > 0 && (
+              <div className="variants">
+                <h3>Select Variant:</h3>
+                <div className="variant-buttons">
+                  {product.variants.map((v, idx) => (
+                    <button
+                      key={idx}
+                      disabled={v.stock === 0}
+                      className={`variant-btn ${
+                        selectedVariant.size === v.size && selectedVariant.color === v.color
+                          ? "selected"
+                          : ""
+                      }`}
+                      onClick={() => setSelectedVariant(v)}
+                    >
+                      {v.size} / {v.color} - ₹{v.price}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            )}
+
+            {/* Price */}
+            <div className="price">
+              ₹{selectedVariant.price} <span>({selectedVariant.stock} in stock)</span>
+            </div>
+
+            {/* Action Buttons */}
+            <div className="action-buttons">
+              <button
+                className="add-cart"
+                onClick={() => alert(`Added ${product.name} to cart!`)}
+              >
+                Add to Cart
+              </button>
+              <button
+                className="buy-now"
+                onClick={() => alert(`Buying ${product.name} now!`)}
+              >
+                Buy Now
+              </button>
+            </div>
+
+            {/* Description */}
+            {product.description && (
+              <div className="description">
+                <h3>Product Details</h3>
+                <p>{product.description}</p>
+              </div>
+            )}
+
+            {/* Additional Info */}
+            <div className="additional-info">
+              <h3>Additional Information</h3>
+              <ul>
+                <li>Category: {product.category}</li>
+                {product.subcategory && <li>Subcategory: {product.subcategory}</li>}
+                <li>Stock: {selectedVariant.stock}</li>
+                <li>
+                  Size / Color: {selectedVariant.size} / {selectedVariant.color}
+                </li>
+              </ul>
+            </div>
+          </div>
         </div>
       </div>
+
+      {/* CSS */}
+      <style>{`
+        .page-container {
+          background: linear-gradient(120deg, #FFA64D, #FF6B00);
+          padding: 40px 20px;
+          min-height: 100vh;
+        }
+
+        .product-detail-container {
+          max-width: 1200px;
+          margin: 0 auto;
+          padding: 30px;
+          background: linear-gradient(135deg, #FFB347, #FF8C00);
+          border-radius: 16px;
+          box-shadow: 0 8px 30px rgba(255, 140, 0, 0.3);
+          font-family: 'Helvetica Neue', Arial, sans-serif;
+          color: #000; /* <-- all text black */
+        }
+
+        .product-detail {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 40px;
+        }
+
+        .images-section {
+          flex: 1 1 45%;
+        }
+
+        .main-image img {
+          width: 100%;
+          height: 450px;
+          object-fit: cover;
+          border-radius: 12px;
+          border: 2px solid #FF8C00;
+          transition: transform 0.3s, box-shadow 0.3s;
+        }
+
+        .main-image img:hover {
+          transform: scale(1.02);
+          box-shadow: 0 8px 20px rgba(255,140,0,0.5);
+        }
+
+        .thumbnails {
+          display: flex;
+          gap: 12px;
+          margin-top: 15px;
+          overflow-x: auto;
+        }
+
+        .thumbnails .thumb {
+          width: 70px;
+          height: 70px;
+          object-fit: cover;
+          border: 2px solid #FFD580;
+          border-radius: 8px;
+          cursor: pointer;
+          transition: all 0.3s;
+        }
+
+        .thumbnails .thumb:hover {
+          border-color: #FF8C00;
+          transform: scale(1.05);
+        }
+
+        .thumbnails .thumb.active {
+          border-color: #FFD700;
+          box-shadow: 0 0 12px rgba(255,215,0,0.6);
+        }
+
+        .details-section {
+          flex: 1 1 50%;
+        }
+
+        .product-name {
+          font-size: 28px;
+          font-weight: 700;
+          margin-bottom: 8px;
+        }
+
+        .category {
+          color: #000; /* black text */
+          font-size: 14px;
+          margin-bottom: 20px;
+        }
+
+        .variant-buttons {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 8px;
+        }
+
+        .variant-btn {
+          padding: 8px 14px;
+          border: 1px solid #FFD580;
+          border-radius: 6px;
+          background: rgba(255,255,255,0.2);
+          color: #000; /* black text */
+          cursor: pointer;
+          font-size: 14px;
+          transition: all 0.3s;
+        }
+
+        .variant-btn.selected {
+          background: #FF8C00;
+          border-color: #FFA500;
+          color: #000; /* black text */
+        }
+
+        .variant-btn:hover:not(:disabled) {
+          border-color: #FFA500;
+        }
+
+        .variant-btn:disabled {
+          opacity: 0.5;
+          cursor: not-allowed;
+        }
+
+        .price {
+          font-size: 22px;
+          font-weight: 700;
+          color: #000; /* black text */
+          margin: 20px 0;
+        }
+
+        .price span {
+          font-weight: 400;
+          color: #000; /* black text */
+          font-size: 14px;
+        }
+
+        .action-buttons {
+          display: flex;
+          gap: 15px;
+          margin-bottom: 25px;
+          flex-wrap: wrap;
+        }
+
+        .add-cart, .buy-now {
+          flex: 1;
+          padding: 12px;
+          border-radius: 8px;
+          font-weight: 600;
+          cursor: pointer;
+          border: none;
+          transition: all 0.3s;
+          color: #000; /* black text for button labels */
+        }
+
+        .add-cart {
+          background: linear-gradient(90deg, #FFD700, #FFA500);
+        }
+
+        .add-cart:hover {
+          background: linear-gradient(90deg, #FFA500, #FF8C00);
+        }
+
+        .buy-now {
+          background: linear-gradient(90deg, #FF8C00, #FFD700);
+        }
+
+        .buy-now:hover {
+          background: linear-gradient(90deg, #FFA500, #FF8C00);
+        }
+
+        .description, .additional-info {
+          margin-top: 25px;
+        }
+
+        .description h3, .additional-info h3 {
+          font-weight: 600;
+          margin-bottom: 8px;
+          color: #000; /* black text */
+        }
+
+        .description p, .additional-info ul {
+          color: #000; /* black text */
+          font-size: 14px;
+          line-height: 1.6;
+        }
+
+        .additional-info ul {
+          list-style: disc inside;
+        }
+
+        @media(max-width: 900px) {
+          .product-detail {
+            flex-direction: column;
+          }
+          .main-image img {
+            height: 350px;
+          }
+        }
+      `}</style>
     </div>
   );
-};
-
-export default ProductDetailsPage;
+}

@@ -1,17 +1,48 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { ArrowRight, Play } from "lucide-react";
 import { useNavigate } from "react-router-dom";
 
 export default function HeroSection() {
-    const navigate = useNavigate(); // <-- hook to programmatically navigate
+  const navigate = useNavigate();
+  const [banners, setBanners] = useState([]);
+  const [currentBanner, setCurrentBanner] = useState(0);
+
+  // Fetch banners from backend
+  useEffect(() => {
+    fetch("https://unstopablerundatabse.onrender.com/banner/all")
+      .then((res) => res.json())
+      .then((data) => {
+        const images = data.map((item) => item.image_url);
+        setBanners(images);
+      })
+      .catch((err) => console.error("Banner fetch error:", err));
+  }, []);
+
+  // Rotate banner every 5 seconds
+  useEffect(() => {
+    if (banners.length === 0) return;
+
+    const interval = setInterval(() => {
+      setCurrentBanner((prev) => (prev + 1) % banners.length);
+    }, 5000);
+
+    return () => clearInterval(interval);
+  }, [banners]);
 
   return (
     <>
-      <section className="hero">
+       <section
+      className="hero"
+      style={{
+        background: banners.length
+          ? `url(${banners[currentBanner]}) center / cover no-repeat`
+          : "#f5f5f5",
+      }}
+    >
         <div className="overlay" />
 
         <div className="hero-content">
-          {/* BADGE - Light background with orange text */}
+          {/* BADGE */}
           <div className="badge-wrapper">
             <span className="badge">
               <span className="dot" /> THE MOVEMENT BEGINS
@@ -28,19 +59,15 @@ export default function HeroSection() {
 
           {/* DESCRIPTION */}
           <p className="description">
-            Push your limits. Break barriers. Embrace the power within you. 
-            Every step brings you closer to <span className="highlight">greatness</span>.
+            Push your limits. Break barriers. Embrace the power within you. Every step brings you closer to{" "}
+            <span className="highlight">greatness</span>.
           </p>
 
-          {/* CTA - Updated to match button styles */}
+          {/* CTA */}
           <div className="actions">
-            <button 
-              className="btn primary"
-              onClick={() => navigate("/shop")}
-            >
+            <button className="btn primary" onClick={() => navigate("/shop")}>
               SHOP NOW <ArrowRight size={20} />
             </button>
-
 
             <button className="btn video-link">
               <div className="play-circle">
@@ -88,13 +115,13 @@ export default function HeroSection() {
         </div>
       </section>
 
+      {/* CSS */}
       <style>{`
         @import url('https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@700;800;900&family=Inter:wght@400;500;600&display=swap');
 
         .hero {
           position: relative;
           min-height: 100vh;
-          background: url("/landingpage.jpeg") center / cover no-repeat;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -105,11 +132,7 @@ export default function HeroSection() {
         .overlay {
           position: absolute;
           inset: 0;
-          background: linear-gradient(
-            to bottom,
-            rgba(255,255,255,0.7),
-            rgba(255,255,255,0.5)
-          );
+          background: linear-gradient(to bottom, rgba(255,255,255,0.7), rgba(255,255,255,0.5));
           backdrop-filter: blur(2px);
         }
 
@@ -120,34 +143,24 @@ export default function HeroSection() {
           text-align: center;
         }
 
-        .badge-wrapper {
-          margin-bottom: 24px;
-        }
-
-        /* Matches the light pill badge in screenshot */
+        .badge-wrapper { margin-bottom: 24px; }
         .badge {
-  display: inline-flex;
-  align-items: center;
-  gap: 10px;
-  padding: 6px 16px;
-  border-radius: 50px;
-  background: rgba(255, 106, 0, 0.12); /* Light orange tint */
-  border: 1px solid rgba(255, 106, 0, 0.25);
-  color: #ff6a00;
-  font-family: 'Barlow Condensed', sans-serif;
-  font-weight: 700;
-  font-size: 14px;
-  letter-spacing: 1px;
-  text-transform: uppercase;
-}
+          display: inline-flex;
+          align-items: center;
+          gap: 10px;
+          padding: 6px 16px;
+          border-radius: 50px;
+          background: rgba(255, 106, 0, 0.12);
+          border: 1px solid rgba(255, 106, 0, 0.25);
+          color: #ff6a00;
+          font-family: 'Barlow Condensed', sans-serif;
+          font-weight: 700;
+          font-size: 14px;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+        }
+        .dot { width: 8px; height: 8px; background: #ff6a00; border-radius: 50%; flex-shrink: 0; }
 
-.dot {
-  width: 8px;
-  height: 8px;
-  background: #ff6a00;
-  border-radius: 50%;
-  flex-shrink: 0;
-}
         .title {
           font-family: 'Barlow Condensed', sans-serif;
           font-size: clamp(60px, 12vw, 120px);
@@ -170,114 +183,25 @@ export default function HeroSection() {
           line-height: 1.5;
         }
 
-        .highlight {
-          color: #ff6a00;
-          font-weight: 700;
-          text-decoration: underline;
-        }
+        .highlight { color: #ff6a00; font-weight: 700; text-decoration: underline; }
 
-        .actions {
-          display: flex;
-          gap: 20px;
-          justify-content: center;
-          align-items: center;
-          margin-bottom: 60px;
-        }
+        .actions { display: flex; gap: 20px; justify-content: center; align-items: center; margin-bottom: 60px; }
+        .btn { font-family: 'Barlow Condensed', sans-serif; font-size: 18px; font-weight: 800; cursor: pointer; border: none; display: flex; align-items: center; gap: 10px; text-transform: uppercase; }
+        .btn.primary { background: #ff6a00; color: #fff; padding: 14px 36px; border-radius: 8px; }
+        .btn.video-link { background: transparent; color: #1a1a1a; gap: 12px; }
+        .play-circle { width: 48px; height: 48px; border: 1px solid #999; border-radius: 50%; display: flex; align-items: center; justify-content: center; color: #ff6a00; }
+        .video-text { font-size: 16px; font-weight: 700; }
 
-        .btn {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-size: 18px;
-          font-weight: 800;
-          cursor: pointer;
-          border: none;
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          text-transform: uppercase;
-        }
+        .stats { display: flex; justify-content: center; align-items: center; gap: 40px; }
+        .stat-item h3 { font-family: 'Barlow Condensed', sans-serif; font-size: 42px; font-weight: 900; color: #1a1a1a; margin: 0; }
+        .stat-item p { font-size: 12px; font-weight: 700; color: #666; margin: 0; }
+        .stat-divider { width: 1px; height: 40px; background: #ccc; }
 
-        .btn.primary {
-          background: #ff6a00;
-          color: #fff;
-          padding: 14px 36px;
-          border-radius: 8px; /* Rounded corners but not a pill */
-        }
+        .scroll-bar { position: absolute; bottom: 0; width: 100%; background: #ff6a00; padding: 15px 0; white-space: nowrap; }
+        .scroll-track { display: flex; animation: scroll-left 25s linear infinite; }
+        .scroll-track span { color: #fff; font-family: 'Barlow Condensed', sans-serif; font-weight: 800; padding: 0 30px; }
 
-        .btn.video-link {
-          background: transparent;
-          color: #1a1a1a;
-          gap: 12px;
-        }
-
-        .play-circle {
-          width: 48px;
-          height: 48px;
-          border: 1px solid #999;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          color: #ff6a00;
-        }
-
-        .video-text {
-          font-size: 16px;
-          font-weight: 700;
-        }
-
-        .stats {
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          gap: 40px;
-        }
-
-        .stat-item h3 {
-          font-family: 'Barlow Condensed', sans-serif;
-          font-size: 42px;
-          font-weight: 900;
-          color: #1a1a1a;
-          margin: 0;
-        }
-
-        .stat-item p {
-          font-size: 12px;
-          font-weight: 700;
-          color: #666;
-          margin: 0;
-        }
-
-        .stat-divider {
-          width: 1px;
-          height: 40px;
-          background: #ccc;
-        }
-
-        .scroll-bar {
-          position: absolute;
-          bottom: 0;
-          width: 100%;
-          background: #ff6a00;
-          padding: 15px 0;
-          white-space: nowrap;
-        }
-
-        .scroll-track {
-          display: flex;
-          animation: scroll-left 25s linear infinite;
-        }
-
-        .scroll-track span {
-          color: #fff;
-          font-family: 'Barlow Condensed', sans-serif;
-          font-weight: 800;
-          padding: 0 30px;
-        }
-
-        @keyframes scroll-left {
-          from { transform: translateX(0); }
-          to { transform: translateX(-50%); }
-        }
+        @keyframes scroll-left { from { transform: translateX(0); } to { transform: translateX(-50%); } }
       `}</style>
     </>
   );
