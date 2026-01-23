@@ -173,10 +173,37 @@ const ContactUs = () => {
       margin-top: 2rem;
     }
 
-    @media (max-width: 900px) {
-      .main-grid { grid-template-columns: 1fr; }
-      .hero-title { font-size: 3rem; }
-    }
+   @media (max-width: 900px) {
+  .main-grid {
+    grid-template-columns: 1fr;  /* stack sections */
+    gap: 2rem;
+    padding: 0 1rem;
+    margin: 3rem auto;
+  }
+  .hero-title { font-size: 2.5rem; }
+  .hero-label { font-size: 0.75rem; letter-spacing: 0.2em; }
+  .hero-sub { font-size: 1rem; margin-top: 1rem; }
+  .form-row {
+    grid-template-columns: 1fr;  /* stack input fields */
+    gap: 1rem;
+  }
+  .field-group input, .field-group textarea {
+    padding: 0.8rem;
+    font-size: 0.9rem;
+  }
+  .btn-send {
+    padding: 1rem 2rem;
+    font-size: 0.9rem;
+  }
+  .info-card {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .info-content h4 { font-size: 0.8rem; }
+  .info-content p { font-size: 0.85rem; }
+  .map-placeholder { height: 200px; margin-top: 1.5rem; }
+}
+
   `;
 
   return (
