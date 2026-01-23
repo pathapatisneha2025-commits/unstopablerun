@@ -24,12 +24,13 @@ export default function ProductDetail() {
   }, [id]);
 // Add this inside your ProductDetail component, above the return
 const handleAddToCart = async () => {
+  if (!product || !selectedVariant) return;
+
   // 1️⃣ Determine user ID (logged-in or guest)
   const user = JSON.parse(localStorage.getItem("user"));
   let userId = user?.userId || user?.id;
 
   if (!userId) {
-    // Guest user
     let guestId = localStorage.getItem("guestId");
     if (!guestId) {
       guestId = `guest_${Date.now()}`;
@@ -38,7 +39,7 @@ const handleAddToCart = async () => {
     userId = guestId;
   }
 
-  // 2️⃣ Build payload according to backend
+  // 2️⃣ Build payload
   const payload = {
     userId,
     items: [
@@ -53,7 +54,6 @@ const handleAddToCart = async () => {
     ]
   };
 
-  // 3️⃣ Send POST request to backend
   try {
     const res = await fetch("https://unstopablerundatabse.onrender.com/cart/add", {
       method: "POST",
@@ -61,10 +61,24 @@ const handleAddToCart = async () => {
       body: JSON.stringify(payload)
     });
 
+    const data = await res.json();
+
     if (res.ok) {
       alert(`${product.name} added to cart!`);
+
+      // 3️⃣ Refetch product from backend to get updated stock
+      const productRes = await fetch(`https://unstopablerundatabse.onrender.com/products/${id}`);
+      if (productRes.ok) {
+        const updatedProduct = await productRes.json();
+        setProduct(updatedProduct);
+
+        // Update selected variant in case backend stock changed
+        const updatedVariant = updatedProduct.variants.find(
+          v => v.size === selectedVariant.size && v.color === selectedVariant.color
+        );
+        if (updatedVariant) setSelectedVariant(updatedVariant);
+      }
     } else {
-      const data = await res.json();
       alert(`Failed to add to cart: ${data.message}`);
     }
   } catch (err) {
@@ -72,6 +86,7 @@ const handleAddToCart = async () => {
     alert("Error adding to cart");
   }
 };
+
 
   if (!product) return <div className="loading">Loading product...</div>;
 

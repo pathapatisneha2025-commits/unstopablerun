@@ -7,26 +7,63 @@ export default function Navbar() {
   const [cartCount, setCartCount] = useState(0);
   const [user, setUser] = useState(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
+  const [userId, setUserId] = useState(null);
   const navigate = useNavigate();
 
   // Load user or guest
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
     let guestId = localStorage.getItem("guestId");
+
     if (!storedUser && !guestId) {
       guestId = `guest_${Date.now()}`;
       localStorage.setItem("guestId", guestId);
     }
-    if (storedUser) setUser(storedUser);
+
+    if (storedUser) {
+      setUser(storedUser);
+      setUserId(storedUser.id.toString()); // ensure string type
+    } else {
+      setUserId(guestId.toString());
+    }
   }, []);
 
-  const userId = user?.id || localStorage.getItem("guestId");
+  // Fetch cart count
+  useEffect(() => {
+    if (!userId) return;
 
-  const handleLinkClick = () => setMenuOpen(false);
+    const fetchCart = async () => {
+      try {
+        console.log("Fetching cart for userId:", userId);
+        const res = await fetch(`https://unstopablerundatabase.onrender.com/cart/${userId}`);
+        if (!res.ok) throw new Error("Failed to fetch cart");
+
+        const data = await res.json();
+        console.log("Cart data:", data);
+
+        // Ensure items is always an array
+        const items = Array.isArray(data.items.quantity) ? data.items : [];
+        const count = items.reduce((acc, item) => acc + (item.quantity || 0), 0);
+        setCartCount(count);
+      } catch (err) {
+        console.error("Failed to fetch cart:", err);
+        setCartCount(0);
+      }
+    };
+
+    fetchCart();
+
+    // Refresh every 30 seconds
+    const interval = setInterval(fetchCart, 30000);
+    return () => clearInterval(interval);
+  }, [userId]);
 
   const handleLogout = () => {
     localStorage.removeItem("user");
     setUser(null);
+    const guestId = localStorage.getItem("guestId") || `guest_${Date.now()}`;
+    localStorage.setItem("guestId", guestId);
+    setUserId(guestId.toString());
     setCartCount(0);
     setUserMenuOpen(false);
     navigate("/register");
@@ -40,60 +77,32 @@ export default function Navbar() {
     { path: "/contact", label: "CONTACT" },
   ];
 
-  // Fetch cart count
-  useEffect(() => {
-    if (!userId) return;
-    const fetchCart = async () => {
-      try {
-        const res = await fetch(`https://unstopablerundatabase.onrender.com/cart/${userId}`);
-        const data = await res.json();
-        if (res.ok && data.items) {
-          const count = data.items.reduce((acc, item) => acc + item.quantity, 0);
-          setCartCount(count);
-        }
-      } catch (err) {
-        console.error("Failed to fetch cart:", err);
-      }
-    };
-    fetchCart();
-    const interval = setInterval(fetchCart, 30000);
-    return () => clearInterval(interval);
-  }, [userId]);
-
   return (
     <>
-      <div className="top-bar">
-        🔥 FREE SHIPPING ON ORDERS OVER $100 | USE CODE: UNSTOPPABLE
-      </div>
+      <div className="top-bar">🔥 FREE SHIPPING ON ORDERS OVER $100 | USE CODE: UNSTOPPABLE</div>
 
       <nav className="navbar">
-        {/* Mobile Logo + Hamburger */}
         <div className="navbar-mobile">
-          <Link to="/" className="logo-mobile" onClick={handleLinkClick}>
+          <Link to="/" className="logo-mobile">
             <img src="/companylogo.png" alt="RUNN" />
           </Link>
-          <div
-            className={`hamburger ${menuOpen ? "active" : ""}`}
-            onClick={() => setMenuOpen(!menuOpen)}
-          >
+          <div className={`hamburger ${menuOpen ? "active" : ""}`} onClick={() => setMenuOpen(!menuOpen)}>
             <span></span>
             <span></span>
             <span></span>
           </div>
         </div>
 
-        {/* Nav Links */}
         <ul className={`navbar-center ${menuOpen ? "show" : ""}`}>
           {links.map((link, i) => (
             <li key={i}>
-              <Link to={link.path} onClick={handleLinkClick} className="nav-link">
+              <Link to={link.path} onClick={() => setMenuOpen(false)} className="nav-link">
                 {link.label}
               </Link>
             </li>
           ))}
         </ul>
 
-        {/* User Dropdown & Cart (works same for desktop & mobile) */}
         <div className="navbar-right">
           <div className="user-dropdown" onClick={() => setUserMenuOpen(!userMenuOpen)}>
             <div className="user-box">
@@ -102,40 +111,32 @@ export default function Navbar() {
             </div>
             {userMenuOpen && (
               <div className="dropdown-menu">
-               {!user ? (
-  <>
-    <Link to="/register" onClick={() => setUserMenuOpen(false)}>
-      Login / Register
-    </Link>
-    <Link to={`/orders/${userId}`} onClick={() => setUserMenuOpen(false)}>
-      My Orders (Guest)
-    </Link>
-  </>
-) : (
-  <>
-    <Link 
-      to={`/orders/${userId}`}   // pass userId in the URL
-      onClick={() => setUserMenuOpen(false)}
-    >
-      My Orders
-    </Link>
-    <div className="logout-btn" onClick={handleLogout}>
-      Logout <LuLogOut />
-    </div>
-  </>
-)}
-
+                {!user ? (
+                  <>
+                    <Link to="/register" onClick={() => setUserMenuOpen(false)}>Login / Register</Link>
+                    <Link to={`/orders/${userId}`} onClick={() => setUserMenuOpen(false)}>My Orders (Guest)</Link>
+                  </>
+                ) : (
+                  <>
+                    <Link to={`/orders/${userId}`} onClick={() => setUserMenuOpen(false)}>My Orders</Link>
+                    <div className="logout-btn" onClick={handleLogout}>
+                      Logout <LuLogOut />
+                    </div>
+                  </>
+                )}
               </div>
             )}
           </div>
-<Link to="/cart" className="cart">
-  <LuShoppingBag size={24} />
-  {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
-</Link>
 
-
+          <Link to="/cart" className="cart">
+            <LuShoppingBag size={24} />
+            <span className="cart-count">{cartCount}</span>
+          </Link>
         </div>
       </nav>
+    
+
+
 
       <style>{`
         * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
