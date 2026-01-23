@@ -1,21 +1,26 @@
 import React, { useState, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import { LuSearch, LuHeart, LuUser, LuShoppingBag, LuLogOut } from "react-icons/lu";
+import { LuShoppingBag, LuUser, LuLogOut } from "react-icons/lu";
 
 export default function Navbar() {
   const [menuOpen, setMenuOpen] = useState(false);
   const [cartCount, setCartCount] = useState(0);
   const [user, setUser] = useState(null);
   const [userMenuOpen, setUserMenuOpen] = useState(false);
-
   const navigate = useNavigate();
 
+  // Load user or guest
   useEffect(() => {
     const storedUser = JSON.parse(localStorage.getItem("user"));
+    let guestId = localStorage.getItem("guestId");
+    if (!storedUser && !guestId) {
+      guestId = `guest_${Date.now()}`;
+      localStorage.setItem("guestId", guestId);
+    }
     if (storedUser) setUser(storedUser);
   }, []);
 
-  const userId = user?.id;
+  const userId = user?.id || localStorage.getItem("guestId");
 
   const handleLinkClick = () => setMenuOpen(false);
 
@@ -23,6 +28,7 @@ export default function Navbar() {
     localStorage.removeItem("user");
     setUser(null);
     setCartCount(0);
+    setUserMenuOpen(false);
     navigate("/register");
   };
 
@@ -34,9 +40,9 @@ export default function Navbar() {
     { path: "/contact", label: "CONTACT" },
   ];
 
+  // Fetch cart count
   useEffect(() => {
     if (!userId) return;
-
     const fetchCart = async () => {
       try {
         const res = await fetch(`https://unstopablerundatabase.onrender.com/cart/${userId}`);
@@ -49,7 +55,6 @@ export default function Navbar() {
         console.error("Failed to fetch cart:", err);
       }
     };
-
     fetchCart();
     const interval = setInterval(fetchCart, 30000);
     return () => clearInterval(interval);
@@ -57,27 +62,27 @@ export default function Navbar() {
 
   return (
     <>
-      {/* TOP BAR */}
       <div className="top-bar">
         🔥 FREE SHIPPING ON ORDERS OVER $100 | USE CODE: UNSTOPPABLE
       </div>
 
-      {/* NAVBAR */}
       <nav className="navbar">
-        {/* MOBILE: Hamburger left & Logo center */}
+        {/* Mobile Logo + Hamburger */}
         <div className="navbar-mobile">
-          <div className={`hamburger ${menuOpen ? "active" : ""}`} onClick={() => setMenuOpen(!menuOpen)}>
+          <Link to="/" className="logo-mobile" onClick={handleLinkClick}>
+            <img src="/companylogo.png" alt="RUNN" />
+          </Link>
+          <div
+            className={`hamburger ${menuOpen ? "active" : ""}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
             <span></span>
             <span></span>
             <span></span>
           </div>
-
-          <Link to="/" className="logo-mobile" onClick={handleLinkClick}>
-            <img src="/companylogo.png" alt="RUNN" />
-          </Link>
         </div>
 
-        {/* NAV LINKS */}
+        {/* Nav Links */}
         <ul className={`navbar-center ${menuOpen ? "show" : ""}`}>
           {links.map((link, i) => (
             <li key={i}>
@@ -88,165 +93,107 @@ export default function Navbar() {
           ))}
         </ul>
 
-        {/* RIGHT ICONS */}
+        {/* User Dropdown & Cart (works same for desktop & mobile) */}
         <div className="navbar-right">
-          <LuSearch />
-          <LuHeart />
-
-          {user ? (
-            <div className="user-dropdown" onClick={() => setUserMenuOpen(!userMenuOpen)}>
-              <div className="user-box">
-                <LuUser />
-                <span className="username">{user.name}</span>
-              </div>
-              {userMenuOpen && (
-                <div className="dropdown-menu">
-                  <Link to="/orders" onClick={handleLinkClick}>My Orders</Link>
-                  <div className="logout-btn" onClick={handleLogout}>
-                    Logout <LuLogOut />
-                  </div>
-                </div>
-              )}
+          <div className="user-dropdown" onClick={() => setUserMenuOpen(!userMenuOpen)}>
+            <div className="user-box">
+              <LuUser />
+              <span>{user ? user.name : "Guest"}</span>
             </div>
-          ) : (
-            <Link to="/register">
-              <LuUser title="Login" />
-            </Link>
-          )}
+            {userMenuOpen && (
+              <div className="dropdown-menu">
+               {!user ? (
+  <>
+    <Link to="/register" onClick={() => setUserMenuOpen(false)}>
+      Login / Register
+    </Link>
+    <Link to={`/orders/${userId}`} onClick={() => setUserMenuOpen(false)}>
+      My Orders (Guest)
+    </Link>
+  </>
+) : (
+  <>
+    <Link 
+      to={`/orders/${userId}`}   // pass userId in the URL
+      onClick={() => setUserMenuOpen(false)}
+    >
+      My Orders
+    </Link>
+    <div className="logout-btn" onClick={handleLogout}>
+      Logout <LuLogOut />
+    </div>
+  </>
+)}
 
-          <Link to="/cart" className="cart">
-            <LuShoppingBag />
-            {cartCount > 0 && <span>{cartCount}</span>}
-          </Link>
+              </div>
+            )}
+          </div>
+<Link to="/cart" className="cart">
+  <LuShoppingBag size={24} />
+  {cartCount > 0 && <span className="cart-count">{cartCount}</span>}
+</Link>
+
+
         </div>
       </nav>
 
-      {/* STYLES */}
       <style>{`
         * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
-
-        .top-bar {
-          background:#ff6a00;
-          color:#fff;
-          text-align:center;
-          padding:10px;
-          font-size:14px;
-          font-weight:600;
-        }
-
-        .navbar {
-          display:flex;
-          align-items:center;
-          justify-content:space-between;
-          padding:14px 40px;
-          background:#000;
-          box-shadow:0 2px 10px rgba(0,0,0,0.3);
-          position:relative;
-          z-index:1000;
-        }
-
-/* Desktop logo */
-.logo img { 
-  height: 80px;   /* taller */
-  width: 200px;   /* wider */
-  object-fit: contain; /* keeps aspect ratio without distortion */
-  transition: all 0.3s ease;
-}
-
-/* Mobile logo */
-.logo-mobile img { 
-  height: 60px;   /* smaller for mobile */
-  width: 150px;   /* narrower for mobile */
-  object-fit: contain;
-  transition: all 0.3s ease;
-}
-
-        .navbar-center {
-          list-style:none;
-          display:flex;
-          gap:28px;
-        }
-
-        .nav-link {
-          text-decoration:none;
-          color:#fff;
-          font-weight:600;
-          font-size:16px;
-          transition: color 0.3s ease;
-        }
+        .top-bar { background:#ff6a00; color:#fff; text-align:center; padding:10px; font-size:14px; font-weight:600; }
+        .navbar { display:flex; align-items:center; justify-content:space-between; padding:14px 40px; background:#000; box-shadow:0 2px 10px rgba(0,0,0,0.3); position:relative; z-index:1000; }
+        .logo-mobile img { height:60px; width:auto; }
+        .navbar-center { list-style:none; display:flex; gap:28px; }
+        .nav-link { text-decoration:none; color:#fff; font-weight:600; font-size:16px; }
         .nav-link:hover { color:#ff6a00; }
-
-        .navbar-right {
-          display:flex;
-          gap:18px;
-          align-items:center;
-          font-size:22px;
-          color:#fff;
-        }
-
+        .navbar-right { display:flex; gap:18px; align-items:center; font-size:22px; color:#fff; }
         .cart { position:relative; color:inherit; text-decoration:none; }
-        .cart span {
-          position:absolute;
-          top:-6px;
-          right:-8px;
-          background:#ff6a00;
-          color:#fff;
-          font-size:12px;
-          padding:2px 6px;
-          border-radius:50%;
-        }
-
-        .hamburger {
-          display:none;
-          flex-direction:column;
-          gap:5px;
-          cursor:pointer;
-        }
-        .hamburger span {
-          width:28px;
-          height:3px;
-          background:#fff;
-          transition: all 0.3s ease;
-        }
-        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px, 5px); }
+        .cart span { position:absolute; top:-6px; right:-8px; background:#ff6a00; color:#fff; font-size:12px; padding:2px 6px; border-radius:50%; }
+        .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
+        .hamburger span { width:28px; height:3px; background:#fff; transition: transform 0.3s, opacity 0.3s; }
+        .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
         .hamburger.active span:nth-child(2) { opacity:0; }
-        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px, -5px); }
-
+        .hamburger.active span:nth-child(3) { transform: rotate(-45deg) translate(5px,-5px); }
         .user-dropdown { position: relative; display: flex; flex-direction: column; cursor: pointer; }
         .user-box { display:flex; align-items:center; gap:6px; font-weight:600; color:#fff; }
-        .dropdown-menu { 
-          position:absolute; top:100%; right:0; background:#111;
-          box-shadow:0 4px 12px rgba(0,0,0,0.5);
-          border-radius:6px; overflow:hidden; min-width:140px; display:flex; flex-direction:column; margin-top:8px; z-index:2000;
-        }
-        .dropdown-menu a, .logout-btn {
-          padding:10px 16px; font-size:14px; color:#fff; text-decoration:none; transition: background 0.2s;
-        }
+        .dropdown-menu { position:absolute; top:100%; right:0; background:#111; box-shadow:0 4px 12px rgba(0,0,0,0.5); border-radius:6px; overflow:hidden; min-width:140px; display:flex; flex-direction:column; margin-top:8px; z-index:2000; }
+        .dropdown-menu a, .logout-btn { padding:10px 16px; font-size:14px; color:#fff; text-decoration:none; transition: background 0.2s; }
         .dropdown-menu a:hover, .logout-btn:hover { background:#ff6a00; color:#fff; }
         .logout-btn { display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
+.cart {
+  position: relative;
+  color: inherit;
+  text-decoration: none;
+}
+.cart-count {
+  position: absolute;
+  top: -8px;
+  right: -8px;
+  background: white;   /* WHITE badge */
+  color: black;        /* text color */
+  font-size: 12px;
+  font-weight: 700;
+  padding: 2px 6px;
+  border-radius: 50%;
+  min-width: 18px;
+  height: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 2px rgba(0,0,0,0.3);
+  z-index: 1000;
+}
 
-        /* MOBILE RESPONSIVE */
+
+ /* Responsive */
         @media (max-width:900px) {
           .hamburger { display:flex; }
-
-          .navbar-mobile {
-            display:flex;
-            align-items:center;
-            justify-content:center;
-            width:100%;
-            position:relative;
-          }
-          .navbar-mobile .hamburger { position:absolute; left:20px; }
-          .logo-mobile img { height:60px; } /* Slightly smaller for mobile */
+          .navbar-mobile { display:flex; align-items:center; justify-content:space-between; width:100%; padding:0 20px; }
           .navbar-center {
-            position:absolute; top:100%; left:0; right:0;
-            background:#000; flex-direction:column; gap:18px;
-            padding:20px; max-height:0; overflow:hidden; opacity:0;
-            transition: all 0.3s ease; z-index:1500;
+            position:absolute; top:100%; left:0; right:0; background:#000; flex-direction:column; gap:18px; padding:20px;
+            max-height:0; overflow:hidden; opacity:0; transition: all 0.3s ease; z-index:1500;
           }
           .navbar-center.show { max-height:500px; opacity:1; }
           .navbar-right { display:flex; gap:12px; font-size:20px; }
-          .user-dropdown { display:none; }
         }
       `}</style>
     </>

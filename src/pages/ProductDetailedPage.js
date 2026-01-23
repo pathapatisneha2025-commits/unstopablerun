@@ -22,6 +22,56 @@ export default function ProductDetail() {
     };
     fetchProduct();
   }, [id]);
+// Add this inside your ProductDetail component, above the return
+const handleAddToCart = async () => {
+  // 1️⃣ Determine user ID (logged-in or guest)
+  const user = JSON.parse(localStorage.getItem("user"));
+  let userId = user?.userId || user?.id;
+
+  if (!userId) {
+    // Guest user
+    let guestId = localStorage.getItem("guestId");
+    if (!guestId) {
+      guestId = `guest_${Date.now()}`;
+      localStorage.setItem("guestId", guestId);
+    }
+    userId = guestId;
+  }
+
+  // 2️⃣ Build payload according to backend
+  const payload = {
+    userId,
+    items: [
+      {
+        product_id: product.id,
+        product_name: product.name,
+        product_price: selectedVariant.price,
+        product_images: [mainImage],
+        quantity: 1,
+        variant: selectedVariant
+      }
+    ]
+  };
+
+  // 3️⃣ Send POST request to backend
+  try {
+    const res = await fetch("https://unstopablerundatabse.onrender.com/cart/add", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+
+    if (res.ok) {
+      alert(`${product.name} added to cart!`);
+    } else {
+      const data = await res.json();
+      alert(`Failed to add to cart: ${data.message}`);
+    }
+  } catch (err) {
+    console.error(err);
+    alert("Error adding to cart");
+  }
+};
 
   if (!product) return <div className="loading">Loading product...</div>;
 
@@ -84,15 +134,16 @@ export default function ProductDetail() {
 
             {/* Action Buttons */}
             <div className="action-buttons">
-              <button
-                className="add-cart"
-                onClick={() => alert(`Added ${product.name} to cart!`)}
-              >
-                Add to Cart
-              </button>
+             <button
+  className="add-cart"
+  onClick={handleAddToCart} // <-- use the new function
+>
+  Add to Cart
+</button>
+
               <button
                 className="buy-now"
-                onClick={() => alert(`Buying ${product.name} now!`)}
+  onClick={handleAddToCart} // <-- use the new function
               >
                 Buy Now
               </button>
@@ -125,7 +176,7 @@ export default function ProductDetail() {
       {/* CSS */}
       <style>{`
         .page-container {
-          background: linear-gradient(120deg, #FFA64D, #FF6B00);
+ background: #fffaf5;
           padding: 40px 20px;
           min-height: 100vh;
         }
@@ -134,7 +185,7 @@ export default function ProductDetail() {
           max-width: 1200px;
           margin: 0 auto;
           padding: 30px;
-          background: linear-gradient(135deg, #FFB347, #FF8C00);
+           background: #fffaf5;
           border-radius: 16px;
           box-shadow: 0 8px 30px rgba(255, 140, 0, 0.3);
           font-family: 'Helvetica Neue', Arial, sans-serif;

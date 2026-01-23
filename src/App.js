@@ -24,12 +24,14 @@ import RegisterPage from "./pages/RegisterPage";
 import ServiceFeatures from "./components/ServicesSection";
 import VideoInstagramFeed from "./components/CustomerTestimonals";
 import OrdersPage from "./pages/Orders";
+import ScrollToTop from "./components/ScrollTop";
 
 function App() {
   return (
     // 2. Wrap everything in the Router
     <Router>
       <Navbar />
+      <ScrollToTop/>
       
       {/* 3. Define your Routes */}
       <Routes>
@@ -55,7 +57,7 @@ function App() {
         <Route path="/activitypage" element={<ActivitiesPage/>} />
                 <Route path="/products/:category" element={<ProductsPage/>} />
   <Route path="/product/:id" element={<ProductDetailsPage />} />
-  <Route path="/orders" element={<OrdersPage />} />
+  <Route path="/orders/:id" element={<OrdersPage />} />
 
                 <Route path="/womencollectoionpage" element={<WomenCollectionPage/>} />
                 <Route path="/menscollectoionpage" element={<MensPage/>} />

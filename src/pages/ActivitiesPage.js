@@ -292,7 +292,7 @@ const ActivitiesPage = () => {
 
   const activities = [
     { title: "Running", Icon: () => "🏃", products: "124", athletes: "15K+", text: "Built for speed and endurance. From sprints to marathons, find your perfect pace." },
-    { title: "Training", Icon: () => "💪", products: "98", athletes: "22K+", text: "Power through every workout. Gear that moves with you and works as hard as you do.", highlight: true },
+    { title: "Training", Icon: () => "💪", products: "98", athletes: "22K+", text: "Power through every workout. Gear that moves with you and works as hard as you do." },
     { title: "Lifestyle", Icon: () => "✨", products: "156", athletes: "30K+", text: "Athletic comfort meets everyday style. Look good, feel unstoppable." },
     { title: "Yoga", Icon: () => "🧘", products: "67", athletes: "12K+", text: "Flow with flexibility and ease. Breathable fabrics for mindful movement." },
     { title: "Hiking", Icon: () => "🥾", products: "45", athletes: "8K+", text: "Conquer any terrain. Durable gear built for adventure." },

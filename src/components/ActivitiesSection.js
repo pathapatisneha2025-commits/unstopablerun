@@ -1,4 +1,4 @@
-import React, { useRef, useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import { ArrowUpRight, ChevronLeft, ChevronRight } from "lucide-react";
 import { Link } from "react-router-dom";
 
@@ -22,6 +22,10 @@ export default function ActivitiesSection() {
     fetchActivities();
   }, []);
 
+  // Duplicate activities for seamless scroll
+  const scrollingActivities = [...activities, ...activities];
+
+  // Scroll buttons
   const scroll = (direction) => {
     const container = scrollRef.current;
     if (!container) return;
@@ -41,11 +45,16 @@ export default function ActivitiesSection() {
           background-color: #fffaf5;
           padding: 80px 24px; 
           font-family: 'Inter', sans-serif; 
-          position: relative;
+        }
+        .header-wrapper {
+          max-width: 1300px;
+          margin: 0 auto 40px auto;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
         }
         .header-container { 
-          text-align: center; 
-          margin-bottom: 60px; 
+          text-align: left; 
         }
         .flow-badge { 
           display: inline-block; 
@@ -68,18 +77,43 @@ export default function ActivitiesSection() {
           text-transform: uppercase; 
         }
         .orange-text { color: #ff6b00; }
-        .cards-grid { 
-          display: grid; 
-          grid-template-columns: repeat(4, 1fr); 
-          gap: 16px; 
-          max-width: 1300px; 
-          margin: 0 auto; 
-          overflow-x: auto;
-          scroll-behavior: smooth;
+
+        .scroll-buttons {
+          display: flex;
+          gap: 10px;
         }
+        .scroll-button {
+          background: #ff6b00; 
+          border: none; 
+          color: white; 
+          width: 40px; 
+          height: 40px; 
+          border-radius: 50%; 
+          cursor: pointer; 
+          display: flex; 
+          align-items: center; 
+          justify-content: center; 
+          transition: background 0.2s;
+        }
+        .scroll-button:hover { background: #e65b00; }
+
+        .scroll-container {
+          overflow: hidden;
+          position: relative;
+        }
+
+        .scroll-track {
+          display: flex;
+          width: fit-content;
+          animation: scrollLeft 30s linear infinite;
+        }
+
         .activity-card { 
           position: relative; 
           height: 520px; 
+          width: 300px;
+          flex-shrink: 0;
+          margin-right: 16px;
           text-decoration: none; 
           display: block; 
         }
@@ -133,98 +167,61 @@ export default function ActivitiesSection() {
           letter-spacing: 0.8px; 
         }
 
-        /* Arrow buttons on right side */
-        /* New wrapper to contain title and arrows */
-.header-wrapper {
-  max-width: 1300px;
-  margin: 0 auto 40px auto;
-  position: relative; /* Anchor for absolute positioning */
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.header-container { 
-  text-align: center; 
-}
-
-/* Arrows moved to top right */
-.arrow-buttons {
-  position: absolute;
-  right: 0;
-  top: 50%;
-  transform: translateY(-50%);
-  display: flex;
-  flex-direction: row; /* Horizontal layout */
-  gap: 10px;
-}
-
-.arrow-button { 
-  background: #ff6b00; 
-  border: none; 
-  color: white; 
-  width: 40px;  /* Fixed width/height for perfect circles */
-  height: 40px;
-  border-radius: 50%; 
-  cursor: pointer; 
-  display: flex; 
-  align-items: center; 
-  justify-content: center; 
-  transition: background 0.2s;
-}
-
-.arrow-button:hover { background: #e65b00; }
-
-        @media (max-width: 1200px) { 
-          .cards-grid { grid-template-columns: repeat(2, 1fr); } 
+        @keyframes scrollLeft {
+          0% { transform: translateX(0); }
+          100% { transform: translateX(-50%); }
         }
-        @media (max-width: 640px) { 
-          .cards-grid { grid-template-columns: 1fr; } 
-          .main-title { font-size: 40px; } 
-          .activity-card { height: 450px; } 
+
+        @media (max-width: 1024px) {
+          .activity-card { width: 250px; height: 450px; }
+        }
+        @media (max-width: 640px) {
+          .activity-card { width: 200px; height: 380px; }
         }
       `}</style>
 
-     
-
       <section className="activities-section">
-  {/* NEW HEADER WRAPPER */}
-  <div className="header-wrapper">
-    <div className="header-container">
-      <span className="flow-badge">FIND YOUR FLOW</span>
-      <h2 className="main-title">SHOP BY <span className="orange-text">ACTIVITY</span></h2>
-    </div>
+        <div className="header-wrapper">
+          <div className="header-container">
+            <span className="flow-badge">FIND YOUR FLOW</span>
+            <h2 className="main-title">
+              SHOP BY <span className="orange-text">ACTIVITY</span>
+            </h2>
+          </div>
 
-    {/* Arrows are now inside the wrapper for top-right positioning */}
-    <div className="arrow-buttons">
-      <button className="arrow-button" onClick={() => scroll("left")}>
-        <ChevronLeft size={20} />
-      </button>
-      <button className="arrow-button" onClick={() => scroll("right")}>
-        <ChevronRight size={20} />
-      </button>
-    </div>
-  </div>
-
-  {/* Grid remains the same */}
-  <div className="cards-grid" ref={scrollRef}>
-    {activities.map((item) => (
-      <Link to={`/activity/${item.link}`} key={item.id} className="activity-card">
-        <div className="img-container">
-          <img src={item.image_url} alt={item.title} />
-        </div>
-        <div className="white-card">
-          <h3>{item.title}</h3>
-          <p>{item.subtitle}</p>
-          <div className="explore-link">
-            EXPLORE <ArrowUpRight size={16} strokeWidth={3} />
+          <div className="scroll-buttons">
+            <button className="scroll-button" onClick={() => scroll("left")}>
+              <ChevronLeft size={20} />
+            </button>
+            <button className="scroll-button" onClick={() => scroll("right")}>
+              <ChevronRight size={20} />
+            </button>
           </div>
         </div>
-      </Link>
-    ))}
-  </div>
-</section>
-      
+
+        <div className="scroll-container" ref={scrollRef}>
+          <div className="scroll-track">
+            {scrollingActivities.map((item, index) => (
+              <Link
+                to={`/${item.link}`}
+                key={index}
+                className="activity-card"
+              >
+                <div className="img-container">
+                  <img src={item.image_url} alt={item.title} />
+                </div>
+                <div className="white-card">
+                  <h3>{item.title}</h3>
+                  <p>{item.subtitle}</p>
+                  <div className="explore-link">
+                    EXPLORE <ArrowUpRight size={16} strokeWidth={3} />
+                  </div>
+                </div>
+              </Link>
+            ))}
+          </div>
+        </div>
+      </section>
     </>
   );
 }

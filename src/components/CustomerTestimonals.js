@@ -1,34 +1,85 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 
 export default function VideoInstagramFeed() {
   const [feedVideos, setFeedVideos] = useState([]);
+  const feedRef = useRef(null);
+  const videoRefs = useRef([]);
 
-  // Fetch feed from backend
-  const fetchFeed = async () => {
-    try {
-      const res = await fetch("https://unstopablerundatabse.onrender.com/feed/all");
-      const data = await res.json();
-      setFeedVideos(data);
-    } catch (err) {
-      console.error("Error fetching feed:", err);
-    }
-  };
-
+  // Fetch feed data
   useEffect(() => {
-    fetchFeed();
+    fetch("https://unstopablerundatabse.onrender.com/feed/all")
+      .then((res) => res.json())
+      .then((data) => setFeedVideos(data))
+      .catch((err) => console.error(err));
   }, []);
+
+  // Auto scroll animation
+  useEffect(() => {
+    const feed = feedRef.current;
+    if (!feed) return;
+
+    let scrollAmount = 0;
+    const speed = 1; // pixels per frame
+
+    const animate = () => {
+      if (!feed) return;
+      scrollAmount += speed;
+      if (scrollAmount >= feed.scrollWidth / 2) {
+        scrollAmount = 0; // reset for infinite loop
+      }
+      feed.scrollLeft = scrollAmount;
+      requestAnimationFrame(animate);
+    };
+
+    animate();
+  }, [feedVideos]);
+
+  // Play/pause a video safely
+  const playVideo = (index) => {
+    const video = videoRefs.current[index];
+    if (!video) return;
+
+    // Pause all other videos
+    videoRefs.current.forEach((v, i) => {
+      if (v && i !== index) v.pause();
+    });
+
+    // Toggle current
+    video.paused ? video.play().catch(() => {}) : video.pause();
+  };
 
   return (
     <div className="instagram-feed-section">
       <h2>Watch Our Clips</h2>
-      <div className="feed-container">
+
+      <div className="feed-container" ref={feedRef}>
         <div className="feed-track">
-          {feedVideos.concat(feedVideos).map((item, index) => (
+          {/* Render feed twice for continuous scroll */}
+          {[...feedVideos, ...feedVideos].map((item, index) => (
             <div key={index} className="feed-item">
               {item.type === "video" ? (
-                <video src={item.src} autoPlay muted loop />
+                <video
+                  ref={(el) => {
+                    // Only save refs for the original feedVideos to avoid duplicates
+                    if (index < feedVideos.length) videoRefs.current[index] = el;
+                  }}
+                  src={item.src}
+                  muted
+                  loop
+                  playsInline
+                  preload="metadata"
+                  onClick={() => playVideo(index % feedVideos.length)}
+                  onMouseEnter={() =>
+                    window.innerWidth > 768 &&
+                    playVideo(index % feedVideos.length)
+                  }
+                  onMouseLeave={() =>
+                    window.innerWidth > 768 &&
+                    videoRefs.current[index % feedVideos.length]?.pause()
+                  }
+                />
               ) : (
-                <img src={item.src} alt="feed" />
+                <img src={item.src} alt="feed" loading="lazy" />
               )}
             </div>
           ))}
@@ -37,54 +88,56 @@ export default function VideoInstagramFeed() {
 
       <style>{`
         .instagram-feed-section {
-          background-color: #fffaf5;
-          padding: 40px 20px;
+          background: #fffaf5;
+          padding: 40px 16px;
           text-align: center;
-          font-family: Arial, sans-serif;
+          overflow: hidden;
         }
 
-        .instagram-feed-section h2 {
+        h2 {
           color: #ff6a00;
-          font-size: 28px;
-          font-weight: 700;
           margin-bottom: 20px;
+          font-size: 26px;
         }
 
         .feed-container {
-          overflow: hidden;
-          position: relative;
+          overflow-x: hidden;
+          white-space: nowrap;
         }
 
         .feed-track {
           display: flex;
-          gap: 10px;
-          animation: scroll 20s linear infinite;
+          gap: 14px;
+          flex-wrap: nowrap;
         }
 
         .feed-item {
-          flex: 0 0 auto;
-          width: 200px;
-          height: 200px;
-          border-radius: 10px;
+          width: 180px;
+          height: 180px;
+          border-radius: 14px;
           overflow: hidden;
           border: 2px solid #ff6a00;
+          flex-shrink: 0;
+          background: #fff;
         }
 
-        .feed-item video,
-        .feed-item img {
+        video,
+        img {
           width: 100%;
           height: 100%;
           object-fit: cover;
+          cursor: pointer;
         }
 
-        @keyframes scroll {
-          0% { transform: translateX(0); }
-          100% { transform: translateX(-50%); }
-        }
+        @media (max-width: 768px) {
+          .feed-item {
+            width: 140px;
+            height: 140px;
+          }
 
-        /* Responsive */
-        @media (max-width: 900px) {
-          .feed-item { width: 150px; height: 150px; }
+          h2 {
+            font-size: 22px;
+          }
         }
       `}</style>
     </div>

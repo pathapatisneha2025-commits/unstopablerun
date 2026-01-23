@@ -15,41 +15,50 @@ export default function CartPage() {
     mobile: ""
   });
 
-  const userId = 1; // Replace with logged-in user ID
+  // Get logged-in user from localStorage
+  const user = JSON.parse(localStorage.getItem("user"));
+  let userId = user?.userId || user?.id;
 
-  // Fetch cart
+  // On mount, generate guestId if no user
   useEffect(() => {
-    fetchCart();
+    if (!userId) {
+      let guestId = localStorage.getItem("guestId");
+      if (!guestId) {
+        guestId = `guest_${Date.now()}`;
+        localStorage.setItem("guestId", guestId);
+      }
+      userId = guestId;
+    }
+
+    fetchCart(userId);
   }, []);
 
-const fetchCart = async () => {
-  try {
-    const res = await fetch(`https://unstopablerundatabse.onrender.com/cart/${userId}`);
-    if (!res.ok) throw new Error("Failed to fetch cart");
-    const data = await res.json();
+  // Fetch cart for both user and guest
+  const fetchCart = async (id) => {
+    try {
+      const res = await fetch(`https://unstopablerundatabse.onrender.com/cart/${id}`);
+      if (!res.ok) throw new Error("Failed to fetch cart");
+      const data = await res.json();
 
-    // Normalize items safely
-    const normalizedItems = (data.items || []).map(item => ({
-      product_id: item.product_id ?? 0,                       // fallback ID
-      quantity: Number(item.quantity) || 1,                  // ensure number, default 1
-      product_name: item.product_name || "Unknown Product", // fallback name
-      product_price: parseFloat(item.product_price) || 0,   // ensure number, default 0
-      product_images: Array.isArray(item.product_images) && item.product_images.length > 0
-        ? item.product_images
-        : ["https://via.placeholder.com/60"]               // fallback image
-    }));
+      const normalizedItems = (data.items || []).map(item => ({
+        product_id: item.product_id ?? 0,
+        quantity: Number(item.quantity) || 1,
+        product_name: item.product_name || "Unknown Product",
+        product_price: parseFloat(item.product_price) || 0,
+        product_images: Array.isArray(item.product_images) && item.product_images.length > 0
+          ? item.product_images
+          : ["https://via.placeholder.com/60"]
+      }));
 
-    setCart(normalizedItems);
-  } catch (err) {
-    console.error("Error fetching cart:", err);
-  } finally {
-    setLoading(false);
-  }
-};
+      setCart(normalizedItems);
+    } catch (err) {
+      console.error("Error fetching cart:", err);
+    } finally {
+      setLoading(false);
+    }
+  };
 
-
-
-  // Remove item
+  // Cart actions
   const removeItem = async (productId) => {
     try {
       const res = await fetch("https://unstopablerundatabse.onrender.com/cart/remove", {
@@ -57,13 +66,12 @@ const fetchCart = async () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, productId })
       });
-      if (res.ok) fetchCart();
+      if (res.ok) fetchCart(userId);
     } catch (err) {
       console.error(err);
     }
   };
 
-  // Update quantity
   const updateQuantity = async (productId, quantity) => {
     if (quantity < 1) return;
     try {
@@ -72,29 +80,31 @@ const fetchCart = async () => {
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ userId, productId, quantity })
       });
-      if (res.ok) fetchCart();
+      if (res.ok) fetchCart(userId);
     } catch (err) {
       console.error(err);
     }
   };
 
-  // Clear cart
   const clearCart = async () => {
     try {
       const res = await fetch(`https://unstopablerundatabse.onrender.com/cart/clear/${userId}`, {
         method: "DELETE"
       });
-      if (res.ok) fetchCart();
+      if (res.ok) fetchCart(userId);
     } catch (err) {
       console.error(err);
     }
   };
 
-  // Show address form
-  const handleProceedToCheckout = () => setShowAddressForm(true);
+  // Checkout
+  const handleProceedToCheckout = () => {
+    if (!user?.id) return alert("Please login to proceed");
+    setShowAddressForm(true);
+  };
 
-  // Place order
   const placeOrder = async () => {
+    if (!user?.id) return alert("Please login to place order");
     if (cart.length === 0) return alert("Cart is empty!");
     if (!address.name || !address.street || !address.city || !address.mobile) {
       return alert("Please fill all address fields");
@@ -103,13 +113,16 @@ const fetchCart = async () => {
     setPlacingOrder(true);
 
     const orderData = {
-      userId,
+      userId: user.id,
       items: cart.map(item => ({
-        product_id: item.product_id,
-        product_name: item.product_name,
-        quantity: item.quantity,
-        product_price: item.product_price
-      })),
+  product_id: item.product_id,
+  product_name: item.product_name,
+  quantity: item.quantity,
+  product_price: item.product_price,
+  product_images: item.product_images,
+  variant: item.variant
+})),
+
       address
     };
 
@@ -174,7 +187,7 @@ const fetchCart = async () => {
                       onChange={(e) => updateQuantity(item.product_id, parseInt(e.target.value))}
                     />
                   </td>
-<td>${(item.product_price * item.quantity).toFixed(2)}</td>
+                  <td>${(item.product_price * item.quantity).toFixed(2)}</td>
                   <td>
                     <button className="remove-btn" onClick={() => removeItem(item.product_id)}>Remove</button>
                   </td>
@@ -193,16 +206,15 @@ const fetchCart = async () => {
         </>
       )}
 
-      {/* Address Form Modal */}
       {showAddressForm && (
         <div className="address-modal">
           <h2>Enter Delivery Address</h2>
-          <input placeholder="Name" value={address.name} onChange={e => setAddress({...address, name: e.target.value})} />
-          <input placeholder="Flat / House No" value={address.flat} onChange={e => setAddress({...address, flat: e.target.value})} />
-          <input placeholder="Street / Locality" value={address.street} onChange={e => setAddress({...address, street: e.target.value})} />
-          <input placeholder="City" value={address.city} onChange={e => setAddress({...address, city: e.target.value})} />
-          <input placeholder="State" value={address.state} onChange={e => setAddress({...address, state: e.target.value})} />
-          <input placeholder="Mobile" value={address.mobile} onChange={e => setAddress({...address, mobile: e.target.value})} />
+          <input placeholder="Name" value={address.name} onChange={e => setAddress({ ...address, name: e.target.value })} />
+          <input placeholder="Flat / House No" value={address.flat} onChange={e => setAddress({ ...address, flat: e.target.value })} />
+          <input placeholder="Street / Locality" value={address.street} onChange={e => setAddress({ ...address, street: e.target.value })} />
+          <input placeholder="City" value={address.city} onChange={e => setAddress({ ...address, city: e.target.value })} />
+          <input placeholder="State" value={address.state} onChange={e => setAddress({ ...address, state: e.target.value })} />
+          <input placeholder="Mobile" value={address.mobile} onChange={e => setAddress({ ...address, mobile: e.target.value })} />
           <div className="address-buttons">
             <button onClick={placeOrder} disabled={placingOrder}>{placingOrder ? "Placing Order..." : "Place Order"}</button>
             <button onClick={() => setShowAddressForm(false)}>Cancel</button>
@@ -225,7 +237,6 @@ const fetchCart = async () => {
         .checkout-btn { background: #ff6a00; color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: bold; cursor: pointer; }
         .clear-btn { background: #555; color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: bold; cursor: pointer; }
 
-        /* Address Modal */
         .address-modal {
           position: fixed;
           top: 50%; left: 50%;
