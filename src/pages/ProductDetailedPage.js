@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 
 export default function ProductDetail() {
   const { id } = useParams();
   const [product, setProduct] = useState(null);
   const [selectedVariant, setSelectedVariant] = useState({});
   const [mainImage, setMainImage] = useState("");
+  const navigate = useNavigate(); // <-- initialize navigate
 
   useEffect(() => {
     const fetchProduct = async () => {
@@ -23,69 +24,71 @@ export default function ProductDetail() {
     fetchProduct();
   }, [id]);
 // Add this inside your ProductDetail component, above the return
-const handleAddToCart = async () => {
-  if (!product || !selectedVariant) return;
+ const handleAddToCart = async (redirectToCart = false) => {
+    if (!product || !selectedVariant) return;
 
-  // 1️⃣ Determine user ID (logged-in or guest)
-  const user = JSON.parse(localStorage.getItem("user"));
-  let userId = user?.userId || user?.id;
+    const user = JSON.parse(localStorage.getItem("user"));
+    let userId = user?.userId || user?.id;
 
-  if (!userId) {
-    let guestId = localStorage.getItem("guestId");
-    if (!guestId) {
-      guestId = `guest_${Date.now()}`;
-      localStorage.setItem("guestId", guestId);
-    }
-    userId = guestId;
-  }
-
-  // 2️⃣ Build payload
-  const payload = {
-    userId,
-    items: [
-      {
-        product_id: product.id,
-        product_name: product.name,
-        product_price: selectedVariant.price,
-        product_images: [mainImage],
-        quantity: 1,
-        variant: selectedVariant
+    if (!userId) {
+      let guestId = localStorage.getItem("guestId");
+      if (!guestId) {
+        guestId = `guest_${Date.now()}`;
+        localStorage.setItem("guestId", guestId);
       }
-    ]
+      userId = guestId;
+    }
+
+    const payload = {
+      userId,
+      items: [
+        {
+          product_id: product.id,
+          product_name: product.name,
+          product_price: selectedVariant.price,
+          product_images: [mainImage],
+          quantity: 1,
+          variant: selectedVariant
+        }
+      ]
+    };
+
+    try {
+      const res = await fetch("https://unstopablerundatabse.onrender.com/cart/add", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload)
+      });
+
+      const data = await res.json();
+
+      if (res.ok) {
+        alert(`${product.name} added to cart!`);
+
+        // Redirect to cart page if it's Buy Now
+        if (redirectToCart) {
+          navigate("/cart"); // <-- redirect
+        }
+
+        // Optionally update stock info
+        const productRes = await fetch(`https://unstopablerundatabse.onrender.com/products/${id}`);
+        if (productRes.ok) {
+          const updatedProduct = await productRes.json();
+          setProduct(updatedProduct);
+
+          const updatedVariant = updatedProduct.variants.find(
+            v => v.size === selectedVariant.size && v.color === selectedVariant.color
+          );
+          if (updatedVariant) setSelectedVariant(updatedVariant);
+        }
+      } else {
+        alert(`Failed to add to cart: ${data.message}`);
+      }
+    } catch (err) {
+      console.error(err);
+      alert("Error adding to cart");
+    }
   };
-
-  try {
-    const res = await fetch("https://unstopablerundatabse.onrender.com/cart/add", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload)
-    });
-
-    const data = await res.json();
-
-    if (res.ok) {
-      alert(`${product.name} added to cart!`);
-
-      // 3️⃣ Refetch product from backend to get updated stock
-      const productRes = await fetch(`https://unstopablerundatabse.onrender.com/products/${id}`);
-      if (productRes.ok) {
-        const updatedProduct = await productRes.json();
-        setProduct(updatedProduct);
-
-        // Update selected variant in case backend stock changed
-        const updatedVariant = updatedProduct.variants.find(
-          v => v.size === selectedVariant.size && v.color === selectedVariant.color
-        );
-        if (updatedVariant) setSelectedVariant(updatedVariant);
-      }
-    } else {
-      alert(`Failed to add to cart: ${data.message}`);
-    }
-  } catch (err) {
-    console.error(err);
-    alert("Error adding to cart");
-  }
-};
 
 
   if (!product) return <div className="loading">Loading product...</div>;
@@ -147,22 +150,15 @@ const handleAddToCart = async () => {
               ₹{selectedVariant.price} <span>({selectedVariant.stock} in stock)</span>
             </div>
 
-            {/* Action Buttons */}
-            <div className="action-buttons">
-             <button
-  className="add-cart"
-  onClick={handleAddToCart} // <-- use the new function
->
-  Add to Cart
-</button>
+          <div className="action-buttons">
+  <button className="add-cart" onClick={() => handleAddToCart(false)}>
+    Add to Cart
+  </button>
 
-              <button
-                className="buy-now"
-  onClick={handleAddToCart} // <-- use the new function
-              >
-                Buy Now
-              </button>
-            </div>
+  <button className="buy-now" onClick={() => handleAddToCart(true)}>
+    Buy Now
+  </button>
+</div>
 
             {/* Description */}
             {product.description && (

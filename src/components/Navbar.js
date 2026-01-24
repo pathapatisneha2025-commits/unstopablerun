@@ -22,10 +22,28 @@ export default function Navbar() {
 
     if (storedUser) {
       setUser(storedUser);
-      setUserId(storedUser.id.toString()); // ensure string type
+      setUserId(storedUser.id.toString());
     } else {
       setUserId(guestId.toString());
     }
+  }, []);
+
+  // Auto-update username if localStorage changes (after login/logout)
+  useEffect(() => {
+    const handleStorage = () => {
+      const storedUser = JSON.parse(localStorage.getItem("user"));
+      if (storedUser) {
+        setUser(storedUser);
+        setUserId(storedUser.id.toString());
+      } else {
+        const guestId = localStorage.getItem("guestId") || `guest_${Date.now()}`;
+        localStorage.setItem("guestId", guestId);
+        setUserId(guestId.toString());
+        setUser(null);
+      }
+    };
+    window.addEventListener("storage", handleStorage);
+    return () => window.removeEventListener("storage", handleStorage);
   }, []);
 
   // Fetch cart count
@@ -34,17 +52,18 @@ export default function Navbar() {
 
     const fetchCart = async () => {
       try {
-        console.log("Fetching cart for userId:", userId);
         const res = await fetch(`https://unstopablerundatabase.onrender.com/cart/${userId}`);
         if (!res.ok) throw new Error("Failed to fetch cart");
 
         const data = await res.json();
-        console.log("Cart data:", data);
+        // Check if data is array (multiple carts) or single object
+        const carts = Array.isArray(data) ? data : [data];
+        const totalCount = carts.reduce((total, cart) => {
+          const items = Array.isArray(cart.items) ? cart.items : [];
+          return total + items.reduce((acc, item) => acc + (item.quantity || 0), 0);
+        }, 0);
 
-        // Ensure items is always an array
-        const items = Array.isArray(data.items.quantity) ? data.items : [];
-        const count = items.reduce((acc, item) => acc + (item.quantity || 0), 0);
-        setCartCount(count);
+        setCartCount(totalCount);
       } catch (err) {
         console.error("Failed to fetch cart:", err);
         setCartCount(0);
@@ -52,9 +71,7 @@ export default function Navbar() {
     };
 
     fetchCart();
-
-    // Refresh every 30 seconds
-    const interval = setInterval(fetchCart, 30000);
+    const interval = setInterval(fetchCart, 30000); // auto-refresh every 30s
     return () => clearInterval(interval);
   }, [userId]);
 
@@ -82,27 +99,37 @@ export default function Navbar() {
       <div className="top-bar">🔥 FREE SHIPPING ON ORDERS OVER $100 | USE CODE: UNSTOPPABLE</div>
 
       <nav className="navbar">
+        {/* Logo & Hamburger */}
         <div className="navbar-mobile">
           <Link to="/" className="logo-mobile">
             <img src="/companylogo.png" alt="RUNN" />
           </Link>
-          <div className={`hamburger ${menuOpen ? "active" : ""}`} onClick={() => setMenuOpen(!menuOpen)}>
+          <div
+            className={`hamburger ${menuOpen ? "active" : ""}`}
+            onClick={() => setMenuOpen(!menuOpen)}
+          >
             <span></span>
             <span></span>
             <span></span>
           </div>
         </div>
 
+        {/* Navbar Links */}
         <ul className={`navbar-center ${menuOpen ? "show" : ""}`}>
           {links.map((link, i) => (
             <li key={i}>
-              <Link to={link.path} onClick={() => setMenuOpen(false)} className="nav-link">
+              <Link
+                to={link.path}
+                onClick={() => setMenuOpen(false)}
+                className="nav-link"
+              >
                 {link.label}
               </Link>
             </li>
           ))}
         </ul>
 
+        {/* User & Cart */}
         <div className="navbar-right">
           <div className="user-dropdown" onClick={() => setUserMenuOpen(!userMenuOpen)}>
             <div className="user-box">
@@ -113,12 +140,18 @@ export default function Navbar() {
               <div className="dropdown-menu">
                 {!user ? (
                   <>
-                    <Link to="/register" onClick={() => setUserMenuOpen(false)}>Login / Register</Link>
-                    <Link to={`/orders/${userId}`} onClick={() => setUserMenuOpen(false)}>My Orders (Guest)</Link>
+                    <Link to="/register" onClick={() => setUserMenuOpen(false)}>
+                      Login / Register
+                    </Link>
+                    <Link to={`/orders/${userId}`} onClick={() => setUserMenuOpen(false)}>
+                      My Orders (Guest)
+                    </Link>
                   </>
                 ) : (
                   <>
-                    <Link to={`/orders/${userId}`} onClick={() => setUserMenuOpen(false)}>My Orders</Link>
+                    <Link to={`/orders/${userId}`} onClick={() => setUserMenuOpen(false)}>
+                      My Orders
+                    </Link>
                     <div className="logout-btn" onClick={handleLogout}>
                       Logout <LuLogOut />
                     </div>
@@ -134,10 +167,8 @@ export default function Navbar() {
           </Link>
         </div>
       </nav>
-    
 
-
-
+      {/* CSS */}
       <style>{`
         * { margin:0; padding:0; box-sizing:border-box; font-family: Arial, sans-serif; }
         .top-bar { background:#ff6a00; color:#fff; text-align:center; padding:10px; font-size:14px; font-weight:600; }
@@ -148,7 +179,7 @@ export default function Navbar() {
         .nav-link:hover { color:#ff6a00; }
         .navbar-right { display:flex; gap:18px; align-items:center; font-size:22px; color:#fff; }
         .cart { position:relative; color:inherit; text-decoration:none; }
-        .cart span { position:absolute; top:-6px; right:-8px; background:#ff6a00; color:#fff; font-size:12px; padding:2px 6px; border-radius:50%; }
+        .cart-count { position:absolute; top:-8px; right:-8px; background:white; color:black; font-size:12px; font-weight:700; padding:2px 6px; border-radius:50%; min-width:18px; height:18px; display:flex; align-items:center; justify-content:center; box-shadow:0 0 2px rgba(0,0,0,0.3); z-index:1000; }
         .hamburger { display:none; flex-direction:column; gap:5px; cursor:pointer; }
         .hamburger span { width:28px; height:3px; background:#fff; transition: transform 0.3s, opacity 0.3s; }
         .hamburger.active span:nth-child(1) { transform: rotate(45deg) translate(5px,5px); }
@@ -160,32 +191,8 @@ export default function Navbar() {
         .dropdown-menu a, .logout-btn { padding:10px 16px; font-size:14px; color:#fff; text-decoration:none; transition: background 0.2s; }
         .dropdown-menu a:hover, .logout-btn:hover { background:#ff6a00; color:#fff; }
         .logout-btn { display:flex; justify-content:space-between; align-items:center; cursor:pointer; }
-.cart {
-  position: relative;
-  color: inherit;
-  text-decoration: none;
-}
-.cart-count {
-  position: absolute;
-  top: -8px;
-  right: -8px;
-  background: white;   /* WHITE badge */
-  color: black;        /* text color */
-  font-size: 12px;
-  font-weight: 700;
-  padding: 2px 6px;
-  border-radius: 50%;
-  min-width: 18px;
-  height: 18px;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  box-shadow: 0 0 2px rgba(0,0,0,0.3);
-  z-index: 1000;
-}
 
-
- /* Responsive */
+        /* Responsive */
         @media (max-width:900px) {
           .hamburger { display:flex; }
           .navbar-mobile { display:flex; align-items:center; justify-content:space-between; width:100%; padding:0 20px; }

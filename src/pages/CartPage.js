@@ -5,6 +5,7 @@ export default function CartPage() {
   const [loading, setLoading] = useState(true);
   const [showAddressForm, setShowAddressForm] = useState(false);
   const [placingOrder, setPlacingOrder] = useState(false);
+  const [userId, setUserId] = useState(null); // ✅ state for userId
 
   const [address, setAddress] = useState({
     name: "",
@@ -17,20 +18,21 @@ export default function CartPage() {
 
   // Get logged-in user from localStorage
   const user = JSON.parse(localStorage.getItem("user"));
-  let userId = user?.userId || user?.id;
 
   // On mount, generate guestId if no user
   useEffect(() => {
-    if (!userId) {
+    if (user?.id || user?.userId) {
+      setUserId(user.userId || user.id);
+      fetchCart(user.userId || user.id);
+    } else {
       let guestId = localStorage.getItem("guestId");
       if (!guestId) {
         guestId = `guest_${Date.now()}`;
         localStorage.setItem("guestId", guestId);
       }
-      userId = guestId;
+      setUserId(guestId);
+      fetchCart(guestId);
     }
-
-    fetchCart(userId);
   }, []);
 
   // Fetch cart for both user and guest
@@ -60,6 +62,7 @@ export default function CartPage() {
 
   // Cart actions
   const removeItem = async (productId) => {
+    if (!userId) return;
     try {
       const res = await fetch("https://unstopablerundatabse.onrender.com/cart/remove", {
         method: "DELETE",
@@ -73,7 +76,7 @@ export default function CartPage() {
   };
 
   const updateQuantity = async (productId, quantity) => {
-    if (quantity < 1) return;
+    if (!userId || quantity < 1) return;
     try {
       const res = await fetch("https://unstopablerundatabse.onrender.com/cart/update", {
         method: "PUT",
@@ -87,6 +90,7 @@ export default function CartPage() {
   };
 
   const clearCart = async () => {
+    if (!userId) return;
     try {
       const res = await fetch(`https://unstopablerundatabse.onrender.com/cart/clear/${userId}`, {
         method: "DELETE"
@@ -99,12 +103,11 @@ export default function CartPage() {
 
   // Checkout
   const handleProceedToCheckout = () => {
-    if (!user?.id) return alert("Please login to proceed");
-    setShowAddressForm(true);
+    if (cart.length === 0) return alert("Cart is empty!");
+    setShowAddressForm(true); // works for both guest & logged-in
   };
 
   const placeOrder = async () => {
-    if (!user?.id) return alert("Please login to place order");
     if (cart.length === 0) return alert("Cart is empty!");
     if (!address.name || !address.street || !address.city || !address.mobile) {
       return alert("Please fill all address fields");
@@ -113,16 +116,16 @@ export default function CartPage() {
     setPlacingOrder(true);
 
     const orderData = {
-      userId: user.id,
+      userId: user?.id || userId, // guestId if not logged in
+      userType: user ? "registered" : "guest",
       items: cart.map(item => ({
-  product_id: item.product_id,
-  product_name: item.product_name,
-  quantity: item.quantity,
-  product_price: item.product_price,
-  product_images: item.product_images,
-  variant: item.variant
-})),
-
+        product_id: item.product_id,
+        product_name: item.product_name,
+        quantity: item.quantity,
+        product_price: item.product_price,
+        product_images: item.product_images,
+        variant: item.variant
+      })),
       address
     };
 
@@ -207,19 +210,35 @@ export default function CartPage() {
       )}
 
       {showAddressForm && (
-        <div className="address-modal">
-          <h2>Enter Delivery Address</h2>
-          <input placeholder="Name" value={address.name} onChange={e => setAddress({ ...address, name: e.target.value })} />
-          <input placeholder="Flat / House No" value={address.flat} onChange={e => setAddress({ ...address, flat: e.target.value })} />
-          <input placeholder="Street / Locality" value={address.street} onChange={e => setAddress({ ...address, street: e.target.value })} />
-          <input placeholder="City" value={address.city} onChange={e => setAddress({ ...address, city: e.target.value })} />
-          <input placeholder="State" value={address.state} onChange={e => setAddress({ ...address, state: e.target.value })} />
-          <input placeholder="Mobile" value={address.mobile} onChange={e => setAddress({ ...address, mobile: e.target.value })} />
-          <div className="address-buttons">
-            <button onClick={placeOrder} disabled={placingOrder}>{placingOrder ? "Placing Order..." : "Place Order"}</button>
-            <button onClick={() => setShowAddressForm(false)}>Cancel</button>
+        <>
+          <div className="modal-overlay" onClick={() => setShowAddressForm(false)} />
+          <div className="address-modal">
+            <h2>Enter Delivery Address</h2>
+            <input placeholder="Name" value={address.name} onChange={e => setAddress({ ...address, name: e.target.value })} />
+            <input placeholder="Flat / House No" value={address.flat} onChange={e => setAddress({ ...address, flat: e.target.value })} />
+            <input placeholder="Street / Locality" value={address.street} onChange={e => setAddress({ ...address, street: e.target.value })} />
+            <input placeholder="City" value={address.city} onChange={e => setAddress({ ...address, city: e.target.value })} />
+            <input placeholder="State" value={address.state} onChange={e => setAddress({ ...address, state: e.target.value })} />
+<div style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+  <span>+91</span>
+  <input
+    placeholder="Mobile"
+    value={address.mobile}
+    onChange={(e) => {
+      let val = e.target.value.replace(/\D/g, "");
+      if (val.length > 10) val = val.slice(0, 10);
+      setAddress({ ...address, mobile: val });
+    }}
+  />
+</div>
+
+
+            <div className="address-buttons">
+              <button onClick={placeOrder} disabled={placingOrder}>{placingOrder ? "Placing Order..." : "Place Order"}</button>
+              <button onClick={() => setShowAddressForm(false)}>Cancel</button>
+            </div>
           </div>
-        </div>
+        </>
       )}
 
       <style>{`
@@ -237,6 +256,11 @@ export default function CartPage() {
         .checkout-btn { background: #ff6a00; color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: bold; cursor: pointer; }
         .clear-btn { background: #555; color: white; border: none; padding: 12px 24px; border-radius: 12px; font-weight: bold; cursor: pointer; }
 
+        .modal-overlay {
+          position: fixed; top:0; left:0; width:100%; height:100%;
+          background: rgba(0,0,0,0.4); z-index: 1500;
+        }
+
         .address-modal {
           position: fixed;
           top: 50%; left: 50%;
@@ -245,7 +269,9 @@ export default function CartPage() {
           border-radius: 12px; box-shadow: 0 0 20px rgba(0,0,0,0.2);
           display: flex; flex-direction: column; gap: 10px;
           width: 90%; max-width: 400px;
+          z-index: 2000; /* above navbar and overlay */
         }
+
         .address-modal input { padding: 10px; border-radius: 6px; border: 1px solid #ccc; width: 100%; }
         .address-buttons { display: flex; justify-content: space-between; margin-top: 10px; }
         .address-buttons button { padding: 10px 20px; border-radius: 6px; border: none; cursor: pointer; }
