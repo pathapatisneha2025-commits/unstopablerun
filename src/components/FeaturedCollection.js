@@ -1,41 +1,30 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { ArrowRight, ArrowUpRight } from "lucide-react";
 
 export default function FeaturedCollections() {
-  const collections = [
-    {
-      id: "men",
-      tag: "PERFORMANCE GEAR",
-      title: "MEN",
-      subtitle: "Engineered for the modern athlete",
-      image: "/men.jpeg",
-      path: "/shop",
-    },
-    {
-      id: "women",
-      tag: "ATHLETIC APPAREL",
-      title: "WOMEN",
-      subtitle: "Power meets elegance",
-      image: "/women.jpeg",
-      path: "/shop",
-    },
-    {
-      id: "accessories",
-      tag: "ESSENTIAL GEAR",
-      title: "ACCESSORIES",
-      subtitle: "Complete your setup",
-      image: "/Acessories.jpeg", // Ensure this matches your filename exactly!
-      path: "/shop",
-    },
-  ];
+  const [collections, setCollections] = useState([]);
+
+  // Fetch collections from backend
+  useEffect(() => {
+    const fetchCollections = async () => {
+      try {
+        const res = await fetch("https://unstopablerundatabse.onrender.com/category/all");
+        const data = await res.json();
+        setCollections(data);
+      } catch (err) {
+        console.error("Error fetching collections:", err);
+      }
+    };
+    fetchCollections();
+  }, []);
 
   return (
     <>
       <section className="collections">
         {/* Dynamic Orange Mesh Background */}
         <div className="bg-glow" />
-        
+
         <div className="collections-header">
           <div>
             <span className="pill">SHOP BY COLLECTION</span>
@@ -52,14 +41,9 @@ export default function FeaturedCollections() {
 
         <div className="grid">
           {collections.map((item) => (
-            <Link
-              key={item.id}
-              to={item.path}
-              className="card"
-            >
-              <img src={item.image} alt={item.title} />
+            <Link key={item.id} to={item.path || "/shop"} className="card">
+              <img src={item.image_url} alt={item.title} />
               <div className="overlay" />
-
               <div className="info">
                 <span className="badge">{item.tag}</span>
                 <h2>{item.title}</h2>
@@ -73,11 +57,11 @@ export default function FeaturedCollections() {
         </div>
       </section>
 
+      {/* Styles */}
       <style>{`
         .collections { 
           position: relative;
           padding: 90px 6%; 
-          /* Orange Shade Background */
           background-color: #fffaf5;
           background-image: 
             radial-gradient(at 0% 0%, rgba(255, 106, 0, 0.12) 0px, transparent 50%),
@@ -155,7 +139,7 @@ export default function FeaturedCollections() {
           height: 520px;
           border-radius: 28px;
           overflow: hidden;
-          background: #e5e5e5; /* Light gray fallback so it doesn't look black if image fails */
+          background: #e5e5e5;
           transition: transform 0.4s ease;
           text-decoration: none;
         }
