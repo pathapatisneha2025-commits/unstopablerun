@@ -37,9 +37,9 @@ const Footer = () => {
           <div className="link-column">
             <h4>SHOP</h4>
             <ul>
-              <li><Link to="/menscollectoionpage">Men</Link></li>
-              <li><Link to="/womencollectoionpage">Women</Link></li>
-              <li><Link to="/Accesssoriespage">Accessories</Link></li>
+              <li><Link to="/shop">Men</Link></li>
+              <li><Link to="/shop">Women</Link></li>
+              <li><Link to="/shop">Accessories</Link></li>
               <li><Link to="/shop">New Arrivals</Link></li>
               <li><Link to="/shop">Best Sellers</Link></li>
             </ul>
